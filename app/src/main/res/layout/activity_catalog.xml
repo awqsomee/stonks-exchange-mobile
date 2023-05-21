@@ -28,6 +28,14 @@
             android:text="nope"
             tools:layout_editor_absoluteX="87dp"
             tools:layout_editor_absoluteY="187dp" />
+
+        <ImageButton
+            android:id="@+id/logOutBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_media_next" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <SearchView

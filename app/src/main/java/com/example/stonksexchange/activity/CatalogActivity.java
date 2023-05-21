@@ -43,6 +43,19 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ImageButton logOutBtn = findViewById(R.id.logOutBtn);
+        logOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPref = context.getSharedPreferences("stonks_exchange", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.remove("token");
+                editor.apply();
+                app.setIsAuth(false);
+                app.setUser(null);
+            }
+        });
     }
 
     private void checkAuth(Context context, App app) {
