@@ -21,6 +21,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="nope"
+            tools:layout_editor_absoluteX="87dp"
+            tools:layout_editor_absoluteY="187dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <SearchView
