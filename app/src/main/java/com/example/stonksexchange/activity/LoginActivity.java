@@ -69,8 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<AuthResponse> call, Throwable t) {
-                        // Handle failure
-                        Toast.makeText(LoginActivity.this, "Internal error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Внутренняя ошибка", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

@@ -22,7 +22,7 @@ public class ErrorUtils {
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
         } catch (IOException | JSONException e) {
             e.printStackTrace();
-            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Внутренняя ошибка", Toast.LENGTH_SHORT).show();
         }
     }
 }
