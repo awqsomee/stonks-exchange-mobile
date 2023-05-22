@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 app.setIsAuth(false);
                                 app.setUser(null);
                                 navigationView.setVisibility(View.GONE);
+                                showFragment(new CatalogFragment());
                                 return true;
                             default:
                                 return false;
