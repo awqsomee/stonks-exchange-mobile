@@ -1,9 +1,9 @@
 package com.example.stonksexchange.api.domain.balance;
 
 public class ChangeBalanceRequest {
-    private Number value;
+    private Float value;
 
-    public ChangeBalanceRequest(Number value) {
+    public ChangeBalanceRequest(Float value) {
         this.value = value;
     }
 }

@@ -27,4 +27,8 @@ public class User {
     public Number getBalance() {
         return balance;
     }
+
+    public void setBalance(Number balance) {
+        this.balance = balance;
+    }
 }
