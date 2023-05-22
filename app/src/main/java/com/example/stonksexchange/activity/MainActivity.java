@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private void getAuth() {
         AuthRequest authRequest = new AuthRequest(sharedPref.getString("token", null));
-        Call<AuthResponse> call = ApiService.authApiService.auth(authRequest.getToken());
+        Call<AuthResponse> call = ApiService.ApiService.auth(authRequest.getToken());
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {

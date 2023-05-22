@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             LoginRequest loginRequest = new LoginRequest(loginInput.getText().toString(), passwordInput.getText().toString());
-            Call<AuthResponse> call = ApiService.authApiService.logIn(loginRequest);
+            Call<AuthResponse> call = ApiService.ApiService.logIn(loginRequest);
             call.enqueue(new Callback<AuthResponse>() {
                 @Override
                 public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {

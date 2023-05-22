@@ -63,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
 
             SignUpRequest signUpRequest = new SignUpRequest(emailInput.getText().toString(), fullNameInput.getText().toString(), passwordSignUpInput.getText().toString());
-            Call<AuthResponse> call = ApiService.authApiService.signUp(signUpRequest);
+            Call<AuthResponse> call = ApiService.ApiService.signUp(signUpRequest);
 
             call.enqueue(new Callback<AuthResponse>() {
                 @Override
