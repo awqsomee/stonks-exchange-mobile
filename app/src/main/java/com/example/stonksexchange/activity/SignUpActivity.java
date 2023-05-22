@@ -25,67 +25,80 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
+    App app;
+    Context context;
+    SharedPreferences sharedPref;
+    EditText fullNameInput;
+    EditText emailInput;
+    EditText passwordSignUpInput;
+    EditText repeatPasswordInput;
+    TextView toLoginText;
+    Button signUpBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App app = App.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        app = App.getInstance();
 
-        Context context = this;
-        SharedPreferences sharedPref = context.getSharedPreferences("stonks_exchange", Context.MODE_PRIVATE);
-        EditText fullNameInput = findViewById(R.id.fullNameInput);
-        EditText emailInput = findViewById(R.id.emailInput);
-        EditText passwordSignUpInput = findViewById(R.id.passwordSignUpInput);
-        EditText repeatPasswordInput = findViewById(R.id.repeatPasswordInput);
-        TextView toLoginText = findViewById(R.id.toLoginText);
-        Button signUpBtn = findViewById(R.id.signUpBtn);
+        context = this;
+        sharedPref = context.getSharedPreferences("stonks_exchange", Context.MODE_PRIVATE);
+        fullNameInput = findViewById(R.id.fullNameInput);
+        emailInput = findViewById(R.id.emailInput);
+        passwordSignUpInput = findViewById(R.id.passwordSignUpInput);
+        repeatPasswordInput = findViewById(R.id.repeatPasswordInput);
+        toLoginText = findViewById(R.id.toLoginText);
+        signUpBtn = findViewById(R.id.signUpBtn);
 
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!passwordSignUpInput.getText().toString().equals(repeatPasswordInput.getText().toString())) {
-                    Toast.makeText(SignUpActivity.this, "Пароли не совпадают", Toast.LENGTH_SHORT).show();
-                    return;
+        signUpBtn.setOnClickListener(new SignUpClickListener());
+
+        toLoginText.setOnClickListener(new toLoginClickListener());
+    }
+
+    private class SignUpClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (!passwordSignUpInput.getText().toString().equals(repeatPasswordInput.getText().toString())) {
+                Toast.makeText(SignUpActivity.this, "Пароли не совпадают", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            SignUpRequest signUpRequest = new SignUpRequest(emailInput.getText().toString(), fullNameInput.getText().toString(), passwordSignUpInput.getText().toString());
+            Call<AuthResponse> call = ApiService.apiService.signUp(signUpRequest);
+
+            call.enqueue(new Callback<AuthResponse>() {
+                @Override
+                public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                    if (response.isSuccessful()) {
+                        AuthResponse authResponse = response.body();
+
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("token", authResponse.getToken());
+                        editor.apply();
+
+                        app.setUser(authResponse.getUser());
+                        app.setIsAuth(true);
+
+                        finish();
+                    } else {
+                        ErrorUtils.handleErrorResponse(response, SignUpActivity.this);
+                    }
                 }
 
-                SignUpRequest signUpRequest = new SignUpRequest(emailInput.getText().toString(), fullNameInput.getText().toString(), passwordSignUpInput.getText().toString());
-                Call<AuthResponse> call = ApiService.apiService.signUp(signUpRequest);
+                @Override
+                public void onFailure(Call<AuthResponse> call, Throwable t) {
+                    Toast.makeText(SignUpActivity.this, "Внутренняя ошибка", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
 
-                call.enqueue(new Callback<AuthResponse>() {
-                    @Override
-                    public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                        if (response.isSuccessful()) {
-                            AuthResponse authResponse = response.body();
-
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("token", authResponse.getToken());
-                            editor.apply();
-
-                            app.setUser(authResponse.getUser());
-                            app.setIsAuth(true);
-
-                            finish();
-                        } else {
-                            ErrorUtils.handleErrorResponse(response, SignUpActivity.this);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<AuthResponse> call, Throwable t) {
-                        Toast.makeText(SignUpActivity.this, "Внутренняя ошибка", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-
-        toLoginText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+    private class toLoginClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }

@@ -7,7 +7,7 @@
     tools:context=".activity.CatalogActivity">
 
     <ImageButton
-        android:id="@+id/toLoginButton"
+        android:id="@+id/accButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,22 +26,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="nope"
-            tools:layout_editor_absoluteX="87dp"
-            tools:layout_editor_absoluteY="187dp" />
-
-        <ImageButton
-            android:id="@+id/logOutBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_media_next" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <SearchView
         android:layout_width="356dp"
         android:layout_height="51dp"
-        app:layout_constraintEnd_toStartOf="@+id/toLoginButton"
+        app:layout_constraintEnd_toStartOf="@+id/accButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

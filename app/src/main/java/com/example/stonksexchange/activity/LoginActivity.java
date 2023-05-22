@@ -29,59 +29,69 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
+    SharedPreferences sharedPref;
+    Context context;
+    App app;
+    EditText loginInput;
+    EditText passwordInput;
+    TextView toSignUpText;
+    Button logInBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App app = App.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        app = App.getInstance();
+        context = this;
+        sharedPref = context.getSharedPreferences("stonks_exchange", Context.MODE_PRIVATE);
+        loginInput = findViewById(R.id.loginInput);
+        passwordInput = findViewById(R.id.passwordInput);
+        toSignUpText = findViewById(R.id.toSignUpText);
+        logInBtn = findViewById(R.id.logInButton);
 
-        Context context = this;
-        SharedPreferences sharedPref = context.getSharedPreferences("stonks_exchange", Context.MODE_PRIVATE);
-        EditText loginInput = findViewById(R.id.loginInput);
-        EditText passwordInput = findViewById(R.id.passwordInput);
-        TextView toSignUpText = findViewById(R.id.toSignUpText);
-        Button logInBtn = findViewById(R.id.logInButton);
+        logInBtn.setOnClickListener(new logInClickListener());
 
-        logInBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginRequest loginRequest = new LoginRequest(loginInput.getText().toString(), passwordInput.getText().toString());
-                Call<AuthResponse> call = ApiService.apiService.logIn(loginRequest);
-                call.enqueue(new Callback<AuthResponse>() {
-                    @Override
-                    public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                        if (response.isSuccessful()) {
-                            AuthResponse authResponse = response.body();
+        toSignUpText.setOnClickListener(new toSignUpClickListener());
+    }
 
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("token", authResponse.getToken());
-                            editor.apply();
+    private class logInClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            LoginRequest loginRequest = new LoginRequest(loginInput.getText().toString(), passwordInput.getText().toString());
+            Call<AuthResponse> call = ApiService.apiService.logIn(loginRequest);
+            call.enqueue(new Callback<AuthResponse>() {
+                @Override
+                public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                    if (response.isSuccessful()) {
+                        AuthResponse authResponse = response.body();
 
-                            app.setUser(authResponse.getUser());
-                            app.setIsAuth(true);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("token", authResponse.getToken());
+                        editor.apply();
 
-                            finish();
-                        } else {
-                            ErrorUtils.handleErrorResponse(response, LoginActivity.this);
-                        }
+                        app.setUser(authResponse.getUser());
+                        app.setIsAuth(true);
+
+                        finish();
+                    } else {
+                        ErrorUtils.handleErrorResponse(response, LoginActivity.this);
                     }
+                }
 
-                    @Override
-                    public void onFailure(Call<AuthResponse> call, Throwable t) {
-                        Toast.makeText(LoginActivity.this, "Внутренняя ошибка", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+                @Override
+                public void onFailure(Call<AuthResponse> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Внутренняя ошибка", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
 
-        toSignUpText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+    private class toSignUpClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
