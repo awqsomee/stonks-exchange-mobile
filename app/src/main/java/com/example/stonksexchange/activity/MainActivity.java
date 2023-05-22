@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         sharedPref = context.getSharedPreferences("stonks_exchange", Context.MODE_PRIVATE);
         accBtn = findViewById(R.id.accButton);
         navigationView = findViewById(R.id.navigationView);
-
         accBtn.setOnClickListener(new AccClickListener());
 
         navigationView.setOnItemSelectedListener(this);
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                     app.setUser(authResponse.getUser());
                     app.setIsAuth(true);
-
+                    navigationView.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -136,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 editor.apply();
                                 app.setIsAuth(false);
                                 app.setUser(null);
+                                navigationView.setVisibility(View.GONE);
                                 return true;
                             default:
                                 return false;
