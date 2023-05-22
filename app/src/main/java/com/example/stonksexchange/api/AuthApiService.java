@@ -10,7 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
-public interface ApiService {
+public interface AuthApiService {
     @POST("auth/login")
     Call<AuthResponse> logIn(@Body LoginRequest request);
 
@@ -19,6 +19,4 @@ public interface ApiService {
 
     @GET("auth")
     Call<AuthResponse> auth(@Header("Authorization") String AuthHeader);
-
-    AuthApiService authApiService = NetworkModule.createUserApiService();
 }

@@ -1,4 +1,4 @@
-package com.example.stonksexchange.api.domain;
+package com.example.stonksexchange.api.domain.auth;
 
 public class AuthRequest {
     String token;

@@ -15,15 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.stonksexchange.R;
-import com.example.stonksexchange.api.domain.AuthResponse;
-import com.example.stonksexchange.api.domain.LoginRequest;
+import com.example.stonksexchange.api.domain.auth.AuthResponse;
+import com.example.stonksexchange.api.domain.auth.LoginRequest;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             LoginRequest loginRequest = new LoginRequest(loginInput.getText().toString(), passwordInput.getText().toString());
-            Call<AuthResponse> call = ApiService.apiService.logIn(loginRequest);
+            Call<AuthResponse> call = ApiService.authApiService.logIn(loginRequest);
             call.enqueue(new Callback<AuthResponse>() {
                 @Override
                 public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {

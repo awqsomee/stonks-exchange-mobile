@@ -16,9 +16,8 @@ import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
-import com.example.stonksexchange.api.domain.AuthResponse;
-import com.example.stonksexchange.api.domain.LoginRequest;
-import com.example.stonksexchange.api.domain.SignUpRequest;
+import com.example.stonksexchange.api.domain.auth.AuthResponse;
+import com.example.stonksexchange.api.domain.auth.SignUpRequest;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
 
             SignUpRequest signUpRequest = new SignUpRequest(emailInput.getText().toString(), fullNameInput.getText().toString(), passwordSignUpInput.getText().toString());
-            Call<AuthResponse> call = ApiService.apiService.signUp(signUpRequest);
+            Call<AuthResponse> call = ApiService.authApiService.signUp(signUpRequest);
 
             call.enqueue(new Callback<AuthResponse>() {
                 @Override

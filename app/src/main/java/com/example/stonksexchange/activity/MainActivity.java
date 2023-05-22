@@ -16,8 +16,8 @@ import android.widget.PopupMenu;
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
 import com.example.stonksexchange.api.ApiService;
-import com.example.stonksexchange.api.domain.AuthRequest;
-import com.example.stonksexchange.api.domain.AuthResponse;
+import com.example.stonksexchange.api.domain.auth.AuthRequest;
+import com.example.stonksexchange.api.domain.auth.AuthResponse;
 import com.example.stonksexchange.fragment.CatalogFragment;
 import com.example.stonksexchange.fragment.InvestmentsFragment;
 import com.example.stonksexchange.fragment.WalletFragment;
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private void getAuth() {
         AuthRequest authRequest = new AuthRequest(sharedPref.getString("token", null));
-        Call<AuthResponse> call = ApiService.apiService.auth(authRequest.getToken());
+        Call<AuthResponse> call = ApiService.authApiService.auth(authRequest.getToken());
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
