@@ -78,8 +78,7 @@ public class WalletFragment extends Fragment {
     }
 
     private void changeBalance(ChangeBalanceRequest amount) {
-        AuthRequest authRequest = new AuthRequest(sharedPref.getString("token", null));
-        Call<ChangeBalanceResponse> call = ApiService.ApiService.changeBalance(authRequest.getToken(), amount);
+        Call<ChangeBalanceResponse> call = ApiService.AuthApiService.changeBalance(amount);
         call.enqueue(new Callback<ChangeBalanceResponse>() {
             @Override
             public void onResponse(Call<ChangeBalanceResponse> call, Response<ChangeBalanceResponse> response) {

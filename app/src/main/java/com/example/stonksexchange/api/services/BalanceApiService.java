@@ -1,4 +1,4 @@
-package com.example.stonksexchange.api;
+package com.example.stonksexchange.api.services;
 
 import com.example.stonksexchange.api.domain.auth.AuthResponse;
 import com.example.stonksexchange.api.domain.balance.ChangeBalanceRequest;
@@ -11,7 +11,6 @@ import retrofit2.http.PATCH;
 import retrofit2.http.PUT;
 
 public interface BalanceApiService {
-
     @PUT("auth/balance")
-    Call<ChangeBalanceResponse> changeBalance(@Header("Authorization") String AuthHeader, @Body ChangeBalanceRequest request);
+    Call<ChangeBalanceResponse> changeBalance(@Body ChangeBalanceRequest request);
 }

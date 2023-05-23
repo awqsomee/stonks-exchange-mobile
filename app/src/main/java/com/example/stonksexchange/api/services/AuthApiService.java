@@ -1,4 +1,4 @@
-package com.example.stonksexchange.api;
+package com.example.stonksexchange.api.services;
 
 import com.example.stonksexchange.api.domain.auth.AuthResponse;
 import com.example.stonksexchange.api.domain.auth.LoginRequest;
@@ -18,5 +18,5 @@ public interface AuthApiService {
     Call<AuthResponse> signUp(@Body SignUpRequest request);
 
     @GET("auth")
-    Call<AuthResponse> auth(@Header("Authorization") String AuthHeader);
+    Call<AuthResponse> auth();
 }

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,16 +14,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
+import com.example.stonksexchange.api.ApiManager;
 import com.example.stonksexchange.api.ApiService;
-import com.example.stonksexchange.api.domain.auth.AuthRequest;
+import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.auth.AuthResponse;
 import com.example.stonksexchange.fragment.CatalogFragment;
 import com.example.stonksexchange.fragment.InvestmentsFragment;
 import com.example.stonksexchange.fragment.WalletFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.Console;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,9 +76,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void showFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
-                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
     @Override
@@ -83,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void getAuth() {
-        AuthRequest authRequest = new AuthRequest(sharedPref.getString("token", null));
-        Call<AuthResponse> call = ApiService.ApiService.auth(authRequest.getToken());
+        ApiManager.setToken(sharedPref.getString("token", null));
+        Call<AuthResponse> call = ApiService.AuthApiService.auth();
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
@@ -94,6 +98,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("token", authResponse.getToken());
                     editor.apply();
+
+                    ApiManager.setToken(authResponse.getToken());
 
                     app.setUser(authResponse.getUser());
                     app.setIsAuth(true);

@@ -1,18 +1,10 @@
 package com.example.stonksexchange.api;
 
-import com.example.stonksexchange.api.domain.auth.AuthResponse;
-import com.example.stonksexchange.api.domain.auth.LoginRequest;
-import com.example.stonksexchange.api.domain.auth.SignUpRequest;
-import com.example.stonksexchange.api.domain.balance.ChangeBalanceRequest;
+import com.example.stonksexchange.api.services.AuthApiService;
+import com.example.stonksexchange.api.services.BalanceApiService;
 
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.PATCH;
-import retrofit2.http.POST;
-
-public interface ApiService extends AuthApiService, BalanceApiService{
+public interface ApiService extends com.example.stonksexchange.api.services.AuthApiService, BalanceApiService {
 
     ApiService ApiService = ApiManager.getApiService();
+    ApiService AuthApiService = ApiManager.getAuthApiService();
 }

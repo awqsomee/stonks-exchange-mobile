@@ -1,5 +1,6 @@
 package com.example.stonksexchange.activity;
 import com.example.stonksexchange.App;
+import com.example.stonksexchange.api.ApiManager;
 import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.ApiService;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("token", authResponse.getToken());
                         editor.apply();
+                        ApiManager.setToken(authResponse.getToken());
 
                         app.setUser(authResponse.getUser());
                         app.setIsAuth(true);

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
+import com.example.stonksexchange.api.ApiManager;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.auth.AuthResponse;
@@ -74,6 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("token", authResponse.getToken());
                         editor.apply();
+                        ApiManager.setToken(authResponse.getToken());
 
                         app.setUser(authResponse.getUser());
                         app.setIsAuth(true);
