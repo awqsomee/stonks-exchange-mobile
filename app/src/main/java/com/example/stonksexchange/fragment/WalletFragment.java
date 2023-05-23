@@ -12,15 +12,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
-import com.example.stonksexchange.activity.LoginActivity;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
-import com.example.stonksexchange.api.domain.auth.AuthRequest;
 import com.example.stonksexchange.api.domain.balance.ChangeBalanceRequest;
 import com.example.stonksexchange.api.domain.balance.ChangeBalanceResponse;
+import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
+import com.example.stonksexchange.utils.ButtonAdapter;
+
+import java.util.ArrayList;
+import com.example.stonksexchange.models.Currency;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +41,9 @@ public class WalletFragment extends Fragment {
     Button replenishBtn;
     Button withdrawBtn;
     TextView balanceText;
+    RecyclerView recyclerView;
+
+    List<String> currencySymbols;
 
     public WalletFragment() {
         // Required empty public constructor
@@ -57,6 +66,8 @@ public class WalletFragment extends Fragment {
         replenishBtn.setOnClickListener(new ReplenishClickListener());
         withdrawBtn.setOnClickListener(new WithdrawClickListener());
 
+        recyclerView = view.findViewById(R.id.recyclerView);
+        getUserCurrencies();
         return view;
     }
 
@@ -100,6 +111,33 @@ public class WalletFragment extends Fragment {
             public void onFailure(Call<ChangeBalanceResponse> call, Throwable t) {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
 
+            }
+        });
+    }
+
+    private void getUserCurrencies() {
+        Call<GetUserCurrenciesResponse> call = ApiService.AuthApiService.getUserCurrencies();
+        call.enqueue(new Callback<GetUserCurrenciesResponse>() {
+            @Override
+            public void onResponse(Call<GetUserCurrenciesResponse> call, Response<GetUserCurrenciesResponse> response) {
+                if (response.isSuccessful()) {
+                    GetUserCurrenciesResponse data = response.body();
+                    currencySymbols = new ArrayList<>();
+                    for (Currency currency : data.getCurrencies()) {
+                        String currencyString = currency.getSymbol();
+                        currencySymbols.add(currencyString);
+                    }
+                    List<String> buttonNames = currencySymbols;
+                    ButtonAdapter adapter = new ButtonAdapter(buttonNames);
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    ErrorUtils.handleErrorResponse(response, context);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetUserCurrenciesResponse> call, Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

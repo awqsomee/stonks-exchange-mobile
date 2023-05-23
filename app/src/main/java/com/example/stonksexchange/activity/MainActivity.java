@@ -104,11 +104,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     app.setUser(authResponse.getUser());
                     app.setIsAuth(true);
                     navigationView.setVisibility(View.VISIBLE);
+                } else {
+//                    ErrorUtils.handleErrorResponse(response, MainActivity.this);
                 }
             }
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
+//                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
