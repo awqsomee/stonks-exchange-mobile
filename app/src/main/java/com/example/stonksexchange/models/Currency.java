@@ -8,7 +8,6 @@ public class Currency {
     Number latestPrice;
     Number price;
     Number difference;
-    String message;
 
     public Currency() {
     }
@@ -21,7 +20,6 @@ public class Currency {
         this.latestPrice = latestPrice;
         this.price = price;
         this.difference = difference;
-        this.message = message;
     }
 
     public String getSymbol() {

@@ -1,9 +1,8 @@
-package com.example.stonksexchange.ui;
+package com.example.stonksexchange.utils;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

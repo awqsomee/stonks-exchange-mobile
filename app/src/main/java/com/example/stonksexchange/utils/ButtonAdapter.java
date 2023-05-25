@@ -16,6 +16,7 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
     private List<String> buttonNames;
 
     public ButtonAdapter(List<String> buttonNames) {
+        buttonNames.add("+");
         this.buttonNames = buttonNames;
     }
 

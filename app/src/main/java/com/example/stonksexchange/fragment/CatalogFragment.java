@@ -14,15 +14,11 @@ import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
-import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
-import com.example.stonksexchange.models.Currency;
 import com.example.stonksexchange.models.Stock;
-import com.example.stonksexchange.ui.StockAdapter;
-import com.example.stonksexchange.utils.ButtonAdapter;
+import com.example.stonksexchange.utils.StockAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

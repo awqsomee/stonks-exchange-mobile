@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.stonksexchange.models.Transaction;
 import com.example.stonksexchange.models.User;
+import com.example.stonksexchange.models.Wallet;
 
 import java.util.ArrayList;
 
@@ -12,11 +13,13 @@ public class App extends Application {
     private User user;
     private ArrayList<Transaction> transactions;
     private boolean isAuth;
+    private Wallet wallet;
 
     public App() {
         super.onCreate();
         isAuth = false;
         transactions = new ArrayList<>();
+        wallet = new Wallet();
     }
 
     public static synchronized App getInstance() {
@@ -45,5 +48,9 @@ public class App extends Application {
 
     public void pushTransaction(Transaction transaction) {
         transactions.add(transaction);
+    }
+
+    public Wallet getWallet() {
+        return wallet;
     }
 }

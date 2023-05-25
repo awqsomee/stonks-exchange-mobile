@@ -19,12 +19,15 @@ import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.balance.ChangeBalanceRequest;
 import com.example.stonksexchange.api.domain.balance.ChangeBalanceResponse;
+import com.example.stonksexchange.api.domain.forex.GetCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
+import com.example.stonksexchange.models.CurrencyShort;
 import com.example.stonksexchange.utils.ButtonAdapter;
 
 import java.util.ArrayList;
 import com.example.stonksexchange.models.Currency;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,6 +66,7 @@ public class WalletFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.currencyList);
         getUserCurrencies();
+        getCurrencies();
         return view;
     }
 
@@ -118,6 +122,7 @@ public class WalletFragment extends Fragment {
                 if (response.isSuccessful()) {
                     GetUserCurrenciesResponse data = response.body();
                     currencySymbols = new ArrayList<>();
+                    currencySymbols.add("RUB");
                     for (Currency currency : data.getCurrencies()) {
                         String currencyString = currency.getSymbol();
                         currencySymbols.add(currencyString);
@@ -130,6 +135,39 @@ public class WalletFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GetUserCurrenciesResponse> call, Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getCurrencies() {
+        Call<GetCurrenciesResponse> call = ApiService.ApiService.getCurrencies();
+        call.enqueue(new Callback<GetCurrenciesResponse>() {
+            @Override
+            public void onResponse(Call<GetCurrenciesResponse> call, Response<GetCurrenciesResponse> response) {
+                if (response.isSuccessful()) {
+                    GetCurrenciesResponse data = response.body();
+
+//                    for (Map.Entry<String, CurrencyShort> entry : data.getCurrencies().entrySet()) {
+//                        String currencyCode = entry.getKey();
+//                        CurrencyShort currency = entry.getValue();
+//
+//                        String name = currency.getName();
+//                        double value = currency.getValue();
+//                        double previous = currency.getPrevious();
+//
+//                        // Do something with the currency information
+//                        System.out.println(currencyCode + ": " + name + ", Value: " + value + ", Previous: " + previous);
+//                    }
+
+                    app.getWallet().setCurrencies(data.getCurrencies());
+                } else {
+                    ErrorUtils.handleErrorResponse(response, context);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetCurrenciesResponse> call, Throwable t) {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
