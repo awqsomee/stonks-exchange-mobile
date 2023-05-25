@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         navigationView.setOnItemSelectedListener(this);
 
-        // Show the initial fragment
         showFragment(new CatalogFragment());
     }
 

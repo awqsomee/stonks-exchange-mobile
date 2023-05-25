@@ -14,6 +14,7 @@ import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
+import com.example.stonksexchange.api.domain.stock.FindStocksResponse;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.models.Stock;
 import com.example.stonksexchange.utils.StockAdapter;
@@ -46,21 +47,21 @@ public class CatalogFragment extends Fragment {
 
         getStock("GAZP");
         getStock("MGNT");
-        getStock("YANDEX");
+        getStock("YNDX");
         return view;
     }
 
     private void getStock(String symbol) {
-        Call<GetStockDataResponse> call = ApiService.ApiService.getStock(symbol);
+        Call<GetStockDataResponse> call = ApiService.ApiService.getStockData(symbol, "", "");
         call.enqueue(new Callback<GetStockDataResponse>() {
             @Override
             public void onResponse(Call<GetStockDataResponse> call, Response<GetStockDataResponse> response) {
                 if (response.isSuccessful()) {
                     GetStockDataResponse data = response.body();
-                    stocks.add(data.GetFirstStock());
+                    stocks.add(data.getStock());
                     recyclerView.setAdapter(new StockAdapter(stocks));
                 } else {
-                    ErrorUtils.handleErrorResponse(response, context);
+//                    ErrorUtils.handleErrorResponse(response, context);
                 }
             }
 
