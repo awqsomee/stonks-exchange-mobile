@@ -1,20 +1,17 @@
 package com.example.stonksexchange.fragment;
 
 import android.content.Context;
+import android.icu.text.Transliterator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
 import com.example.stonksexchange.api.ApiService;
-import com.example.stonksexchange.api.ErrorUtils;
-import com.example.stonksexchange.api.domain.stock.FindStocksResponse;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.models.Stock;
 import com.example.stonksexchange.utils.StockAdapter;
