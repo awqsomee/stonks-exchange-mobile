@@ -123,14 +123,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 PopupMenu popupMenu = new PopupMenu(MainActivity.this, accBtn);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
                 walletCount = popupMenu.getMenu().findItem(R.id.balanceBtn);
-                walletCount.setTitle(app.getUser().getBalance() + " ₽");
+                walletCount.setTitle(String.format("%.2f", app.getUser().getBalance()) + " ₽");
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.balanceBtn:
-                                // TODO: Должен отображать текущий баланс и быть ссылкой на кошелек
+                                showFragment(new WalletFragment());
+                                navigationView.setSelectedItemId(R.id.menu_wallet);
                                 return true;
                             case R.id.accountBtn:
                                 // TODO: Ссылка на аккаунт
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 app.setUser(null);
                                 navigationView.setVisibility(View.GONE);
                                 showFragment(new CatalogFragment());
+                                navigationView.setSelectedItemId(R.id.menu_catalog);
                                 return true;
                             default:
                                 return false;

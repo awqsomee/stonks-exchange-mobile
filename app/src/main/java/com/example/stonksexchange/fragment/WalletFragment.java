@@ -57,7 +57,7 @@ public class WalletFragment extends Fragment {
         withdrawBtn = view.findViewById(R.id.withdrawBtn);
         balanceText = view.findViewById(R.id.balanceText);
 
-        balanceText.setText(app.getUser().getBalance().toString());
+        balanceText.setText(String.format("%.2f", app.getUser().getBalance()));
         replenishBtn.setOnClickListener(new ReplenishClickListener());
         withdrawBtn.setOnClickListener(new WithdrawClickListener());
 
@@ -94,7 +94,7 @@ public class WalletFragment extends Fragment {
                     app.pushTransaction(data.getTransaction());
 
                     amountInput.setText("");
-                    balanceText.setText(data.getUser().getBalance().toString());
+                    balanceText.setText(String.format("%.2f", data.getUser().getBalance()));
                     Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
 
                 } else {

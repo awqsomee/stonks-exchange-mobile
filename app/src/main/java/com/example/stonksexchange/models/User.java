@@ -24,8 +24,8 @@ public class User {
         return username;
     }
 
-    public Number getBalance() {
-        return balance;
+    public Float getBalance() {
+        return balance.floatValue();
     }
 
     public void setBalance(Number balance) {
