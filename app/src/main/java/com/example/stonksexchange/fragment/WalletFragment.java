@@ -1,7 +1,6 @@
 package com.example.stonksexchange.fragment;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,6 @@ import com.example.stonksexchange.utils.ButtonAdapter;
 import java.util.ArrayList;
 import com.example.stonksexchange.models.Currency;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +32,6 @@ import retrofit2.Response;
 
 public class WalletFragment extends Fragment {
     App app;
-    SharedPreferences sharedPref;
     Context context;
 
     EditText amountInput;
@@ -46,7 +43,6 @@ public class WalletFragment extends Fragment {
     List<String> currencySymbols;
 
     public WalletFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -55,7 +51,6 @@ public class WalletFragment extends Fragment {
 
         app = App.getInstance();
         context = view.getContext();
-        sharedPref = context.getSharedPreferences("stonks_exchange", Context.MODE_PRIVATE);
 
         amountInput = view.findViewById(R.id.amountET);
         replenishBtn = view.findViewById(R.id.replenishBtn);
@@ -66,7 +61,7 @@ public class WalletFragment extends Fragment {
         replenishBtn.setOnClickListener(new ReplenishClickListener());
         withdrawBtn.setOnClickListener(new WithdrawClickListener());
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.currencyList);
         getUserCurrencies();
         return view;
     }
@@ -127,9 +122,7 @@ public class WalletFragment extends Fragment {
                         String currencyString = currency.getSymbol();
                         currencySymbols.add(currencyString);
                     }
-                    List<String> buttonNames = currencySymbols;
-                    ButtonAdapter adapter = new ButtonAdapter(buttonNames);
-                    recyclerView.setAdapter(adapter);
+                    recyclerView.setAdapter(new ButtonAdapter(currencySymbols));
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }
