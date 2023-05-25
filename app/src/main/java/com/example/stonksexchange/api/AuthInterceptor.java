@@ -20,4 +20,8 @@ public class AuthInterceptor implements Interceptor {
                 .addHeader("Authorization", "Bearer " + authToken).build();
         return chain.proceed(request);
     }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
 }

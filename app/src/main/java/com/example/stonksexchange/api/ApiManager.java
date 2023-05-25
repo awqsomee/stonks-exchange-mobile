@@ -13,6 +13,7 @@ public class ApiManager {
     static Retrofit retrofit;
     static String authToken;
     private static Retrofit retrofitAuth;
+    static AuthInterceptor authInterceptor = new AuthInterceptor(authToken);
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
@@ -24,28 +25,29 @@ public class ApiManager {
         return retrofit;
     }
 
-    public static Retrofit getAuthenticatedRetrofitInstance(String authToken) {
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new AuthInterceptor(authToken));
-        retrofitAuth = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(httpClient.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+    public static Retrofit getAuthenticatedRetrofitInstance() {
+        if (retrofitAuth == null) {
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+            httpClient.addInterceptor(authInterceptor);
+            retrofitAuth = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .client(httpClient.build())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
         return retrofitAuth;
     }
 
     public static ApiService getApiService() {
-        Retrofit retrofit = getRetrofitInstance();
-        return retrofit.create(ApiService.class);
+        return getRetrofitInstance().create(ApiService.class);
     }
 
     public static ApiService getAuthApiService() {
-        Retrofit retrofitAuth = getAuthenticatedRetrofitInstance(authToken);
-        return retrofitAuth.create(ApiService.class);
+        return getAuthenticatedRetrofitInstance().create(ApiService.class);
     }
 
     public static void setToken(String token) {
         authToken = token;
+        authInterceptor.setAuthToken(token);
     }
 }

@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.remove("token");
                                 editor.apply();
+                                ApiManager.setToken(null);
                                 app.setIsAuth(false);
                                 app.setUser(null);
                                 navigationView.setVisibility(View.GONE);

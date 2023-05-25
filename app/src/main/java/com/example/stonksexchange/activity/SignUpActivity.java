@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText repeatPasswordInput;
     TextView toLoginText;
     Button signUpBtn;
+    ImageButton goBackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +51,10 @@ public class SignUpActivity extends AppCompatActivity {
         repeatPasswordInput = findViewById(R.id.repeatPasswordInput);
         toLoginText = findViewById(R.id.toLoginText);
         signUpBtn = findViewById(R.id.signUpBtn);
+        goBackBtn = findViewById(R.id.goBackBtn);
 
         signUpBtn.setOnClickListener(new SignUpClickListener());
-
+        goBackBtn.setOnClickListener(new goBackClickListener());
         toLoginText.setOnClickListener(new toLoginClickListener());
     }
 
@@ -99,6 +102,13 @@ public class SignUpActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
+            finish();
+        }
+    }
+
+    private class goBackClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
             finish();
         }
     }
