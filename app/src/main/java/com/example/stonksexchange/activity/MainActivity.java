@@ -43,11 +43,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = this;
+        sharedPref = context.getSharedPreferences("stonks_exchange", Context.MODE_PRIVATE);
+        ApiManager.setToken(sharedPref.getString("token", null));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         app = App.getInstance();
-        context = this;
-        sharedPref = context.getSharedPreferences("stonks_exchange", Context.MODE_PRIVATE);
         accBtn = findViewById(R.id.accButton);
         navigationView = findViewById(R.id.navigationView);
         accBtn.setOnClickListener(new AccClickListener());
@@ -87,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void getAuth() {
-        ApiManager.setToken(sharedPref.getString("token", null));
         Call<AuthResponse> call = ApiService.AuthApiService.auth();
         call.enqueue(new Callback<AuthResponse>() {
             @Override
