@@ -76,6 +76,7 @@ public class WalletFragment extends Fragment {
     private class ReplenishClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            if (amountInput.getText().toString().equals("")) return;
             ChangeBalanceRequest changeBalanceRequest = new ChangeBalanceRequest(Float.parseFloat(amountInput.getText().toString()));
             changeBalance(changeBalanceRequest);
         }
@@ -84,6 +85,7 @@ public class WalletFragment extends Fragment {
     private class WithdrawClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            if (amountInput.getText().toString().equals("")) return;
             ChangeBalanceRequest changeBalanceRequest = new ChangeBalanceRequest(-Float.parseFloat(amountInput.getText().toString()));
             changeBalance(changeBalanceRequest);
         }
