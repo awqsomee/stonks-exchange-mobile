@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
+import com.example.stonksexchange.activity.MainActivity;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.models.Stock;
@@ -46,17 +47,10 @@ public class CatalogFragment extends Fragment {
         context = view.getContext();
 
         recyclerView = view.findViewById(R.id.stockList);
-        ConstraintLayout vieww = view.findViewById(R.id.rel);
 
         getStock("GAZP");
         getStock("MGNT");
         getStock("YNDX");
-
-        ShadowView shadowView = new ShadowView(context); // Create an instance of ShadowView
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(500, 300); // Set the desired width and height
-        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT); // Center the view in its parent
-        shadowView.setLayoutParams(layoutParams); // Set the layout parameters
-        vieww.addView(shadowView); // Add the ShadowView to the parent layout
 
         return view;
     }

@@ -2,6 +2,7 @@ package com.example.stonksexchange.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.content.ClipData;
@@ -9,9 +10,14 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -25,6 +31,7 @@ import com.example.stonksexchange.api.domain.auth.AuthResponse;
 import com.example.stonksexchange.fragment.CatalogFragment;
 import com.example.stonksexchange.fragment.InvestmentsFragment;
 import com.example.stonksexchange.fragment.WalletFragment;
+import com.example.stonksexchange.utils.ShadowView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.Console;
@@ -41,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     ImageButton accBtn;
     BottomNavigationView navigationView;
 
+    private ConstraintLayout shadowContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         context = this;
@@ -52,10 +60,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         accBtn = findViewById(R.id.accButton);
         navigationView = findViewById(R.id.navigationView);
         accBtn.setOnClickListener(new AccClickListener());
+        shadowContainer = findViewById(R.id.shadowContainer);
 
         navigationView.setOnItemSelectedListener(this);
 
         showFragment(new CatalogFragment());
+
+        // Create a ShadowView and add it to the shadowContainer
+        ShadowView shadowView = new ShadowView(this);
+        shadowContainer.addView(shadowView, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 800));
     }
 
     @Override

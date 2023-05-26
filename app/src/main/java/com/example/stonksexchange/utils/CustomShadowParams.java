@@ -2,15 +2,12 @@ package com.example.stonksexchange.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.ColorInt;
-import androidx.annotation.FloatRange;
-import androidx.annotation.Px;
 
 import java.util.List;
 
 public class CustomShadowParams implements Parcelable {
-    private String name;
-    private List<Shadow> layers;
+    private final String name;
+    private final List<Shadow> layers;
 
     public CustomShadowParams(String name, List<Shadow> layers) {
         this.name = name;
@@ -53,4 +50,3 @@ public class CustomShadowParams implements Parcelable {
         dest.writeTypedList(layers);
     }
 }
-
