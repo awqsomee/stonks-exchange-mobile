@@ -6,6 +6,7 @@ import com.example.stonksexchange.models.Stock;
 import com.example.stonksexchange.models.Transaction;
 import com.example.stonksexchange.models.User;
 import com.example.stonksexchange.models.Wallet;
+import com.example.stonksexchange.utils.TypefaceUtil;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,9 @@ public class App extends Application {
 
     public App() {
         super.onCreate();
+
+//        TODO: Оно либо не работает, либо я не так реализую
+//        TypefaceUtil.overrideFont(instance, "SANS_SERIF", "font/exo2_regular.ttf");
         isAuth = false;
         transactions = new ArrayList<>();
         displayedStocks = new ArrayList<>();
