@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     App app;
     Context context;
     SharedPreferences sharedPref;
-    ImageButton accBtn;
+    Button accBtn;
     BottomNavigationView navigationView;
 
     @Override

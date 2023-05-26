@@ -3,15 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="0dp"
+    android:elevation="2dp"
+    android:background="@drawable/stockcard_shadow"
     tools:layout_editor_absoluteX="1dp"
     tools:layout_editor_absoluteY="1dp">
+    <!--layout_marginBottom="0dp" потому что png тень дает 8px -->
 
     <TextView
         android:id="@+id/stockShortname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:text="Apple"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/imageView"

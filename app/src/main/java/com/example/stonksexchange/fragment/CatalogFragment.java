@@ -45,6 +45,24 @@ public class CatalogFragment extends Fragment {
         getStock("GAZP");
         getStock("MGNT");
         getStock("YNDX");
+        getStock("GAZP");
+        getStock("MGNT");
+        getStock("YNDX");
+        getStock("GAZP");
+        getStock("MGNT");
+        getStock("YNDX");
+        getStock("GAZP");
+        getStock("MGNT");
+        getStock("YNDX");
+        getStock("GAZP");
+        getStock("MGNT");
+        getStock("YNDX");
+        getStock("GAZP");
+        getStock("MGNT");
+        getStock("YNDX");
+        getStock("GAZP");
+        getStock("MGNT");
+        getStock("YNDX");
         return view;
     }
 
