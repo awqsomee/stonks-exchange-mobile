@@ -14,4 +14,7 @@
     <color name="silver">#E9EEF2</color>
     <color name="orange">#EE8100</color>
     <color name="dark_element">#202020</color>
+    <color name="light_grey">#E9EEF2</color>
+    <color name="green">#BBFFA7</color>
+    <color name="red">#FF2A51</color>
 </resources>
