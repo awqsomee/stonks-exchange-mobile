@@ -1,7 +1,6 @@
 package com.example.stonksexchange.fragment;
 
 import android.content.Context;
-import android.icu.text.Transliterator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,11 +29,22 @@ public class CatalogFragment extends Fragment {
     Context context;
 
     RecyclerView recyclerView;
+    boolean isLoading = false;
 
     ArrayList<Stock> stocks = new ArrayList<>();
     private CountDownLatch responseCountDownLatch;
 
     public CatalogFragment() {
+    }
+
+    public void updateUI() {
+        stocks = app.getDisplayedStocks();
+        recyclerView.setAdapter(new StockAdapter(stocks));
+    }
+
+    public void clearUI() {
+        stocks = app.getDisplayedStocks();
+        getStandartStocks();
     }
 
     @Override
@@ -45,16 +55,10 @@ public class CatalogFragment extends Fragment {
         context = view.getContext();
 
         recyclerView = view.findViewById(R.id.stockList);
+
         stocks = app.getDisplayedStocks();
         if (app.getDisplayedStocks().size() == 0) {
-            int numberOfApiCalls = 6;
-            responseCountDownLatch = new CountDownLatch(numberOfApiCalls);
-            getStock("GAZP");
-            getStock("MGNT");
-            getStock("YNDX");
-            getStock("TSLA-RM");
-            getStock("AAPL-RM");
-            getStock("META-RM");
+            getStandartStocks();
         } else recyclerView.setAdapter(new StockAdapter(stocks));
 
         return view;
@@ -63,6 +67,15 @@ public class CatalogFragment extends Fragment {
     private void getStock(String symbol) {
         Call<GetStockDataResponse> call = ApiService.ApiService.getStockData(symbol, "", "");
         call.enqueue(new Callback<GetStockDataResponse>() {
+            void countDown() {
+                responseCountDownLatch.countDown();
+                if (responseCountDownLatch.getCount() == 0) {
+                    app.setDisplayedStocks(stocks);
+                    recyclerView.setAdapter(new StockAdapter(stocks));
+                    isLoading = false;
+                }
+            }
+
             @Override
             public void onResponse(Call<GetStockDataResponse> call, Response<GetStockDataResponse> response) {
                 if (response.isSuccessful()) {
@@ -71,19 +84,33 @@ public class CatalogFragment extends Fragment {
                 } else {
 //                    ErrorUtils.handleErrorResponse(response, context);
                 }
-                responseCountDownLatch.countDown();
-                if (responseCountDownLatch.getCount() == 0) app.setDisplayedStocks(stocks);
-                recyclerView.setAdapter(new StockAdapter(stocks));
+                countDown();
 
             }
 
             @Override
             public void onFailure(Call<GetStockDataResponse> call, Throwable t) {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
-                responseCountDownLatch.countDown();
-                if (responseCountDownLatch.getCount() == 0) app.setDisplayedStocks(stocks);
-                recyclerView.setAdapter(new StockAdapter(stocks));
+                countDown();
             }
         });
+    }
+
+    private void getStandartStocks() {
+        if (!isLoading) {
+            isLoading = true;
+            int numberOfApiCalls = 6;
+            responseCountDownLatch = new CountDownLatch(numberOfApiCalls);
+            getStock("GAZP");
+            getStock("MGNT");
+            getStock("YNDX");
+            getStock("TSLA-RM");
+            getStock("AAPL-RM");
+            getStock("META-RM");
+        }
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
     }
 }

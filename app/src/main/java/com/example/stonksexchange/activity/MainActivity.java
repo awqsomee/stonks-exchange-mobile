@@ -12,8 +12,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.stonksexchange.App;
@@ -22,12 +24,16 @@ import com.example.stonksexchange.api.ApiManager;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.auth.AuthResponse;
+import com.example.stonksexchange.api.domain.stock.FindStocksResponse;
+import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.fragment.CatalogFragment;
 import com.example.stonksexchange.fragment.InvestmentsFragment;
 import com.example.stonksexchange.fragment.WalletFragment;
+import com.example.stonksexchange.utils.StockAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.Console;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     SharedPreferences sharedPref;
     ImageButton accBtn;
     BottomNavigationView navigationView;
+    SearchView searchView;
+    CatalogFragment catalogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +59,26 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         app = App.getInstance();
         accBtn = findViewById(R.id.accButton);
         navigationView = findViewById(R.id.navigationView);
+        searchView = findViewById(R.id.searchView);
+
         accBtn.setOnClickListener(new AccClickListener());
 
         navigationView.setOnItemSelectedListener(this);
+        searchView.setOnQueryTextListener(new SearchSubmitListener());
 
-        showFragment(new CatalogFragment());
+        catalogFragment = new CatalogFragment();
+        showFragment(catalogFragment);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_catalog:
-                showFragment(new CatalogFragment());
+                if (navigationView.getSelectedItemId() == R.id.menu_catalog) {
+                    app.setDisplayedStocks(new ArrayList<>());
+                    catalogFragment.clearUI();
+                }
+                showFragment(catalogFragment);
                 return true;
             case R.id.menu_investments:
                 showFragment(new InvestmentsFragment());
@@ -160,6 +176,42 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
+        }
+    }
+
+    private class SearchSubmitListener implements SearchView.OnQueryTextListener {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            catalogFragment.setLoading(true);
+            
+            Call<FindStocksResponse> call = ApiService.ApiService.findStock(searchView.getQuery().toString());
+            call.enqueue(new Callback<FindStocksResponse>() {
+                @Override
+                public void onResponse(Call<FindStocksResponse> call, Response<FindStocksResponse> response) {
+                    if (response.isSuccessful()) {
+                        FindStocksResponse data = response.body();
+                        app.setDisplayedStocks(data.getStocks());
+                        catalogFragment.updateUI();
+                    } else {
+                        ErrorUtils.handleErrorResponse(response, context);
+                    }
+                    catalogFragment.setLoading(false);
+                }
+
+                @Override
+                public void onFailure(Call<FindStocksResponse> call, Throwable t) {
+                    Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    catalogFragment.setLoading(false);
+                }
+            });
+
+            searchView.onActionViewCollapsed();
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            return false;
         }
     }
 }
