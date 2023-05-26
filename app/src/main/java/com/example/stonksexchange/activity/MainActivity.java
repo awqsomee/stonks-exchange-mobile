@@ -1,11 +1,5 @@
 package com.example.stonksexchange.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,10 +7,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
@@ -25,15 +22,12 @@ import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.auth.AuthResponse;
 import com.example.stonksexchange.api.domain.stock.FindStocksResponse;
-import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.fragment.AccountFragment;
 import com.example.stonksexchange.fragment.CatalogFragment;
 import com.example.stonksexchange.fragment.InvestmentsFragment;
 import com.example.stonksexchange.fragment.WalletFragment;
-import com.example.stonksexchange.utils.StockAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.Console;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -41,7 +35,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener {
-    private MenuItem walletCount;
     App app;
     Context context;
     SharedPreferences sharedPref;
@@ -49,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     BottomNavigationView navigationView;
     SearchView searchView;
     CatalogFragment catalogFragment;
+    private MenuItem walletCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         navigationView.setOnItemSelectedListener(this);
         searchView.setOnQueryTextListener(new SearchSubmitListener());
+        searchView.setOnClickListener(new SearchClickListener());
 
         catalogFragment = new CatalogFragment();
         showFragment(catalogFragment);
@@ -188,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         @Override
         public boolean onQueryTextSubmit(String query) {
             catalogFragment.setLoading(true);
-            
+
             Call<FindStocksResponse> call = ApiService.ApiService.findStock(searchView.getQuery().toString());
             call.enqueue(new Callback<FindStocksResponse>() {
                 @Override
@@ -219,4 +214,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             return false;
         }
     }
+
+    private class SearchClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            searchView.onActionViewExpanded();
+        }
+    }
+
 }
