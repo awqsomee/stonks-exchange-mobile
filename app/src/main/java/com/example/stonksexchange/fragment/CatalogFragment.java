@@ -6,7 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stonksexchange.App;
@@ -14,6 +18,7 @@ import com.example.stonksexchange.R;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.models.Stock;
+import com.example.stonksexchange.utils.ShadowView;
 import com.example.stonksexchange.utils.StockAdapter;
 
 import java.util.ArrayList;
@@ -41,10 +46,18 @@ public class CatalogFragment extends Fragment {
         context = view.getContext();
 
         recyclerView = view.findViewById(R.id.stockList);
+        ConstraintLayout vieww = view.findViewById(R.id.rel);
 
         getStock("GAZP");
         getStock("MGNT");
         getStock("YNDX");
+
+        ShadowView shadowView = new ShadowView(context); // Create an instance of ShadowView
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(500, 300); // Set the desired width and height
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT); // Center the view in its parent
+        shadowView.setLayoutParams(layoutParams); // Set the layout parameters
+        vieww.addView(shadowView); // Add the ShadowView to the parent layout
+
         return view;
     }
 
