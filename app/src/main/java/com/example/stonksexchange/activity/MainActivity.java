@@ -26,6 +26,7 @@ import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.auth.AuthResponse;
 import com.example.stonksexchange.api.domain.stock.FindStocksResponse;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
+import com.example.stonksexchange.fragment.AccountFragment;
 import com.example.stonksexchange.fragment.CatalogFragment;
 import com.example.stonksexchange.fragment.InvestmentsFragment;
 import com.example.stonksexchange.fragment.WalletFragment;
@@ -85,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
             case R.id.menu_wallet:
                 showFragment(new WalletFragment());
+                return true;
+            case R.id.menu_dummy:
+                showFragment(new AccountFragment());
                 return true;
             default:
                 return false;
@@ -149,7 +153,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 navigationView.setSelectedItemId(R.id.menu_wallet);
                                 return true;
                             case R.id.accountBtn:
-                                // TODO: Ссылка на аккаунт
+                                showFragment(new AccountFragment());
+                                navigationView.setSelectedItemId(R.id.menu_dummy);
                                 return true;
                             case R.id.infoBtn:
                                 // TODO: Ссылка на инфо
