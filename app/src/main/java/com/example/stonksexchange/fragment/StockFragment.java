@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
+import com.example.stonksexchange.utils.BackButtonHandler;
 
 public class StockFragment extends Fragment {
     App app;
@@ -24,6 +25,7 @@ public class StockFragment extends Fragment {
 
         app = App.getInstance();
         context = view.getContext();
+        BackButtonHandler.setupBackPressedCallback(this);
 
         return view;
     }

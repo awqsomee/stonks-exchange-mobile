@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     Context context;
     SharedPreferences sharedPref;
     Button accBtn;
-    BottomNavigationView navigationView;
+    static BottomNavigationView navigationView;
     SearchView searchView;
     CatalogFragment catalogFragment;
     private MenuItem walletCount;
@@ -128,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 //                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public static BottomNavigationView getNavigationView() {
+        return navigationView;
     }
 
     private class AccClickListener implements View.OnClickListener {

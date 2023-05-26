@@ -22,6 +22,7 @@ import com.example.stonksexchange.api.domain.balance.ChangeBalanceResponse;
 import com.example.stonksexchange.api.domain.forex.GetCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
 import com.example.stonksexchange.models.CurrencyShort;
+import com.example.stonksexchange.utils.BackButtonHandler;
 import com.example.stonksexchange.utils.ButtonAdapter;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class WalletFragment extends Fragment {
 
         app = App.getInstance();
         context = view.getContext();
+        BackButtonHandler.setupBackPressedCallback(this);
 
         amountInput = view.findViewById(R.id.amountET);
         replenishBtn = view.findViewById(R.id.replenishBtn);
