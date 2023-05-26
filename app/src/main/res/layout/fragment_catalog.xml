@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ToggleButton
-            android:id="@+id/toggleButton"
+            android:id="@+id/changeSortOrderBtn"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ToggleButton
-            android:id="@+id/toggleButton2"
+            android:id="@+id/sortByNameBtn"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,11 +76,11 @@
             android:textColor="@color/white"
             android:textSize="@dimen/font_mark_10"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/toggleButton3"
+            app:layout_constraintEnd_toStartOf="@+id/sortByChangeBtn"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ToggleButton
-            android:id="@+id/toggleButton3"
+            android:id="@+id/sortByChangeBtn"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/font_mark_10"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/toggleButton"
+            app:layout_constraintEnd_toStartOf="@+id/changeSortOrderBtn"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

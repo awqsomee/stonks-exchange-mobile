@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +16,11 @@ import com.example.stonksexchange.R;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.models.Stock;
+import com.example.stonksexchange.utils.ArrayListSortUtil;
 import com.example.stonksexchange.utils.StockAdapter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.concurrent.CountDownLatch;
 
 import retrofit2.Call;
@@ -29,17 +32,24 @@ public class CatalogFragment extends Fragment {
     Context context;
 
     RecyclerView recyclerView;
-    boolean isLoading = false;
+    ToggleButton changeSortOrderBtn;
+    ToggleButton sortByChangeBtn;
+    ToggleButton sortByNameBtn;
 
     ArrayList<Stock> stocks = new ArrayList<>();
+    boolean isLoading = false;
     private CountDownLatch responseCountDownLatch;
+
+    boolean isSortAsc = true;
+    Comparator<Stock> comparator = Comparator.comparing(Stock::getShortname);
 
     public CatalogFragment() {
     }
 
     public void updateUI() {
         stocks = app.getDisplayedStocks();
-        recyclerView.setAdapter(new StockAdapter(stocks));
+        recyclerView.setAdapter(new StockAdapter(
+                ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
     }
 
     public void clearUI() {
@@ -55,13 +65,48 @@ public class CatalogFragment extends Fragment {
         context = view.getContext();
 
         recyclerView = view.findViewById(R.id.stockList);
+        changeSortOrderBtn = view.findViewById(R.id.changeSortOrderBtn);
+        sortByChangeBtn = view.findViewById(R.id.sortByChangeBtn);
+        sortByNameBtn = view.findViewById(R.id.sortByNameBtn);
 
+        setSortClickListeners();
         stocks = app.getDisplayedStocks();
         if (app.getDisplayedStocks().size() == 0) {
             getStandartStocks();
-        } else recyclerView.setAdapter(new StockAdapter(stocks));
+        } else
+            recyclerView.setAdapter(new StockAdapter(
+                    ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
 
         return view;
+    }
+
+    private void setSortClickListeners() {
+        changeSortOrderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isSortAsc = !isSortAsc;
+                recyclerView.setAdapter(new StockAdapter(
+                        ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
+            }
+        });
+
+        sortByChangeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                comparator = Comparator.comparing(Stock::getChange);
+                recyclerView.setAdapter(new StockAdapter(
+                        ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
+            }
+        });
+
+        sortByNameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                comparator = Comparator.comparing(Stock::getShortname);
+                recyclerView.setAdapter(new StockAdapter(
+                        ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
+            }
+        });
     }
 
     private void getStock(String symbol) {
@@ -71,7 +116,8 @@ public class CatalogFragment extends Fragment {
                 responseCountDownLatch.countDown();
                 if (responseCountDownLatch.getCount() == 0) {
                     app.setDisplayedStocks(stocks);
-                    recyclerView.setAdapter(new StockAdapter(stocks));
+                    recyclerView.setAdapter(new StockAdapter(
+                            ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
                     isLoading = false;
                 }
             }
