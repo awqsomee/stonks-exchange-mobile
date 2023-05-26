@@ -21,6 +21,7 @@ import java.util.List;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.stonksexchange.models.Stock;
 
 public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
@@ -44,7 +45,7 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         holder.stockShortname.setText(stock.getShortname());
         holder.stockSymbol.setText(stock.getSymbol());
         holder.stockPrice.setText(stock.getPrice() + " " + stock.getCurrency());
-        holder.stockChange.setText(String.format("%.2f", stock.getChange())  + "%");
+        holder.stockChange.setText(stock.getChange() + "%");
 
         transliterator = Transliterator.getInstance("Russian-Latin/BGN");
         String iconUrl = "https://cdn.bcs.ru/company-logos/" + transliterator.transliterate(stock.getShortname().split(" ")[0].toLowerCase()) + ".svg";

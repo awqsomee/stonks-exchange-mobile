@@ -54,17 +54,17 @@ public class Stock {
         return currency;
     }
 
-    public Number getPrice() {
+    public String getPrice() {
         if (prices.size() > 0 && prices.get(0).getClose() != null) {
-            return prices.get(0).getClose();
+            return prices.get(0).getClose().toString();
         }
-        return null;
+        return "-";
     }
 
-    public Float getChange() {
+    public String getChange() {
         if (prices.size() > 0 && prices.get(0).getClose() != null) {
-            return ((prices.get(0).getClose() - prices.get(1).getClose()) / prices.get(0).getClose()) * 100;
+            return String.format("%.2f", ((prices.get(0).getClose() - prices.get(1).getClose()) / prices.get(0).getClose()) * 100);
         }
-        return null;
+        return "-";
     }
 }

@@ -35,7 +35,7 @@ public class UserStockAdapter extends RecyclerView.Adapter<UserStockAdapter.Stoc
         holder.stockName.setText(stock.getName());
         holder.stockSymbol.setText(stock.getSymbol());
         holder.stockPrice.setText(stock.getPrice() + " " + stock.getCurrency());
-        holder.stockChange.setText(String.format("%.2f", stock.getChange()) + "%");
+        holder.stockChange.setText(stock.getChange() + "%");
         holder.stockAmount.setText(stock.getAmount() + " шт");
     }
 

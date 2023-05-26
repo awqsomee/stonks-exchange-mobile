@@ -19,6 +19,8 @@ public class Price {
     }
 
     public Float getClose() {
-        return close.floatValue();
+        if (close != null)
+            return close.floatValue();
+        return null;
     }
 }
