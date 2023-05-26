@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     App app;
     Context context;
     SharedPreferences sharedPref;
-    ImageButton accBtn;
+    Button accBtn;
     BottomNavigationView navigationView;
     SearchView searchView;
     CatalogFragment catalogFragment;

@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="stock_background">#0DEAEAEA</color>
+    <color name="app_background">#272727</color>
+    <color name="navigation">#1B1B1B</color>
+    <color name="grey">#4D4D4D</color>
+    <color name="silver">#E9EEF2</color>
+    <color name="orange">#EE8100</color>
+    <color name="dark_element">#202020</color>
 </resources>
