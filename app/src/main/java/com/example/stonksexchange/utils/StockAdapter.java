@@ -1,6 +1,7 @@
 package com.example.stonksexchange.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Picture;
 import android.graphics.drawable.PictureDrawable;
 import android.icu.text.Transliterator;
@@ -46,6 +47,13 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         holder.stockSymbol.setText(stock.getSymbol());
         holder.stockPrice.setText(stock.getPrice() + " " + stock.getCurrency());
         holder.stockChange.setText(stock.getChange() + "%");
+        if (stock.getChange().charAt(0) != '-'){
+            holder.stockChange.setTextColor(Color.parseColor("#BBFFA7"));
+        } else if (stock.getChange().charAt(0) == '0') {
+            holder.stockChange.setTextColor(Color.parseColor("#E9EEF2"));
+        } else{
+            holder.stockChange.setTextColor(Color.parseColor("#FF2A51"));
+        }
 
         transliterator = Transliterator.getInstance("Russian-Latin/BGN");
         String iconUrl = "https://cdn.bcs.ru/company-logos/" + transliterator.transliterate(stock.getShortname().split(" ")[0].toLowerCase()) + ".svg";
