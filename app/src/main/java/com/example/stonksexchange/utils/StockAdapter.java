@@ -2,32 +2,24 @@ package com.example.stonksexchange.utils;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Picture;
-import android.graphics.drawable.PictureDrawable;
 import android.icu.text.Transliterator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.caverock.androidsvg.SVG;
-import com.caverock.androidsvg.SVGParseException;
 import com.example.stonksexchange.R;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.example.stonksexchange.models.Stock;
 
+import java.util.List;
+
 public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
-    private List<Stock> stocks;
     Transliterator transliterator = null;
+    private List<Stock> stocks;
 
     public StockAdapter(List<com.example.stonksexchange.models.Stock> stocks) {
         this.stocks = stocks;
@@ -47,12 +39,22 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         holder.stockSymbol.setText(stock.getSymbol());
         holder.stockPrice.setText(stock.getPrice() + " " + stock.getCurrency());
         holder.stockChange.setText(stock.getChange() + "%");
-        if (stock.getChange().charAt(0) != '-'){
-            holder.stockChange.setTextColor(Color.parseColor("#BBFFA7"));
-        } else if (stock.getChange().charAt(0) == '0') {
-            holder.stockChange.setTextColor(Color.parseColor("#E9EEF2"));
-        } else{
-            holder.stockChange.setTextColor(Color.parseColor("#FF2A51"));
+        switch (stock.getChange().charAt(0)) {
+            case '-':
+                System.out.println("-");
+                if (stock.getPrice().equals("-")) {
+                    System.out.println("noPrice");
+                    holder.stockChange.setTextColor(Color.parseColor("#E9EEF2"));
+                } else
+                    holder.stockChange.setTextColor(Color.parseColor("#FF2A51"));
+                break;
+            case '0':
+                holder.stockChange.setTextColor(Color.parseColor("#E9EEF2"));
+                break;
+            default:
+                holder.stockChange.setTextColor(Color.parseColor("#BBFFA7"));
+
+                break;
         }
 
         transliterator = Transliterator.getInstance("Russian-Latin/BGN");

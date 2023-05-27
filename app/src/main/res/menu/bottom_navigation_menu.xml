@@ -4,20 +4,16 @@
         android:id="@+id/menu_catalog"
         android:icon="@drawable/home"
         android:title="Каталог" />
-<!--        android:icon="@drawable/ic_home"-->
     <item
         android:id="@+id/menu_investments"
         android:icon="@drawable/briefcase"
         android:title="Инвестиции" />
-<!--        android:icon="@drawable/ic_settings"-->
     <item
         android:id="@+id/menu_wallet"
         android:icon="@drawable/wallet"
         android:title="Кошелек" />
-<!--        android:icon="@drawable/ic_profile"-->
     <item
         android:id="@+id/menu_dummy"
         android:visible="false"
         android:title="" />
-    <!--        android:icon="@drawable/ic_profile"-->
 </menu>
