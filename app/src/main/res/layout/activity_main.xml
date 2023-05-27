@@ -41,16 +41,30 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/authorized_user"
             android:fontFamily="@font/exo2"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
+            android:minWidth="24dp"
+            android:minHeight="24dp"
             android:text="Войти"
             android:textColor="@color/white"
             android:textSize="@dimen/font_body_12"
+            app:flow_horizontalAlign="center"
+            app:flow_verticalAlign="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/accAuthButton"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <ImageView
+            android:id="@+id/accAuthButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="TouchTargetSizeCheck" />
+            app:srcCompat="@drawable/authorized_user"
+            android:visibility="gone" />
 
         <SearchView
             android:id="@+id/searchView"

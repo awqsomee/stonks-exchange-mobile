@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -53,10 +55,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         app = App.getInstance();
         accBtn = findViewById(R.id.accButton);
+        ImageView accAuthButton = findViewById(R.id.accAuthButton);
         navigationView = findViewById(R.id.navigationView);
         searchView = findViewById(R.id.searchView);
 
         accBtn.setOnClickListener(new AccClickListener());
+        accAuthButton.setOnClickListener(new AccClickListener());
 
         navigationView.setOnItemSelectedListener(this);
         searchView.setOnQueryTextListener(new SearchSubmitListener());
@@ -118,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     app.setUser(authResponse.getUser());
                     app.setIsAuth(true);
                     navigationView.setVisibility(View.VISIBLE);
+
+                    changePopupMenuIcon();
                 } else {
 //                    ErrorUtils.handleErrorResponse(response, MainActivity.this);
                 }
@@ -132,6 +138,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public static BottomNavigationView getNavigationView() {
         return navigationView;
+    }
+    public void changePopupMenuIcon() {
+        Button accButton = findViewById(R.id.accButton);
+        ImageView accAuthButton = findViewById(R.id.accAuthButton);
+        if(app.getIsAuth()) {
+            accButton.setVisibility(View.GONE);
+            accAuthButton.setVisibility(View.VISIBLE);
+        }else{
+            accButton.setVisibility(View.VISIBLE);
+            accAuthButton.setVisibility(View.GONE);
+        }
     }
 
     private class AccClickListener implements View.OnClickListener {
@@ -166,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 app.setIsAuth(false);
                                 app.setUser(null);
                                 navigationView.setVisibility(View.GONE);
+                                changePopupMenuIcon();
                                 showFragment(new CatalogFragment());
                                 navigationView.setSelectedItemId(R.id.menu_catalog);
                                 return true;
@@ -182,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             startActivity(intent);
         }
     }
+
 
     private class SearchSubmitListener implements SearchView.OnQueryTextListener {
         @Override
