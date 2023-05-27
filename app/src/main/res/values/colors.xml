@@ -17,4 +17,5 @@
     <color name="light_grey">#E9EEF2</color>
     <color name="green">#BBFFA7</color>
     <color name="red">#FF2A51</color>
+    <color name="grey_form_placeholder">#806c7175</color>
 </resources>
