@@ -58,7 +58,7 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         }
 
         transliterator = Transliterator.getInstance("Russian-Latin/BGN");
-        String iconUrl = "https://cdn.bcs.ru/company-logos/" + transliterator.transliterate(stock.getShortname().split(" ")[0].toLowerCase()) + ".svg";
+        String iconUrl = "https://cdn.bcs.ru/company-logos/" + transliterator.transliterate(stock.getShortname().split("[ -]")[0].toLowerCase()) + ".svg";
         Context context = holder.imageView.getContext().getApplicationContext();
         FetchSvgTask task = new FetchSvgTask(iconUrl, holder.imageView, context);
         task.execute();
