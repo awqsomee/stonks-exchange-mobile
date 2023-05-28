@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -50,38 +52,14 @@ public class LoginActivity extends AppCompatActivity {
         logInBtn.setOnClickListener(new logInClickListener());
         goBackBtn.setOnClickListener(new goBackClickListener());
         toSignUpText.setOnClickListener(new toSignUpClickListener());
+
+        passwordInput.setOnEditorActionListener(new sendFormETListener());
     }
 
     private class logInClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            LoginRequest loginRequest = new LoginRequest(loginInput.getText().toString(), passwordInput.getText().toString());
-            Call<AuthResponse> call = ApiService.ApiService.logIn(loginRequest);
-            call.enqueue(new Callback<AuthResponse>() {
-                @Override
-                public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                    if (response.isSuccessful()) {
-                        AuthResponse authResponse = response.body();
-
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("token", authResponse.getToken());
-                        editor.apply();
-                        ApiManager.setToken(authResponse.getToken());
-
-                        app.setUser(authResponse.getUser());
-                        app.setIsAuth(true);
-
-                        finish();
-                    } else {
-                        ErrorUtils.handleErrorResponse(response, LoginActivity.this);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<AuthResponse> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Внутренняя ошибка", Toast.LENGTH_SHORT).show();
-                }
-            });
+            attemptLogin();
         }
     }
 
@@ -99,5 +77,47 @@ public class LoginActivity extends AppCompatActivity {
         public void onClick(View v) {
             finish();
         }
+    }
+
+    private class sendFormETListener implements TextView.OnEditorActionListener {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                    actionId == EditorInfo.IME_ACTION_SEND) {
+                attemptLogin();
+                return true;
+            }
+            return false;
+        }
+    }
+
+    private void attemptLogin() {
+        LoginRequest loginRequest = new LoginRequest(loginInput.getText().toString(), passwordInput.getText().toString());
+        Call<AuthResponse> call = ApiService.ApiService.logIn(loginRequest);
+            call.enqueue(new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                if (response.isSuccessful()) {
+                    AuthResponse authResponse = response.body();
+
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("token", authResponse.getToken());
+                    editor.apply();
+                    ApiManager.setToken(authResponse.getToken());
+
+                    app.setUser(authResponse.getUser());
+                    app.setIsAuth(true);
+
+                    finish();
+                } else {
+                    ErrorUtils.handleErrorResponse(response, LoginActivity.this);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Внутренняя ошибка", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
