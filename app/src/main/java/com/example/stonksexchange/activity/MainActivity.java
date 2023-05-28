@@ -239,10 +239,26 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private class SearchClickListener implements View.OnClickListener {
+        int searchCloseButtonId = searchView.getContext().getResources()
+            .getIdentifier("android:id/search_close_btn", null, null);
+        ImageView closeButton = (ImageView) searchView.findViewById(searchCloseButtonId);
+
         @Override
         public void onClick(View v) {
+            searchView.setIconified(false);
             searchView.onActionViewExpanded();
+            closeButton.setVisibility(View.VISIBLE);
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    searchView.setQuery("", false);
+                    searchView.setIconified(true);
+                    searchView.clearFocus();
+                    searchView.onActionViewCollapsed();
+                }
+            });
         }
+
     }
 
 }

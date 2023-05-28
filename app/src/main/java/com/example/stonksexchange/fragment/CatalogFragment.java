@@ -36,7 +36,6 @@ public class CatalogFragment extends Fragment {
     ToggleButton sortByChangeBtn;
     ToggleButton sortByNameBtn;
 
-    ArrayList<Stock> stocks = new ArrayList<>();
     boolean isLoading = false;
     private CountDownLatch responseCountDownLatch;
 
@@ -47,13 +46,11 @@ public class CatalogFragment extends Fragment {
     }
 
     public void updateUI() {
-        stocks = app.getDisplayedStocks();
         recyclerView.setAdapter(new StockAdapter(
-                ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
+                ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
     }
 
     public void clearUI() {
-        stocks = app.getDisplayedStocks();
         getStandartStocks();
     }
 
@@ -70,12 +67,11 @@ public class CatalogFragment extends Fragment {
         sortByNameBtn = view.findViewById(R.id.sortByNameBtn);
 
         setSortClickListeners();
-        stocks = app.getDisplayedStocks();
         if (app.getDisplayedStocks().size() == 0) {
             getStandartStocks();
         } else
             recyclerView.setAdapter(new StockAdapter(
-                    ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
+                    ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
 
         return view;
     }
@@ -86,7 +82,7 @@ public class CatalogFragment extends Fragment {
             public void onClick(View v) {
                 isSortAsc = !isSortAsc;
                 recyclerView.setAdapter(new StockAdapter(
-                        ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
+                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
             }
         });
 
@@ -95,7 +91,7 @@ public class CatalogFragment extends Fragment {
             public void onClick(View v) {
                 comparator = Comparator.comparing(Stock::getChange);
                 recyclerView.setAdapter(new StockAdapter(
-                        ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
+                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
             }
         });
 
@@ -104,7 +100,7 @@ public class CatalogFragment extends Fragment {
             public void onClick(View v) {
                 comparator = Comparator.comparing(Stock::getShortname);
                 recyclerView.setAdapter(new StockAdapter(
-                        ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
+                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
             }
         });
     }
@@ -115,9 +111,8 @@ public class CatalogFragment extends Fragment {
             void countDown() {
                 responseCountDownLatch.countDown();
                 if (responseCountDownLatch.getCount() == 0) {
-                    app.setDisplayedStocks(stocks);
                     recyclerView.setAdapter(new StockAdapter(
-                            ArrayListSortUtil.sortArrayList(stocks, comparator, isSortAsc)));
+                            ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
                     isLoading = false;
                 }
             }
@@ -126,7 +121,7 @@ public class CatalogFragment extends Fragment {
             public void onResponse(Call<GetStockDataResponse> call, Response<GetStockDataResponse> response) {
                 if (response.isSuccessful()) {
                     GetStockDataResponse data = response.body();
-                    stocks.add(data.getStock());
+                    app.getDisplayedStocks().add(data.getStock());
                 } else {
 //                    ErrorUtils.handleErrorResponse(response, context);
                 }
