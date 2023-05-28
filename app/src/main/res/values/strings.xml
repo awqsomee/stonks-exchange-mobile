@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Stonks Exchange</string>
     <string name="app_padding">16dp</string>
+    <dimen name="font_header_24">24sp</dimen>
     <dimen name="font_paragraph_16">16sp</dimen>
     <dimen name="font_body_12">12sp</dimen>
     <dimen name="font_mark_10">10sp</dimen>
