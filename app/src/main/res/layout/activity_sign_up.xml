@@ -97,39 +97,65 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
-        <EditText
-            android:id="@+id/repeatPasswordInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/repeatPasswordInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/shape_input_field"
-            android:ems="10"
-            android:hint="Повторите пароль"
-            android:inputType="textPassword"
-            android:padding="16dp"
-            android:textColor="@color/app_background"
-            android:textColorHint="@color/grey_form_placeholder"
-            android:textCursorDrawable="@drawable/shape_edittext_cursor"
-            android:textSize="@dimen/font_paragraph_16"
+            app:hintEnabled="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+            app:layout_constraintTop_toBottomOf="@+id/textView11"
+            app:passwordToggleEnabled ="true"
+            app:passwordToggleTint="@color/grey_form_placeholder">
 
-        <EditText
-            android:id="@+id/passwordSignUpInput"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/repeatPasswordInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/shape_input_field"
+                android:ems="10"
+                android:hint="Повторите пароль"
+                android:inputType="textPassword"
+                android:padding="16dp"
+                android:textColor="@color/app_background"
+                android:textColorHint="@color/grey_form_placeholder"
+                android:textCursorDrawable="@drawable/shape_edittext_cursor"
+                android:textSize="@dimen/font_paragraph_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/shape_input_field"
-            android:ems="10"
-            android:hint="Пароль"
-            android:inputType="textPassword"
-            android:padding="16dp"
-            android:textColor="@color/app_background"
-            android:textColorHint="@color/grey_form_placeholder"
-            android:textCursorDrawable="@drawable/shape_edittext_cursor"
-            android:textSize="@dimen/font_paragraph_16"
+            app:hintEnabled="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            app:layout_constraintTop_toBottomOf="@+id/textView10"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/grey_form_placeholder">
+
+            <com.google.android.material.textfield.TextInputEditText
+
+                android:id="@+id/passwordSignUpInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/shape_input_field"
+                android:ems="10"
+                android:hint="Пароль"
+                android:inputType="textPassword"
+                android:padding="16dp"
+                android:textColor="@color/app_background"
+                android:textColorHint="@color/grey_form_placeholder"
+                android:textCursorDrawable="@drawable/shape_edittext_cursor"
+                android:textSize="@dimen/font_paragraph_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/textView9"
@@ -162,7 +188,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/font_body_12"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordSignUpInput" />
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -191,7 +217,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="66dp"
-            android:text="Войти"
+            android:text="Вход"
             android:textSize="@dimen/font_header_24"
             android:textFontWeight="500"
             android:textColor="@color/white"
@@ -207,9 +233,11 @@
         android:layout_marginStart="7dp"
         android:layout_marginTop="27dp"
         android:background="@drawable/dark_button_shadow"
-        android:text="Вход"
-        android:textFontWeight="500"
+        android:paddingHorizontal="40dp"
+        android:paddingVertical="16dp"
+        android:text="Зарегистрироваться"
         android:textColor="@color/white"
+        android:textFontWeight="500"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 

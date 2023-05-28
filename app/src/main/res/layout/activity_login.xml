@@ -36,10 +36,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="68dp"
-            android:text="Зарегистироваться"
-            android:textSize="@dimen/font_header_24"
-            android:textFontWeight="500"
+            android:text="Регистрация"
             android:textColor="@color/white"
+            android:textFontWeight="500"
+            android:textSize="@dimen/font_header_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView4"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,29 +49,43 @@
         android:id="@+id/constraintLayout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
-        <EditText
-            android:id="@+id/passwordInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/app_background"
-            android:textColorHint="@color/grey_form_placeholder"
-            android:textCursorDrawable="@drawable/shape_edittext_cursor"
-            android:ems="16"
-            android:hint="Пароль"
-            android:textSize="@dimen/font_paragraph_16"
-            android:inputType="textPassword"
-            android:padding="16dp"
+            app:hintEnabled="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6"
-            android:background="@drawable/shape_input_field"/>
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/grey_form_placeholder">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/shape_input_field"
+                android:ems="16"
+                android:hint="Пароль"
+                android:inputType="textPassword"
+                android:padding="16dp"
+                android:textColor="@color/app_background"
+                android:textColorHint="@color/grey_form_placeholder"
+                android:textCursorDrawable="@drawable/shape_edittext_cursor"
+                android:textSize="@dimen/font_paragraph_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <EditText
             android:id="@+id/loginInput"
@@ -96,8 +110,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Электронная почта"
-            android:textSize="@dimen/font_body_12"
             android:textColor="@color/white"
+            android:textSize="@dimen/font_body_12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -107,8 +121,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Пароль"
-            android:textSize="@dimen/font_body_12"
             android:textColor="@color/white"
+            android:textSize="@dimen/font_body_12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/loginInput" />
 
@@ -120,7 +134,7 @@
             android:text="Забыли пароль?"
             android:textColor="@color/silver"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordInput" />
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <android.widget.Button
