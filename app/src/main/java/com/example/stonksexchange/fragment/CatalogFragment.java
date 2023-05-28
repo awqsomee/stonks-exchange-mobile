@@ -2,6 +2,7 @@ package com.example.stonksexchange.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +84,12 @@ public class CatalogFragment extends Fragment {
                 isSortAsc = !isSortAsc;
                 recyclerView.setAdapter(new StockAdapter(
                         ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
+
+//                TODO:Должно менять иконку сортировки
+//                if(changeSortOrderBtn.isChecked())
+//                    changeSortOrderBtn.setChecked(false);
+//                else
+//                    changeSortOrderBtn.setChecked(true);
             }
         });
 
@@ -92,6 +99,7 @@ public class CatalogFragment extends Fragment {
                 comparator = Comparator.comparing(Stock::getChange);
                 recyclerView.setAdapter(new StockAdapter(
                         ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
+                sortByNameBtn.setChecked(false);
             }
         });
 
@@ -101,6 +109,7 @@ public class CatalogFragment extends Fragment {
                 comparator = Comparator.comparing(Stock::getShortname);
                 recyclerView.setAdapter(new StockAdapter(
                         ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
+                sortByChangeBtn.setChecked(false);
             }
         });
     }
