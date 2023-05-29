@@ -18,6 +18,10 @@ import com.example.stonksexchange.api.domain.user.GetUserDataResponse;
 import com.example.stonksexchange.models.User;
 import com.example.stonksexchange.utils.BackButtonHandler;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,7 +82,7 @@ public class AccountFragment extends Fragment {
                     if (fullName.length > 2)
                         editPatronymic.setText(fullName[2]);
                     editEmail.setText(user.getEmail());
-                    editBirthday.setText(user.getBirthday());
+                    editBirthday.setText(stringToDate(user.getBirthday()));
                     editPhone.setText(user.getPhoneNumber());
                     editPassport.setText(user.getPassportNumber());
                 } else {
@@ -91,5 +95,20 @@ public class AccountFragment extends Fragment {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private String stringToDate(String inputDate){
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            Date date = inputFormat.parse(inputDate);
+
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yyyy");
+            String outputDate = outputFormat.format(date);
+
+             return outputDate;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
