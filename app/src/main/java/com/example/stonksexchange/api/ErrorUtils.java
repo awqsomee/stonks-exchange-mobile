@@ -15,6 +15,7 @@ public class ErrorUtils {
         try {
             // Parse error response JSON
             String errorBody = response.errorBody().string();
+            System.out.println(errorBody);
             JSONObject jsonObject = new JSONObject(errorBody);
             String errorMessage = jsonObject.optString("message");
 

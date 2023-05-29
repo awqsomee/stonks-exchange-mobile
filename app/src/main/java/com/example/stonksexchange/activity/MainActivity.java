@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     static BottomNavigationView navigationView;
     SearchView searchView;
     CatalogFragment catalogFragment;
-    ImageView accAuthButton;
+    static ImageView accAuthButton;
     private MenuItem walletCount;
 
     @Override
@@ -154,6 +154,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             accButton.setVisibility(View.VISIBLE);
             accAuthButton.setVisibility(View.GONE);
         }
+    }
+
+    public static ImageView getAccAuthButton() {
+        return accAuthButton;
     }
 
     private class AccClickListener implements View.OnClickListener {
