@@ -1,5 +1,6 @@
 package com.example.stonksexchange.fragment;
 
+import android.content.Context;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -9,9 +10,12 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,8 +31,6 @@ import com.example.stonksexchange.R;
 import com.example.stonksexchange.activity.MainActivity;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
-import com.example.stonksexchange.api.domain.auth.LoginRequest;
-import com.example.stonksexchange.api.domain.user.ChangeUserDataRequest;
 import com.example.stonksexchange.api.domain.user.UserDataResponse;
 import com.example.stonksexchange.models.User;
 import com.example.stonksexchange.utils.BackButtonHandler;
@@ -108,7 +110,7 @@ public class AccountFragment extends Fragment {
         deleteAccText.setOnClickListener(new DeleteAccClickListener());
 
         for (EditText editText : editTextList) {
-            editText.setOnFocusChangeListener(new FocusChangeListener());
+            editText.setOnEditorActionListener(new FocusChangeListener());
         }
         return view;
     }
@@ -191,7 +193,7 @@ public class AccountFragment extends Fragment {
                                 UserDataResponse data = response.body();
                                 User user = data.getUser();
                                 app.setUserData(user);
-                                if (app.getUser().getAvatar() != null){
+                                if (app.getUser().getAvatar() != null) {
                                     RequestCreator avatarImage = Picasso.get().load("https://stonks-kaivr.amvera.io/" + app.getUser().getAvatar());
                                     avatarImage.into(avatar);
                                     avatarImage.into(MainActivity.getAccAuthButton());
@@ -234,18 +236,18 @@ public class AccountFragment extends Fragment {
         }
     }
 
-    private class FocusChangeListener implements View.OnFocusChangeListener {
+    private class FocusChangeListener implements TextView.OnEditorActionListener {
         @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (!hasFocus) {
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 User user = new User();
                 user.setUsername(usernameInput.getText().toString());
                 String lastName = editLastname.getText().toString();
                 String firstName = editFirstname.getText().toString();
                 String patronymic = editPatronymic.getText().toString();
-                if (lastName.equals("")) return;
-                if (firstName.equals("")) return;
-                if (patronymic.equals("")) return;
+                if (lastName.equals("")) return false;
+                if (firstName.equals("")) return false;
+                if (patronymic.equals("")) return false;
                 String fullName = lastName + " " + firstName + " " + patronymic;
                 user.setName(fullName);
                 user.setEmail(editEmail.getText().toString());
@@ -281,7 +283,15 @@ public class AccountFragment extends Fragment {
                         Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+                // Closing the keyboard
+                InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                // Unfocusing the EditText
+                v.clearFocus();
+                return true;
             }
+            return false;
         }
     }
 

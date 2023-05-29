@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:backgroundTint="@drawable/focus_tint_list"
-                    android:hint=""
+                    android:text="--/--"
                     android:inputType="datetime|date"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:backgroundTint="@drawable/focus_tint_list"
-                    android:hint=""
+                    android:text="0000 0000 0000 0000"
                     android:inputType="number"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:backgroundTint="@drawable/focus_tint_list"
-                    android:hint=""
+                    android:text="Visa"
                     android:inputType="number"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
@@ -164,7 +164,8 @@
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
                     android:textSize="@dimen/font_paragraph_16"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titleINN" />
+                    app:layout_constraintTop_toBottomOf="@+id/titleINN"
+                    android:imeOptions="actionDone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -195,7 +196,8 @@
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
                     android:textSize="@dimen/font_paragraph_16"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titlePassport" />
+                    app:layout_constraintTop_toBottomOf="@+id/titlePassport"
+                    android:imeOptions="actionDone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -282,7 +284,8 @@
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
                     android:textSize="@dimen/font_paragraph_16"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titlePhone" />
+                    app:layout_constraintTop_toBottomOf="@+id/titlePhone"
+                    android:imeOptions="actionDone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -315,7 +318,8 @@
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
                     android:textSize="@dimen/font_paragraph_16"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titleBirthday" />
+                    app:layout_constraintTop_toBottomOf="@+id/titleBirthday"
+                    android:imeOptions="actionDone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -352,15 +356,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:backgroundTint="@drawable/focus_tint_list"
-                    android:hint=""
+                    android:hint="Введите E-mail"
                     android:inputType="textWebEmailAddress"
                     android:padding="16dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColorHint="@color/grey"
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
                     android:textSize="@dimen/font_header_24"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titleEmail" />
+                    app:layout_constraintTop_toBottomOf="@+id/titleEmail"
+                    android:imeOptions="actionDone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -395,7 +400,8 @@
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
                     android:textSize="@dimen/font_header_24"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titlePatrinimus" />
+                    app:layout_constraintTop_toBottomOf="@+id/titlePatrinimus"
+                    android:imeOptions="actionDone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -422,17 +428,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:backgroundTint="@drawable/focus_tint_list"
-                    android:hint=""
+                    android:hint="Введите имя"
                     android:inputType="textPersonName"
                     android:padding="16dp"
                     android:textColor="@color/white"
                     android:textColorHighlight="@color/orange"
-                    android:textColorHint="@color/white"
+                    android:textColorHint="@color/grey"
                     android:textColorLink="@color/orange"
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
                     android:textSize="@dimen/font_header_24"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textName" />
+                    app:layout_constraintTop_toBottomOf="@+id/textName"
+                    android:imeOptions="actionDone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -458,15 +465,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:backgroundTint="@drawable/focus_tint_list"
-                    android:hint=""
+                    android:hint="Фамилия"
                     android:inputType="textPersonName"
                     android:padding="16dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColorHint="@color/grey"
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
                     android:textSize="@dimen/font_header_24"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titleFirstname" />
+                    app:layout_constraintTop_toBottomOf="@+id/titleFirstname"
+                    android:imeOptions="actionDone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -493,14 +501,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:backgroundTint="@drawable/focus_tint_list"
-                android:hint=""
+                android:hint="Имя пользователя"
                 android:textColor="@color/white"
+                android:textColorHint="@color/grey"
                 android:textCursorDrawable="@drawable/shape_edittext_cursor"
                 android:textSize="@dimen/font_header_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/avatar"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:singleLine="true"
+                android:imeOptions="actionDone" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
