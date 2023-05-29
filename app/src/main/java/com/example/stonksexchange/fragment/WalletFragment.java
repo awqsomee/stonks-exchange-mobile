@@ -125,13 +125,9 @@ public class WalletFragment extends Fragment {
             public void onResponse(Call<GetUserCurrenciesResponse> call, Response<GetUserCurrenciesResponse> response) {
                 if (response.isSuccessful()) {
                     GetUserCurrenciesResponse data = response.body();
-                    currencySymbols = new ArrayList<>();
-                    currencySymbols.add("RUB");
-                    for (Currency currency : data.getCurrencies()) {
-                        String currencyString = currency.getSymbol();
-                        currencySymbols.add(currencyString);
-                    }
-                    recyclerView.setAdapter(new ButtonAdapter(currencySymbols));
+                    data.getCurrencies().add(0, new Currency("", "RUB", "Российский рубль", app.getUser().getBalance(), 0, 0, 0));
+                    app.getWallet().setUserCurrencies(data.getCurrencies());
+                    recyclerView.setAdapter(new ButtonAdapter(app.getWallet().getUserCurrencies()));
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }
