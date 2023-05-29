@@ -234,6 +234,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         @Override
         public boolean onQueryTextChange(String newText) {
+            int searchCloseButtonId = searchView.getContext().getResources()
+                    .getIdentifier("android:id/search_close_btn", null, null);
+            ImageView closeButton = (ImageView) searchView.findViewById(searchCloseButtonId);
+            if (newText.equals(""))
+                closeButton.setVisibility(View.VISIBLE);
             return false;
         }
     }
