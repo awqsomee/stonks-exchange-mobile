@@ -1,8 +1,11 @@
 package com.example.stonksexchange.api.services;
 
+import com.example.stonksexchange.api.domain.forex.CloseAccountResponse;
 import com.example.stonksexchange.api.domain.forex.CurrencyExchangeRequest;
+import com.example.stonksexchange.api.domain.forex.CurrencyExchangeResponse;
 import com.example.stonksexchange.api.domain.forex.GetCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
+import com.example.stonksexchange.api.domain.forex.OpenAccountResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,12 +21,12 @@ public interface ForexApiService {
     Call<GetCurrenciesResponse> getCurrencies();
 
     @POST("forex/auth/{symbol}/open")
-    Call<GetCurrenciesResponse> openAccount(@Path("symbol") String symbol);
+    Call<OpenAccountResponse> openAccount(@Path("symbol") String symbol);
 
     @POST("forex/auth/{symbol}/close")
-    Call<GetCurrenciesResponse> closeAccount(@Path("symbol") String symbol);
+    Call<CloseAccountResponse> closeAccount(@Path("symbol") String symbol);
 
     @POST("forex/auth")
-    Call<GetCurrenciesResponse> exchangeCurrency(@Body CurrencyExchangeRequest request);
+    Call<CurrencyExchangeResponse> exchangeCurrency(@Body CurrencyExchangeRequest request);
 
 }

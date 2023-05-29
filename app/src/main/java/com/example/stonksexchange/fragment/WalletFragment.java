@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,9 @@ import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.balance.ChangeBalanceRequest;
 import com.example.stonksexchange.api.domain.balance.ChangeBalanceResponse;
+import com.example.stonksexchange.api.domain.forex.CloseAccountResponse;
+import com.example.stonksexchange.api.domain.forex.CurrencyExchangeRequest;
+import com.example.stonksexchange.api.domain.forex.CurrencyExchangeResponse;
 import com.example.stonksexchange.api.domain.forex.GetCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
 import com.example.stonksexchange.models.Currency;
@@ -47,6 +51,7 @@ public class WalletFragment extends Fragment {
     TextView price_change;
     ConstraintLayout pricesLayout;
     WalletFragment fragment;
+    ImageButton closeWalletBtn;
     List<String> currencySymbols;
 
     public WalletFragment() {
@@ -70,10 +75,12 @@ public class WalletFragment extends Fragment {
         prev_price = view.findViewById(R.id.prev_price);
         cur_price = view.findViewById(R.id.cur_price);
         price_change = view.findViewById(R.id.price_change);
+        closeWalletBtn = view.findViewById(R.id.closeWalletBtn);
 
         balanceText.setText(String.format("%.2f", app.getUser().getBalance()));
         replenishBtn.setOnClickListener(new ReplenishClickListener());
         withdrawBtn.setOnClickListener(new WithdrawClickListener());
+        closeWalletBtn.setOnClickListener(new CloseAccListener());
 
         recyclerView = view.findViewById(R.id.currencyList);
         getUserCurrencies();
@@ -102,6 +109,41 @@ public class WalletFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ChangeBalanceResponse> call, Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    private void exchangeCurrency(CurrencyExchangeRequest request) {
+        Call<CurrencyExchangeResponse> call = ApiService.AuthApiService.exchangeCurrency(request);
+        call.enqueue(new Callback<CurrencyExchangeResponse>() {
+            @Override
+            public void onResponse(Call<CurrencyExchangeResponse> call, Response<CurrencyExchangeResponse> response) {
+                if (response.isSuccessful()) {
+                    CurrencyExchangeResponse data = response.body();
+                    app.getUser().setBalance(data.getUser().getBalance());
+                    app.pushTransaction(data.getTransaction());
+
+                    amountInput.setText("");
+                    balanceText.setText(data.getCurrency().getAmount().toString());
+
+                    prev_price.setText(data.getCurrency().getLatestPriceString());
+                    cur_price.setText(data.getCurrency().getLatestPriceString());
+                    price_change.setText("0");
+
+                    app.getWallet().setUserCurrencies(data.getCurrencies());
+                    recyclerView.setAdapter(new CurrenciesAdapter(fragment, app.getWallet().getUserCurrencies()));
+
+                    Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
+
+                } else {
+                    ErrorUtils.handleErrorResponse(response, context);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CurrencyExchangeResponse> call, Throwable t) {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
@@ -193,8 +235,13 @@ public class WalletFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (amountInput.getText().toString().equals("")) return;
-            ChangeBalanceRequest changeBalanceRequest = new ChangeBalanceRequest(Float.parseFloat(amountInput.getText().toString()));
-            changeBalance(changeBalanceRequest);
+            if (app.getWallet().getSelectedCurrency().getSymbol() == "RUB") {
+                ChangeBalanceRequest changeBalanceRequest = new ChangeBalanceRequest(Float.parseFloat(amountInput.getText().toString()));
+                changeBalance(changeBalanceRequest);
+            } else {
+                CurrencyExchangeRequest currencyExchangeRequest = new CurrencyExchangeRequest(app.getWallet().getSelectedCurrency().getSymbol(), Float.parseFloat(amountInput.getText().toString()));
+                exchangeCurrency(currencyExchangeRequest);
+            }
         }
     }
 
@@ -202,8 +249,36 @@ public class WalletFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (amountInput.getText().toString().equals("")) return;
-            ChangeBalanceRequest changeBalanceRequest = new ChangeBalanceRequest(-Float.parseFloat(amountInput.getText().toString()));
-            changeBalance(changeBalanceRequest);
+            if (app.getWallet().getSelectedCurrency().getSymbol() == "RUB") {
+                ChangeBalanceRequest changeBalanceRequest = new ChangeBalanceRequest(-Float.parseFloat(amountInput.getText().toString()));
+                changeBalance(changeBalanceRequest);
+            } else {
+                CurrencyExchangeRequest currencyExchangeRequest = new CurrencyExchangeRequest(app.getWallet().getSelectedCurrency().getSymbol(), -Float.parseFloat(amountInput.getText().toString()));
+                exchangeCurrency(currencyExchangeRequest);
+            }
+        }
+    }
+
+    private class CloseAccListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Call<CloseAccountResponse> call = ApiService.AuthApiService.closeAccount(app.getWallet().getSelectedCurrency().getSymbol());
+            call.enqueue(new Callback<CloseAccountResponse>() {
+                @Override
+                public void onResponse(Call<CloseAccountResponse> call, Response<CloseAccountResponse> response) {
+                    if (response.isSuccessful()) {
+                        CloseAccountResponse data = response.body();
+                        // TODO: Рассортировать ответ
+                    } else {
+                        ErrorUtils.handleErrorResponse(response, context);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CloseAccountResponse> call, Throwable t) {
+                    Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }
