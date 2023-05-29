@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
+import com.example.stonksexchange.activity.MainActivity;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.models.Stock;
@@ -46,12 +47,16 @@ public class CatalogFragment extends Fragment {
     }
 
     public void updateUI() {
-        recyclerView.setAdapter(new StockAdapter(
-                ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
+        setAdapter();
     }
 
     public void clearUI() {
         getStandartStocks();
+    }
+
+    private void setAdapter() {
+        recyclerView.setAdapter(new StockAdapter(
+                ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked()), this));
     }
 
     @Override
@@ -70,9 +75,7 @@ public class CatalogFragment extends Fragment {
         if (app.getDisplayedStocks().size() == 0) {
             getStandartStocks();
         } else
-            recyclerView.setAdapter(new StockAdapter(
-                    ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
-
+            setAdapter();
         return view;
     }
 
@@ -80,8 +83,7 @@ public class CatalogFragment extends Fragment {
         changeSortOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recyclerView.setAdapter(new StockAdapter(
-                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
+                setAdapter();
             }
         });
 
@@ -89,8 +91,7 @@ public class CatalogFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 comparator = Comparator.comparing(Stock::getChange);
-                recyclerView.setAdapter(new StockAdapter(
-                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
+                setAdapter();
                 sortByNameBtn.setChecked(false);
             }
         });
@@ -99,8 +100,7 @@ public class CatalogFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 comparator = Comparator.comparing(Stock::getShortname);
-                recyclerView.setAdapter(new StockAdapter(
-                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
+                setAdapter();
                 sortByChangeBtn.setChecked(false);
             }
         });
@@ -112,8 +112,7 @@ public class CatalogFragment extends Fragment {
             void countDown() {
                 responseCountDownLatch.countDown();
                 if (responseCountDownLatch.getCount() == 0) {
-                    recyclerView.setAdapter(new StockAdapter(
-                            ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
+                    setAdapter();
                     isLoading = false;
                 }
             }

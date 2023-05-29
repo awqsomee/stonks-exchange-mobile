@@ -10,9 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stonksexchange.R;
+import com.example.stonksexchange.activity.MainActivity;
+import com.example.stonksexchange.fragment.CatalogFragment;
+import com.example.stonksexchange.fragment.StockFragment;
 import com.example.stonksexchange.models.Stock;
 
 import java.util.List;
@@ -20,9 +26,11 @@ import java.util.List;
 public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
     Transliterator transliterator = null;
     private List<Stock> stocks;
+    private Fragment fragment;
 
-    public StockAdapter(List<com.example.stonksexchange.models.Stock> stocks) {
+    public StockAdapter(List<com.example.stonksexchange.models.Stock> stocks, Fragment fragment) {
         this.stocks = stocks;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -62,6 +70,18 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         Context context = holder.imageView.getContext().getApplicationContext();
         FetchSvgTask task = new FetchSvgTask(iconUrl, holder.imageView, context);
         task.execute();
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.getNavigationView().setSelectedItemId(R.id.menu_catalog);
+                FragmentManager fragmentManager = fragment.getParentFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragmentContainer, StockFragment.newInstance(stock.getSymbol()));
+                transaction.commit();
+
+            }
+        });
 
     }
 
