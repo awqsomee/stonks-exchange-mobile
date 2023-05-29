@@ -5,7 +5,6 @@ import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.api.domain.stock.GetUserStocksResponse;
 import com.example.stonksexchange.api.domain.stock.StockExchangeRequest;
 import com.example.stonksexchange.api.domain.stock.StockExchangeResponse;
-import com.example.stonksexchange.models.Stock;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -13,7 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public interface StockService {
+public interface StockApiService {
     @GET("stocks/search")
     Call<FindStocksResponse> findStock(@Query("q") String q);
 
