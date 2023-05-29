@@ -12,10 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/currencybuttont_tint_list"
+        android:checked="false"
         android:text="ToggleButton"
         android:textOff=""
         android:textOn=""
-        android:checked="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

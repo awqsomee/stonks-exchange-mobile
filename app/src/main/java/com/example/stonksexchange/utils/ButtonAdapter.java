@@ -19,9 +19,6 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
 
     public ButtonAdapter(List<String> buttonNames) {
         buttonNames.add("+");
-        buttonNames.add("USD");
-        buttonNames.add("EUR");
-        buttonNames.add("TGN");
         this.buttonNames = buttonNames;
     }
 
