@@ -8,7 +8,7 @@ import java.util.function.Function;
 public class ArrayListSortUtil {
     public static <T, U> List<T> sortArrayList(List<T> list, Comparator<T> comparator, boolean sortOrder) {
 
-        if (!sortOrder) {
+        if (sortOrder) {
             comparator = comparator.reversed();
         }
 

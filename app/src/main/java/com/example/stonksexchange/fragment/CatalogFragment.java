@@ -40,7 +40,6 @@ public class CatalogFragment extends Fragment {
     boolean isLoading = false;
     private CountDownLatch responseCountDownLatch;
 
-    boolean isSortAsc = true;
     Comparator<Stock> comparator = Comparator.comparing(Stock::getShortname);
 
     public CatalogFragment() {
@@ -48,7 +47,7 @@ public class CatalogFragment extends Fragment {
 
     public void updateUI() {
         recyclerView.setAdapter(new StockAdapter(
-                ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
+                ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
     }
 
     public void clearUI() {
@@ -72,7 +71,7 @@ public class CatalogFragment extends Fragment {
             getStandartStocks();
         } else
             recyclerView.setAdapter(new StockAdapter(
-                    ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
+                    ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
 
         return view;
     }
@@ -81,15 +80,8 @@ public class CatalogFragment extends Fragment {
         changeSortOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isSortAsc = !isSortAsc;
                 recyclerView.setAdapter(new StockAdapter(
-                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
-
-//                TODO:Должно менять иконку сортировки
-//                if(changeSortOrderBtn.isChecked())
-//                    changeSortOrderBtn.setChecked(false);
-//                else
-//                    changeSortOrderBtn.setChecked(true);
+                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
             }
         });
 
@@ -98,7 +90,7 @@ public class CatalogFragment extends Fragment {
             public void onClick(View v) {
                 comparator = Comparator.comparing(Stock::getChange);
                 recyclerView.setAdapter(new StockAdapter(
-                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
+                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
                 sortByNameBtn.setChecked(false);
             }
         });
@@ -108,7 +100,7 @@ public class CatalogFragment extends Fragment {
             public void onClick(View v) {
                 comparator = Comparator.comparing(Stock::getShortname);
                 recyclerView.setAdapter(new StockAdapter(
-                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
+                        ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
                 sortByChangeBtn.setChecked(false);
             }
         });
@@ -121,7 +113,7 @@ public class CatalogFragment extends Fragment {
                 responseCountDownLatch.countDown();
                 if (responseCountDownLatch.getCount() == 0) {
                     recyclerView.setAdapter(new StockAdapter(
-                            ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, isSortAsc)));
+                            ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked())));
                     isLoading = false;
                 }
             }

@@ -247,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         public void onClick(View v) {
             searchView.setIconified(false);
             searchView.onActionViewExpanded();
+            searchView.setFocusable(true);
             closeButton.setVisibility(View.VISIBLE);
             closeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
