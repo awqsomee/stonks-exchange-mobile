@@ -90,7 +90,7 @@ public class CatalogFragment extends Fragment {
         sortByChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                comparator = Comparator.comparing(Stock::getChange);
+                comparator = Comparator.comparing(Stock::getChange).reversed();
                 setAdapter();
                 sortByNameBtn.setChecked(false);
             }
