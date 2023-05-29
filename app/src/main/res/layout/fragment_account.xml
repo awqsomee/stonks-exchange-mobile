@@ -155,9 +155,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint=""
+                android:hint="Введите данные ИНН"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/grey"
                 android:textCursorDrawable="@drawable/shape_edittext_cursor"
                 android:textSize="@dimen/font_paragraph_16"
                 app:layout_constraintStart_toStartOf="parent"
@@ -186,9 +186,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint=""
+                android:hint="Введите данные паспорта"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/grey"
                 android:textCursorDrawable="@drawable/shape_edittext_cursor"
                 android:textSize="@dimen/font_paragraph_16"
                 app:layout_constraintStart_toStartOf="parent"
@@ -271,12 +271,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint=""
+                android:backgroundTint="@drawable/focus_tint_list"
+                android:hint="Введите телефон"
                 android:inputType="phone"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/grey"
                 android:textCursorDrawable="@drawable/shape_edittext_cursor"
-                android:backgroundTint="@drawable/focus_tint_list"
                 android:textSize="@dimen/font_paragraph_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titlePhone" />
@@ -304,10 +304,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint=""
+                android:hint="Введите дату рождения"
                 android:inputType="datetime|date"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/grey"
                 android:textCursorDrawable="@drawable/shape_edittext_cursor"
                 android:backgroundTint="@drawable/focus_tint_list"
                 android:textSize="@dimen/font_paragraph_16"
@@ -366,7 +366,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/accCL6">
+            app:layout_constraintTop_toBottomOf="@+id/accCL5">
 
             <TextView
                 android:id="@+id/titlePatrinimus"
@@ -379,17 +379,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editPatrinimus"
+                android:id="@+id/editPatronymic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint=""
+                android:backgroundTint="@drawable/focus_tint_list"
+                android:hint="Введите отчество"
                 android:inputType="textPersonName"
                 android:padding="16dp"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/grey"
                 android:textCursorDrawable="@drawable/shape_edittext_cursor"
-                android:backgroundTint="@drawable/focus_tint_list"
                 android:textSize="@dimen/font_header_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titlePatrinimus" />
@@ -399,8 +399,9 @@
             android:id="@+id/accCL5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/accCL6">
 
             <TextView
                 android:id="@+id/textName"
@@ -417,7 +418,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:backgroundTint="@drawable/focus_tint_list"
                 android:hint=""
+                android:text="Валерия"
                 android:inputType="textPersonName"
                 android:padding="16dp"
                 android:textColor="@color/white"
@@ -425,7 +428,6 @@
                 android:textColorHint="@color/white"
                 android:textColorLink="@color/orange"
                 android:textCursorDrawable="@drawable/shape_edittext_cursor"
-                android:backgroundTint="@drawable/focus_tint_list"
                 android:textSize="@dimen/font_header_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textName" />
@@ -435,9 +437,8 @@
             android:id="@+id/accCL6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/accCL5">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/titleFirstname"
@@ -454,13 +455,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:backgroundTint="@drawable/focus_tint_list"
                 android:hint=""
                 android:inputType="textPersonName"
                 android:padding="16dp"
+                android:text="Нигаметзянова"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textCursorDrawable="@drawable/shape_edittext_cursor"
-                android:backgroundTint="@drawable/focus_tint_list"
                 android:textSize="@dimen/font_header_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titleFirstname" />
@@ -487,9 +489,12 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="90dp"
-            android:hint=""
+            android:layout_marginStart="32dp"
             android:backgroundTint="@drawable/focus_tint_list"
+            android:hint=""
+            android:text="nerpyshka♥"
+            android:textSize="@dimen/font_header_24"
+            android:textColor="@color/white"
             android:textCursorDrawable="@drawable/shape_edittext_cursor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
