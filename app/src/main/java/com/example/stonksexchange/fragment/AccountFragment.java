@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.user.GetUserDataResponse;
 import com.example.stonksexchange.models.User;
 import com.example.stonksexchange.utils.BackButtonHandler;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,7 +50,7 @@ public class AccountFragment extends Fragment {
     EditText editPhone;
     EditText editPassport;
     TextView deleteAccText;
-
+    ImageView avatar;
 
     public AccountFragment() {
     }
@@ -71,6 +73,7 @@ public class AccountFragment extends Fragment {
         editPhone = view.findViewById(R.id.editPhone);
         editPassport = view.findViewById(R.id.editPassport);
         deleteAccText = view.findViewById(R.id.deleteAccText);
+        avatar = view.findViewById(R.id.avatar);
 
         getAccountData();
 
@@ -80,6 +83,8 @@ public class AccountFragment extends Fragment {
     }
 
     private void getAccountData() {
+        if (app.getUser().getAvatar() != null)
+            Picasso.get().load("https://stonks-kaivr.amvera.io/" + app.getUser().getAvatar()).into(avatar);
         Call<GetUserDataResponse> call = ApiService.AuthApiService.getUserData();
         call.enqueue(new Callback<GetUserDataResponse>() {
             @Override
