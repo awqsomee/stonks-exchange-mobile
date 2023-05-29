@@ -10,7 +10,8 @@
         android:background="@color/app_background"
         android:paddingStart="16dp"
         android:paddingTop="16dp"
-        android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:paddingBottom="40dp">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -158,6 +159,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:backgroundTint="@drawable/focus_tint_list"
                     android:hint="Введите данные ИНН"
                     android:textColor="@color/white"
                     android:textColorHint="@color/grey"
@@ -189,7 +191,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:hint="Введите данные паспорта"
+                    android:backgroundTint="@drawable/focus_tint_list"
+                    android:hint="Введите данные"
                     android:textColor="@color/white"
                     android:textColorHint="@color/grey"
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
@@ -354,11 +357,10 @@
                     android:backgroundTint="@drawable/focus_tint_list"
                     android:hint=""
                     android:inputType="textWebEmailAddress"
-                    android:padding="16dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
-                    android:textSize="@dimen/font_header_24"
+                    android:textSize="@dimen/font_paragraph_16"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/titleEmail" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -389,11 +391,10 @@
                     android:backgroundTint="@drawable/focus_tint_list"
                     android:hint="Введите отчество"
                     android:inputType="textPersonName"
-                    android:padding="16dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/grey"
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
-                    android:textSize="@dimen/font_header_24"
+                    android:textSize="@dimen/font_paragraph_16"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/titlePatrinimus" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -424,13 +425,12 @@
                     android:backgroundTint="@drawable/focus_tint_list"
                     android:hint=""
                     android:inputType="textPersonName"
-                    android:padding="16dp"
                     android:textColor="@color/white"
                     android:textColorHighlight="@color/orange"
                     android:textColorHint="@color/white"
                     android:textColorLink="@color/orange"
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
-                    android:textSize="@dimen/font_header_24"
+                    android:textSize="@dimen/font_paragraph_16"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textName" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -460,11 +460,10 @@
                     android:backgroundTint="@drawable/focus_tint_list"
                     android:hint=""
                     android:inputType="textPersonName"
-                    android:padding="16dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textCursorDrawable="@drawable/shape_edittext_cursor"
-                    android:textSize="@dimen/font_header_24"
+                    android:textSize="@dimen/font_paragraph_16"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/titleFirstname" />
             </androidx.constraintlayout.widget.ConstraintLayout>

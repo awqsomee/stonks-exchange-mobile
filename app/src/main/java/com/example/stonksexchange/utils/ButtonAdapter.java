@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,20 +19,23 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
 
     public ButtonAdapter(List<String> buttonNames) {
         buttonNames.add("+");
+        buttonNames.add("USD");
+        buttonNames.add("EUR");
+        buttonNames.add("TGN");
         this.buttonNames = buttonNames;
     }
 
     @NonNull
     @Override
     public ButtonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_button, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_currency, parent, false);
         return new ButtonViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ButtonViewHolder holder, int position) {
         String buttonName = buttonNames.get(position);
-        holder.btnItem.setText(buttonName);
+        holder.currencyName.setText(buttonName);
         // Set click listener or any other customization for the button
     }
 
@@ -40,11 +45,12 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
     }
 
     public class ButtonViewHolder extends RecyclerView.ViewHolder {
-        Button btnItem;
+        ToggleButton btnItem;
+        TextView currencyName;
 
         public ButtonViewHolder(@NonNull View itemView) {
             super(itemView);
-            btnItem = itemView.findViewById(R.id.btnItem);
+            currencyName = itemView.findViewById(R.id.currencyName);
         }
     }
 }
