@@ -1,6 +1,7 @@
 package com.example.stonksexchange.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,14 +23,11 @@ import com.example.stonksexchange.api.domain.balance.ChangeBalanceRequest;
 import com.example.stonksexchange.api.domain.balance.ChangeBalanceResponse;
 import com.example.stonksexchange.api.domain.forex.GetCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
-import com.example.stonksexchange.models.CurrencyShort;
-import com.example.stonksexchange.utils.BackButtonHandler;
-import com.example.stonksexchange.utils.ButtonAdapter;
-
-import java.util.ArrayList;
 import com.example.stonksexchange.models.Currency;
+import com.example.stonksexchange.utils.BackButtonHandler;
+import com.example.stonksexchange.utils.CurrenciesAdapter;
+
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,7 +42,11 @@ public class WalletFragment extends Fragment {
     Button withdrawBtn;
     TextView balanceText;
     RecyclerView recyclerView;
-
+    TextView prev_price;
+    TextView cur_price;
+    TextView price_change;
+    ConstraintLayout pricesLayout;
+    WalletFragment fragment;
     List<String> currencySymbols;
 
     public WalletFragment() {
@@ -56,11 +59,17 @@ public class WalletFragment extends Fragment {
         app = App.getInstance();
         context = view.getContext();
         BackButtonHandler.setupBackPressedCallback(this);
+        fragment = this;
 
         amountInput = view.findViewById(R.id.amountET);
         replenishBtn = view.findViewById(R.id.replenishBtn);
         withdrawBtn = view.findViewById(R.id.withdrawBtn);
         balanceText = view.findViewById(R.id.balanceText);
+
+        pricesLayout = view.findViewById(R.id.pricesLayout);
+        prev_price = view.findViewById(R.id.prev_price);
+        cur_price = view.findViewById(R.id.cur_price);
+        price_change = view.findViewById(R.id.price_change);
 
         balanceText.setText(String.format("%.2f", app.getUser().getBalance()));
         replenishBtn.setOnClickListener(new ReplenishClickListener());
@@ -70,25 +79,6 @@ public class WalletFragment extends Fragment {
         getUserCurrencies();
         getCurrencies();
         return view;
-    }
-
-
-    private class ReplenishClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if (amountInput.getText().toString().equals("")) return;
-            ChangeBalanceRequest changeBalanceRequest = new ChangeBalanceRequest(Float.parseFloat(amountInput.getText().toString()));
-            changeBalance(changeBalanceRequest);
-        }
-    }
-
-    private class WithdrawClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if (amountInput.getText().toString().equals("")) return;
-            ChangeBalanceRequest changeBalanceRequest = new ChangeBalanceRequest(-Float.parseFloat(amountInput.getText().toString()));
-            changeBalance(changeBalanceRequest);
-        }
     }
 
     private void changeBalance(ChangeBalanceRequest amount) {
@@ -127,7 +117,7 @@ public class WalletFragment extends Fragment {
                     GetUserCurrenciesResponse data = response.body();
                     data.getCurrencies().add(0, new Currency("", "RUB", "Российский рубль", app.getUser().getBalance(), 0, 0, 0));
                     app.getWallet().setUserCurrencies(data.getCurrencies());
-                    recyclerView.setAdapter(new ButtonAdapter(app.getWallet().getUserCurrencies()));
+                    recyclerView.setAdapter(new CurrenciesAdapter(fragment, app.getWallet().getUserCurrencies()));
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }
@@ -171,5 +161,49 @@ public class WalletFragment extends Fragment {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void onSelectedCurrencyChange() {
+        if (app.getWallet().getSelectedCurrency().getSymbol() == "RUB") {
+            pricesLayout.setVisibility(View.GONE);
+            balanceText.setText(app.getUser().getBalanceString());
+        } else {
+            pricesLayout.setVisibility(View.VISIBLE);
+            Currency currency = app.getWallet().getSelectedCurrency();
+            prev_price.setText(currency.getLatestPriceString());
+            cur_price.setText(currency.getPriceString());
+            price_change.setText(currency.getDifferenceString());
+            balanceText.setText(currency.getAmount().toString());
+
+            switch (currency.getDifferenceString().charAt(0)) {
+                case '-':
+                    price_change.setTextColor(Color.parseColor("#FF2A51"));
+                    break;
+                case '0':
+                    price_change.setTextColor(Color.parseColor("#E9EEF2"));
+                    break;
+                default:
+                    price_change.setTextColor(Color.parseColor("#BBFFA7"));
+                    break;
+            }
+        }
+    }
+
+    private class ReplenishClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (amountInput.getText().toString().equals("")) return;
+            ChangeBalanceRequest changeBalanceRequest = new ChangeBalanceRequest(Float.parseFloat(amountInput.getText().toString()));
+            changeBalance(changeBalanceRequest);
+        }
+    }
+
+    private class WithdrawClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (amountInput.getText().toString().equals("")) return;
+            ChangeBalanceRequest changeBalanceRequest = new ChangeBalanceRequest(-Float.parseFloat(amountInput.getText().toString()));
+            changeBalance(changeBalanceRequest);
+        }
     }
 }

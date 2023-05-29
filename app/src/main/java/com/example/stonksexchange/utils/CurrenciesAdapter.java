@@ -3,29 +3,31 @@ package com.example.stonksexchange.utils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
+import com.example.stonksexchange.fragment.WalletFragment;
 import com.example.stonksexchange.models.Currency;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonViewHolder> {
+public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.ButtonViewHolder> {
     private ArrayList<Currency> currencies;
     private ToggleButton checkedButton;
     private boolean isFirstItemChecked;
     private App app;
+    private WalletFragment fragment;
 
-    public ButtonAdapter(ArrayList<Currency> currencies) {
+    public CurrenciesAdapter(WalletFragment fragment, ArrayList<Currency> currencies) {
         this.currencies = currencies;
         app = App.getInstance();
         isFirstItemChecked = false;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -46,22 +48,20 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
             checkedButton = holder.toggleButton;
             holder.toggleButton.setChecked(true);
         }
-
         holder.toggleButton.setText(currency.getAmount() + " " + currency.getSymbol());
         holder.toggleButton.setTextOn(currency.getAmount() + " " + currency.getSymbol());
         holder.toggleButton.setTextOff(currency.getAmount() + " " + currency.getSymbol());
 
         holder.toggleButton.setOnClickListener(view -> {
             if (checkedButton == view) {
-                System.out.println("AAS eq");
                 holder.toggleButton.setChecked(true); // Keep the ToggleButton checked
             }
             else {
-                System.out.println("AAS neq");
                 app.getWallet().setSelectedCurrency(currency);
                 checkedButton.toggle();
                 checkedButton = holder.toggleButton;
                 checkedButton.setChecked(true);
+                fragment.onSelectedCurrencyChange();
             }
         });
 

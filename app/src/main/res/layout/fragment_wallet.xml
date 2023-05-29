@@ -15,10 +15,11 @@
         app:layout_constraintTop_toBottomOf="@+id/currencyList">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout8"
+            android:id="@+id/pricesLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
@@ -166,7 +167,7 @@
             android:inputType="numberDecimal"
             android:textSize="@dimen/font_paragraph_16"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout8" />
+            app:layout_constraintTop_toBottomOf="@+id/pricesLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

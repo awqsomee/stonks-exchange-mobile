@@ -49,4 +49,16 @@ public class Currency {
     public Number getDifference() {
         return difference;
     }
+
+    public String getLatestPriceString() {
+        return String.format("%.2f", latestPrice.floatValue());
+    }
+
+    public String getPriceString() {
+        return String.format("%.2f", price.floatValue());
+    }
+
+    public String getDifferenceString() {
+        return String.format("%.2f", difference.floatValue());
+    }
 }
