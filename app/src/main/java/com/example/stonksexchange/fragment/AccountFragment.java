@@ -27,6 +27,8 @@ import com.example.stonksexchange.R;
 import com.example.stonksexchange.activity.MainActivity;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
+import com.example.stonksexchange.api.domain.auth.LoginRequest;
+import com.example.stonksexchange.api.domain.user.ChangeUserDataRequest;
 import com.example.stonksexchange.api.domain.user.UserDataResponse;
 import com.example.stonksexchange.models.User;
 import com.example.stonksexchange.utils.BackButtonHandler;
@@ -105,6 +107,9 @@ public class AccountFragment extends Fragment {
         avatar.setOnClickListener(new AvatarClickListener());
         deleteAccText.setOnClickListener(new DeleteAccClickListener());
 
+        for (EditText editText : editTextList) {
+            editText.setOnFocusChangeListener(new FocusChangeListener());
+        }
         return view;
     }
 
@@ -161,20 +166,16 @@ public class AccountFragment extends Fragment {
 
     private void uploadAvatar() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("*/*");  // Set the MIME type to filter file types if needed
-        System.out.println("AAS Y");
         launcher.launch(intent);
     }
 
     private ActivityResultLauncher<Intent> registerGalleryLauncher() {
         return registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            System.out.println("AAS 1");
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Intent data = result.getData();
                 Uri selectedFileUri = data.getData();
                 String filePath = FileUtils.getPathFromUri(requireContext(), selectedFileUri);
 
-
-                System.out.println("AAS 2");
                 if (filePath != null) {
                     // Step 4: Create a RequestBody from the selected file
                     File file = new File(filePath);
@@ -187,7 +188,6 @@ public class AccountFragment extends Fragment {
                         @Override
                         public void onResponse(Call<UserDataResponse> call, Response<UserDataResponse> response) {
                             if (response.isSuccessful()) {
-                                System.out.println("AAS Pic");
                                 UserDataResponse data = response.body();
                                 User user = data.getUser();
                                 app.setUserData(user);
@@ -197,18 +197,16 @@ public class AccountFragment extends Fragment {
                                     avatarImage.into(MainActivity.getAccAuthButton());
                                 }
                             } else {
-                                System.out.println("AAS nePic");
                                 ErrorUtils.handleErrorResponse(response, context);
                             }
                         }
 
                         @Override
                         public void onFailure(Call<UserDataResponse> call, Throwable t) {
-                            System.out.println("AAS err");
                             Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-                } else System.out.println("AAS 44");
+                }
             }
         });
     }
@@ -233,6 +231,70 @@ public class AccountFragment extends Fragment {
                     Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+    }
+
+    private class FocusChangeListener implements View.OnFocusChangeListener {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (!hasFocus) {
+                User user = new User();
+                user.setUsername(usernameInput.getText().toString());
+                String lastName = editLastname.getText().toString();
+                String firstName = editFirstname.getText().toString();
+                String patronymic = editPatronymic.getText().toString();
+                if (lastName.equals("")) return;
+                if (firstName.equals("")) return;
+                if (patronymic.equals("")) return;
+                String fullName = lastName + " " + firstName + " " + patronymic;
+                user.setName(fullName);
+                user.setEmail(editEmail.getText().toString());
+                user.setPhoneNumber(editPhone.getText().toString());
+                user.setPassportNumber(editPassport.getText().toString());
+                user.setBirthday(editBirthday.getText().toString());
+
+                Call<UserDataResponse> call = ApiService.AuthApiService.changeUserData(user);
+                call.enqueue(new Callback<UserDataResponse>() {
+                    @Override
+                    public void onResponse(Call<UserDataResponse> call, Response<UserDataResponse> response) {
+                        if (response.isSuccessful()) {
+                            UserDataResponse data = response.body();
+                            User user = data.getUser();
+                            app.setUserData(user);
+                            usernameInput.setText(user.getUsername());
+                            String[] fullName = user.getName().split(" ");
+                            editLastname.setText(fullName[0]);
+                            if (fullName.length > 1) editFirstname.setText(fullName[1]);
+                            if (fullName.length > 2) editPatronymic.setText(fullName[2]);
+                            editEmail.setText(user.getEmail());
+                            editBirthday.setText(stringToDate(user.getBirthday()));
+                            editPhone.setText(user.getPhoneNumber());
+                            editPassport.setText(user.getPassportNumber());
+                            Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            ErrorUtils.handleErrorResponse(response, context);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserDataResponse> call, Throwable t) {
+                        Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+    }
+
+    private class AvatarClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            String readImagePermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ? Manifest.permission.READ_MEDIA_IMAGES : Manifest.permission.READ_EXTERNAL_STORAGE;
+            if (ContextCompat.checkSelfPermission(context, readImagePermission) == PackageManager.PERMISSION_GRANTED) {
+                uploadAvatar();
+            } else {
+                Toast.makeText(context, "Нужно разрешение", Toast.LENGTH_SHORT).show();
+                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, PERMISSION_REQUEST_CODE);
+            }
         }
     }
 }

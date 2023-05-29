@@ -17,4 +17,8 @@ public class UserDataResponse {
     public User getUser() {
         return user;
     }
+
+    public String getMessage() {
+        return message;
+    }
 }

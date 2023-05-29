@@ -2,6 +2,7 @@ package com.example.stonksexchange.api.services;
 
 import com.example.stonksexchange.api.domain.user.ChangeUserDataRequest;
 import com.example.stonksexchange.api.domain.user.UserDataResponse;
+import com.example.stonksexchange.models.User;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -18,7 +19,7 @@ public interface UserApiService {
     Call<UserDataResponse> getUserData();
 
     @PUT("auth/user")
-    Call<UserDataResponse> changeUserData(@Body ChangeUserDataRequest request);
+    Call<UserDataResponse> changeUserData(@Body User request);
 
     @DELETE("auth/user/")
     Call<UserDataResponse> deleteUser();
