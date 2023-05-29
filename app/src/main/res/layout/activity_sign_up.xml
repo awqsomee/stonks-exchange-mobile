@@ -19,7 +19,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
 
         <EditText
-            android:id="@+id/fullNameInput2"
+            android:id="@+id/firstNameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -33,10 +33,10 @@
             android:textCursorDrawable="@drawable/shape_edittext_cursor"
             android:textSize="@dimen/font_paragraph_16"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fullNameInput" />
+            app:layout_constraintTop_toBottomOf="@+id/lastNameInput" />
 
         <EditText
-            android:id="@+id/fullNameInput3"
+            android:id="@+id/patronymicInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -50,7 +50,7 @@
             android:textCursorDrawable="@drawable/shape_edittext_cursor"
             android:textSize="@dimen/font_paragraph_16"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fullNameInput2" />
+            app:layout_constraintTop_toBottomOf="@+id/firstNameInput" />
 
         <TextView
             android:id="@+id/textView8"
@@ -64,7 +64,7 @@
 
 
         <EditText
-            android:id="@+id/fullNameInput"
+            android:id="@+id/lastNameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -166,7 +166,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/font_body_12"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fullNameInput3" />
+            app:layout_constraintTop_toBottomOf="@+id/patronymicInput" />
 
         <TextView
             android:id="@+id/textView10"

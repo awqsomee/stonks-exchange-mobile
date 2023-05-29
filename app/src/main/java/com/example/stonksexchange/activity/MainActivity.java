@@ -176,16 +176,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 // TODO: Ссылка на инфо
                                 return true;
                             case R.id.logOutBtn:
-                                SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.remove("token");
-                                editor.apply();
-                                ApiManager.setToken(null);
-                                app.setIsAuth(false);
-                                app.setUser(null);
-                                navigationView.setVisibility(View.GONE);
-                                changePopupMenuIcon();
-                                showFragment(new CatalogFragment());
-                                navigationView.setSelectedItemId(R.id.menu_catalog);
+                                logOut();
                                 return true;
                             default:
                                 return false;
@@ -267,4 +258,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+    public void logOut() {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove("token");
+        editor.apply();
+        ApiManager.setToken(null);
+        app.setIsAuth(false);
+        app.setUser(null);
+        navigationView.setVisibility(View.GONE);
+        changePopupMenuIcon();
+        showFragment(new CatalogFragment());
+        navigationView.setSelectedItemId(R.id.menu_catalog);
+    }
 }

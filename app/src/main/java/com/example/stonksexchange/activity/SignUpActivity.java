@@ -31,7 +31,9 @@ public class SignUpActivity extends AppCompatActivity {
     App app;
     Context context;
     SharedPreferences sharedPref;
-    EditText fullNameInput;
+    EditText firstNameInput;
+    EditText lastNameInput;
+    EditText patronymicInput;
     EditText emailInput;
     EditText passwordSignUpInput;
     EditText repeatPasswordInput;
@@ -47,7 +49,9 @@ public class SignUpActivity extends AppCompatActivity {
 
         context = this;
         sharedPref = context.getSharedPreferences("stonks_exchange", Context.MODE_PRIVATE);
-        fullNameInput = findViewById(R.id.fullNameInput);
+        firstNameInput = findViewById(R.id.firstNameInput);
+        lastNameInput = findViewById(R.id.lastNameInput);
+        patronymicInput = findViewById(R.id.patronymicInput);
         emailInput = findViewById(R.id.emailInput);
         passwordSignUpInput = findViewById(R.id.passwordSignUpInput);
         repeatPasswordInput = findViewById(R.id.repeatPasswordInput);
@@ -103,7 +107,15 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        SignUpRequest signUpRequest = new SignUpRequest(emailInput.getText().toString(), fullNameInput.getText().toString(), passwordSignUpInput.getText().toString());
+        String lastName = lastNameInput.getText().toString();
+        String firstName = firstNameInput.getText().toString();
+        String patronymic = patronymicInput.getText().toString();
+        if (lastName.equals("")) return;
+        if (firstName.equals("")) return;
+        if (patronymic.equals("")) return;
+        String fullName = lastName + " " + firstName + " " + patronymic;
+
+        SignUpRequest signUpRequest = new SignUpRequest(emailInput.getText().toString(), fullName, passwordSignUpInput.getText().toString());
         Call<AuthResponse> call = ApiService.ApiService.signUp(signUpRequest);
 
         call.enqueue(new Callback<AuthResponse>() {
