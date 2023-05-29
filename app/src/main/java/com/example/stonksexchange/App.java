@@ -39,7 +39,17 @@ public class App extends Application {
     }
 
     public void setUser(User user) {
-        this.user = user;
+        if (this.user == null)
+            this.user = user;
+        else {
+            this.user.setUsername(user.getUsername());
+            this.user.setName(user.getName());
+            this.user.setAvatar(user.getAvatar());
+            this.user.setBirthday(user.getBirthday());
+            this.user.setEmail(user.getEmail());
+            this.user.setPassportNumber(user.getPassportNumber());
+            this.user.setPhoneNumber(user.getPhoneNumber());
+        }
     }
 
     public boolean getIsAuth() {
