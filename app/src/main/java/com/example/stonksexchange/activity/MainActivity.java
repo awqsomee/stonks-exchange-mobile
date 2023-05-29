@@ -29,6 +29,7 @@ import com.example.stonksexchange.fragment.CatalogFragment;
 import com.example.stonksexchange.fragment.InvestmentsFragment;
 import com.example.stonksexchange.fragment.WalletFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     static BottomNavigationView navigationView;
     SearchView searchView;
     CatalogFragment catalogFragment;
+    static ImageView accAuthButton;
     private MenuItem walletCount;
 
     @Override
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         app = App.getInstance();
         accBtn = findViewById(R.id.accButton);
-        ImageView accAuthButton = findViewById(R.id.accAuthButton);
+        accAuthButton = findViewById(R.id.accAuthButton);
         navigationView = findViewById(R.id.navigationView);
         searchView = findViewById(R.id.searchView);
 
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         catalogFragment = new CatalogFragment();
         showFragment(catalogFragment);
+
     }
 
     @Override
@@ -120,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     ApiManager.setToken(authResponse.getToken());
 
                     app.setUser(authResponse.getUser());
+                    if (authResponse.getUser().getAvatar() != null)
+                        Picasso.get().load("https://stonks-kaivr.amvera.io/" + authResponse.getUser().getAvatar()).into(accAuthButton);
                     app.setIsAuth(true);
                     navigationView.setVisibility(View.VISIBLE);
 
@@ -149,6 +154,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             accButton.setVisibility(View.VISIBLE);
             accAuthButton.setVisibility(View.GONE);
         }
+    }
+
+    public static ImageView getAccAuthButton() {
+        return accAuthButton;
     }
 
     private class AccClickListener implements View.OnClickListener {
