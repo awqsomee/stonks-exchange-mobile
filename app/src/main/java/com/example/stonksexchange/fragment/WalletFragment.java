@@ -37,12 +37,15 @@ import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.OpenAccountResponse;
 import com.example.stonksexchange.models.Currency;
 import com.example.stonksexchange.models.CurrencyShort;
-import com.example.stonksexchange.models.CurrencyShort;
 import com.example.stonksexchange.utils.BackButtonHandler;
 import com.example.stonksexchange.utils.ButtonAdapter;
 
 import java.util.ArrayList;
 import com.example.stonksexchange.models.Currency;
+import java.util.List;
+import java.util.Map;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
