@@ -12,7 +12,7 @@ public class Currency {
     public Currency() {
     }
 
-    public Currency(String id, String symbol, String name, Number amount, Number latestPrice, Number price, Number difference) {
+    public Currency(String id, String symbol, String name, Number amount, Number latestPrice, Number price, Number difference, String message) {
         this.id = id;
         this.symbol = symbol;
         this.name = name;
@@ -24,45 +24,5 @@ public class Currency {
 
     public String getSymbol() {
         return symbol;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Number getAmount() {
-        return amount;
-    }
-
-    public Number getLatestPrice() {
-        return latestPrice;
-    }
-
-    public Number getPrice() {
-        return price;
-    }
-
-    public Number getDifference() {
-        return difference;
-    }
-
-    public String getLatestPriceString() {
-        return String.format("%.2f", latestPrice.floatValue());
-    }
-
-    public String getPriceString() {
-        return String.format("%.2f", price.floatValue());
-    }
-
-    public String getDifferenceString() {
-        return String.format("%.2f", difference.floatValue());
-    }
-
-    public void setAmount(Number amount) {
-        this.amount = amount;
     }
 }

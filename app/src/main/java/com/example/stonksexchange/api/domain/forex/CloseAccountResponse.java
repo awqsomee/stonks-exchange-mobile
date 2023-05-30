@@ -21,24 +21,4 @@ public class CloseAccountResponse {
 
     public CloseAccountResponse() {
     }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public Transaction getTransactionClose() {
-        return transactionClose;
-    }
-
-    public Transaction getTransactionExchange() {
-        return transactionExchange;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }

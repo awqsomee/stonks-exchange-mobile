@@ -7,19 +7,21 @@
     android:background="@color/app_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/currencyList">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/pricesLayout"
+            android:id="@+id/constraintLayout8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
-            android:visibility="gone"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
@@ -31,7 +33,7 @@
                 android:text="Изменение"
                 android:textColor="@color/wallet_grey_titles"
                 android:textSize="@dimen/font_body_12"
-                app:layout_constraintStart_toStartOf="@+id/price_change"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -43,6 +45,7 @@
                 android:textColor="@color/wallet_grey_titles"
                 android:textSize="@dimen/font_paragraph_16"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView15"
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
             <TextView
@@ -95,12 +98,24 @@
             android:id="@+id/constraintLayout7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:id="@+id/currencyFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Российский рубль"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_paragraph_16"
+                app:layout_constraintStart_toEndOf="@+id/balanceText"
+                app:layout_constraintBottom_toBottomOf="@id/balanceText" />
+
             <ImageButton
-                android:visibility="gone"
                 android:id="@+id/closeWalletBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,7 +128,7 @@
                 android:id="@+id/balanceText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/grey"
+                android:textColor="@color/white"
                 android:textSize="@dimen/font_header_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -123,8 +138,8 @@
             android:id="@+id/withdrawBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="-10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="3dp"
             android:background="@drawable/shape_dark_button"
             android:paddingHorizontal="40dp"
             android:paddingVertical="16dp"
@@ -140,11 +155,9 @@
             android:id="@+id/replenishBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="-8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/shape_light_button"
-            android:paddingHorizontal="40dp"
-            android:paddingVertical="16dp"
             android:text="Пополнить"
             android:textAllCaps="false"
             android:textColor="@color/dark_element"
@@ -157,24 +170,26 @@
             android:id="@+id/amountET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/shape_input_field"
             android:ems="10"
+            android:hint="Сумма для конвертации"
+            android:inputType="numberDecimal"
             android:padding="16dp"
             android:textColor="@color/app_background"
             android:textColorHint="@color/grey_form_placeholder"
             android:textCursorDrawable="@drawable/shape_edittext_cursor"
-            android:hint="Сумма для конвертации"
-            android:inputType="numberDecimal"
             android:textSize="@dimen/font_paragraph_16"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pricesLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout8" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/currencyList"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:orientation="horizontal"
@@ -190,9 +205,75 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="36dp"
-        android:background="@drawable/shape_addwallet_button"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
+        android:background="@raw/shape_addwallet_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></android.widget.Button>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="История изменений"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_paragraph_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/transactionsDropdownMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-8dp"
+            android:background="@drawable/shape_selector_dark"
+            android:dropDownWidth="match_parent"
+            android:spinnerMode="dropdown"
+            android:dropDownVerticalOffset="16dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toStartOf="@+id/changeSortOrderTransactionsBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ToggleButton
+            android:id="@+id/changeSortOrderTransactionsBtn"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/sorting_toggle_list"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingLeft="0dp"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="0dp"
+            android:text="ToggleButton"
+            android:textOff=""
+            android:textOn=""
+            app:flow_horizontalAlign="center"
+            app:flow_verticalAlign="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/transactionsList"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10" />
 </androidx.constraintlayout.widget.ConstraintLayout>

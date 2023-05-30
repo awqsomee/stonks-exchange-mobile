@@ -49,7 +49,9 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         holder.stockChange.setText(stock.getChange() + "%");
         switch (stock.getChange().charAt(0)) {
             case '-':
+                System.out.println("-");
                 if (stock.getPrice().equals("-")) {
+                    System.out.println("noPrice");
                     holder.stockChange.setTextColor(Color.parseColor("#E9EEF2"));
                 } else
                     holder.stockChange.setTextColor(Color.parseColor("#FF2A51"));
