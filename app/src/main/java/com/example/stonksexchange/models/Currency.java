@@ -55,10 +55,14 @@ public class Currency {
     }
 
     public String getPriceString() {
+        if (price == null)
+            return getLatestPriceString();
         return String.format("%.2f", price.floatValue());
     }
 
     public String getDifferenceString() {
+        if (difference == null)
+            return "0";
         return String.format("%.2f", difference.floatValue());
     }
 

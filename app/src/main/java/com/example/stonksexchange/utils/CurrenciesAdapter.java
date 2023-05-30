@@ -76,6 +76,15 @@ public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.Bu
         return currencies;
     }
 
+    public class ButtonViewHolder extends RecyclerView.ViewHolder {
+        ToggleButton toggleButton;
+
+        public ButtonViewHolder(@NonNull View itemView) {
+            super(itemView);
+            toggleButton = itemView.findViewById(R.id.toggleButton);
+        }
+    }
+
     public void updateCurrencyList(Currency currency) {
         for (int i = 0; i < this.currencies.size(); i++) {
             if (currency.getSymbol().equals(this.currencies.get(i).getSymbol())) {
@@ -112,13 +121,16 @@ public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.Bu
         notifyDataSetChanged();
     }
 
-    public class ButtonViewHolder extends RecyclerView.ViewHolder {
-        ToggleButton toggleButton;
-
-        public ButtonViewHolder(@NonNull View itemView) {
-            super(itemView);
-            toggleButton = itemView.findViewById(R.id.toggleButton);
-        }
+    public void addCurrency(Currency currency) {
+        this.currencies.add(currency);
+        checkedButton.toggle();
+        checkedButton = rubButton;
+        checkedButton.setChecked(true);
+        fragment.onSelectedCurrencyChange();
+        notifyItemInserted(currencies.size() - 1);
     }
+
+    @Override
+    OnItemI
 }
 

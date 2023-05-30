@@ -1,7 +1,9 @@
 package com.example.stonksexchange.models;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Wallet {
     Map<String, CurrencyShort> currencies;
@@ -22,6 +24,10 @@ public class Wallet {
 
     public Map<String, CurrencyShort> getCurrencies() {
         return currencies;
+    }
+
+    public Set<String> getCurrencyNames() {
+        return currencies.keySet();
     }
 
     public void setSelectedCurrency(Currency selectedCurrency) {

@@ -16,4 +16,16 @@ public class OpenAccountResponse {
         this.transaction = transaction;
         this.message = message;
     }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

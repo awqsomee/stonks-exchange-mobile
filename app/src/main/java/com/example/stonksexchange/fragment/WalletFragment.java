@@ -1,14 +1,25 @@
 package com.example.stonksexchange.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +38,15 @@ import com.example.stonksexchange.api.domain.forex.CurrencyExchangeRequest;
 import com.example.stonksexchange.api.domain.forex.CurrencyExchangeResponse;
 import com.example.stonksexchange.api.domain.forex.GetCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
+import com.example.stonksexchange.api.domain.forex.OpenAccountResponse;
 import com.example.stonksexchange.models.Currency;
+import com.example.stonksexchange.models.CurrencyShort;
 import com.example.stonksexchange.utils.BackButtonHandler;
 import com.example.stonksexchange.utils.CurrenciesAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,6 +67,7 @@ public class WalletFragment extends Fragment {
     ConstraintLayout pricesLayout;
     WalletFragment fragment;
     ImageButton closeWalletBtn;
+    Button openWalletBtn;
     CurrenciesAdapter adapter;
 
     public WalletFragment() {
@@ -74,6 +92,15 @@ public class WalletFragment extends Fragment {
         price_change = view.findViewById(R.id.price_change);
         closeWalletBtn = view.findViewById(R.id.closeWalletBtn);
         recyclerView = view.findViewById(R.id.currencyList);
+        openWalletBtn = view.findViewById(R.id.button);
+
+        openWalletBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("AAS 1");
+                showCurrencyPopup(view);
+            }
+        });
 
         balanceText.setText(String.format("%.2f", app.getUser().getBalance()));
         replenishBtn.setOnClickListener(new ReplenishClickListener());
@@ -295,5 +322,74 @@ public class WalletFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void showCurrencyPopup(View anchorView) {
+        // Create the custom dialog
+        final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setContentView(R.layout.dialog_currency);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        // Set the desired width and height of the dialog
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = anchorView.getWidth() - 200;
+        params.height = anchorView.getHeight() - 300;
+        dialog.getWindow().setAttributes(params);
+
+        // Get the ListView from the dialog layout
+        ListView currencyListView = dialog.findViewById(R.id.currencyListView);
+
+        // Create an ArrayList of currency symbols
+        List<String> currencySymbols = new ArrayList<>(app.getWallet().getCurrencyNames());
+
+        // Create an ArrayAdapter for the currency symbols
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, currencySymbols);
+
+        // Set the adapter on the ListView
+        currencyListView.setAdapter(adapter);
+
+        // Set the item click listener for the ListView
+        currencyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCurrencySymbol = currencySymbols.get(position);
+
+                openAccount(selectedCurrencySymbol);
+
+                // Dismiss the dialog
+                dialog.dismiss();
+            }
+        });
+
+        params.gravity = Gravity.CENTER; // Center the dialog on the screen
+        dialog.getWindow().setAttributes(params);
+
+        // Show the dialog
+        dialog.show();
+    }
+
+    public void openAccount(String symbol) {
+        Call<OpenAccountResponse> call = ApiService.AuthApiService.openAccount(symbol);
+        call.enqueue(new Callback<OpenAccountResponse>() {
+            @Override
+            public void onResponse(Call<OpenAccountResponse> call, Response<OpenAccountResponse> response) {
+                if (response.isSuccessful()) {
+                    OpenAccountResponse data = response.body();
+                    app.pushTransaction(data.getTransaction());
+                    adapter.addCurrency(data.getCurrency());
+
+                    app.getWallet().setUserCurrencies(adapter.getCurrencies());
+
+                    Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    ErrorUtils.handleErrorResponse(response, context);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OpenAccountResponse> call, Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
