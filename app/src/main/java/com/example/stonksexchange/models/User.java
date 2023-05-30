@@ -33,6 +33,9 @@ public class User {
     public Float getBalance() {
         return balance.floatValue();
     }
+    public String getBalanceString() {
+        return String.format("%.2f", balance.floatValue());
+    }
 
     public void setBalance(Number balance) {
         this.balance = balance;

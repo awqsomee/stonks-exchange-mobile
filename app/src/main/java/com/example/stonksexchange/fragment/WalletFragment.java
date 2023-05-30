@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +33,9 @@ import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.balance.ChangeBalanceRequest;
 import com.example.stonksexchange.api.domain.balance.ChangeBalanceResponse;
+import com.example.stonksexchange.api.domain.forex.CloseAccountResponse;
+import com.example.stonksexchange.api.domain.forex.CurrencyExchangeRequest;
+import com.example.stonksexchange.api.domain.forex.CurrencyExchangeResponse;
 import com.example.stonksexchange.api.domain.forex.GetCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.OpenAccountResponse;
@@ -42,6 +46,8 @@ import com.example.stonksexchange.utils.ButtonAdapter;
 
 import java.util.ArrayList;
 import com.example.stonksexchange.models.Currency;
+import com.example.stonksexchange.utils.CurrenciesAdapter;
+
 import java.util.List;
 import java.util.Map;
 
@@ -69,6 +75,7 @@ public class WalletFragment extends Fragment {
     TextView prev_price;
     TextView cur_price;
     TextView price_change;
+    TextView currencyFullName;
     ConstraintLayout pricesLayout;
     WalletFragment fragment;
     ImageButton closeWalletBtn;
@@ -98,6 +105,7 @@ public class WalletFragment extends Fragment {
         closeWalletBtn = view.findViewById(R.id.closeWalletBtn);
         recyclerView = view.findViewById(R.id.currencyList);
         openWalletBtn = view.findViewById(R.id.button);
+        currencyFullName = view.findViewById(R.id.currencyFullName);
 
         openWalletBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,6 +202,7 @@ public class WalletFragment extends Fragment {
                     app.getWallet().setUserCurrencies(data.getCurrencies());
                     app.getWallet().setSelectedCurrency(app.getWallet().getUserCurrencies().get(0));
                     adapter = new CurrenciesAdapter(fragment, app.getWallet().getUserCurrencies());
+                    currencyFullName.setText( app.getWallet().getSelectedCurrency().getName());
                     recyclerView.setAdapter(adapter);
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
@@ -215,18 +224,6 @@ public class WalletFragment extends Fragment {
                 if (response.isSuccessful()) {
                     GetCurrenciesResponse data = response.body();
 
-//                    for (Map.Entry<String, CurrencyShort> entry : data.getCurrencies().entrySet()) {
-//                        String currencyCode = entry.getKey();
-//                        CurrencyShort currency = entry.getValue();
-//
-//                        String name = currency.getName();
-//                        double value = currency.getValue();
-//                        double previous = currency.getPrevious();
-//
-//                        // Do something with the currency information
-//                        System.out.println(currencyCode + ": " + name + ", Value: " + value + ", Previous: " + previous);
-//                    }
-
                     app.getWallet().setCurrencies(data.getCurrencies());
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
@@ -241,6 +238,7 @@ public class WalletFragment extends Fragment {
     }
 
     public void onSelectedCurrencyChange() {
+        currencyFullName.setText(app.getWallet().getSelectedCurrency().getName());
         if (app.getWallet().getSelectedCurrency().getSymbol() == "RUB") {
             pricesLayout.setVisibility(View.GONE);
             closeWalletBtn.setVisibility(View.GONE);

@@ -130,7 +130,5 @@ public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.Bu
         notifyItemInserted(currencies.size() - 1);
     }
 
-    @Override
-    OnItemI
 }
 

@@ -23,4 +23,24 @@ public class CurrencyExchangeResponse {
         this.user = user;
         this.message = message;
     }
+
+    public ArrayList<Currency> getCurrencies() {
+        return currencies;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

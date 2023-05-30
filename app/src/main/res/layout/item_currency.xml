@@ -8,7 +8,7 @@
     android:layout_alignParentRight="false">
 
     <ToggleButton
-        android:id="@+id/btnItem"
+        android:id="@+id/toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/currencybuttont_tint_list"
@@ -25,10 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:text="USD"
+        android:text=""
         android:textColor="@color/orange"
         android:textSize="@dimen/font_paragraph_16"
-        android:layout_alignLeft="@+id/btnItem"/>
+        android:layout_alignLeft="@+id/toggleButton"/>
 
     <TextView
         android:id="@+id/textView13"
@@ -37,9 +37,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="27dp"
         android:foregroundGravity="right"
-        android:text="1000$"
+        android:text=""
         android:textAlignment="textEnd"
         android:textSize="@dimen/font_paragraph_16"
-        android:layout_alignRight="@+id/btnItem" />
+        android:layout_alignRight="@+id/toggleButton" />
 
 </RelativeLayout>

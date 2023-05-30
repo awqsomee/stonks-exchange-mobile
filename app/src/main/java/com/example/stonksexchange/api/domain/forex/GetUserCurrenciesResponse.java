@@ -2,21 +2,26 @@ package com.example.stonksexchange.api.domain.forex;
 
 import com.example.stonksexchange.models.Currency;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GetUserCurrenciesResponse {
-    List<Currency> currencies;
+    ArrayList<Currency> currencies;
     String message;
 
     public GetUserCurrenciesResponse() {
     }
 
-    public GetUserCurrenciesResponse(List<Currency> currencies, String message) {
+    public GetUserCurrenciesResponse(ArrayList<Currency> currencies, String message) {
         this.currencies = currencies;
         this.message = message;
     }
 
-    public List<Currency> getCurrencies() {
+    public ArrayList<Currency> getCurrencies() {
         return currencies;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

@@ -16,7 +16,8 @@
         app:layout_constraintTop_toBottomOf="@+id/currencyList">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout8"
+            android:id="@+id/pricesLayout"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -109,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Российский рубль"
+                android:text=""
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_paragraph_16"
                 app:layout_constraintStart_toEndOf="@+id/balanceText"
@@ -183,7 +184,7 @@
             android:textCursorDrawable="@drawable/shape_edittext_cursor"
             android:textSize="@dimen/font_paragraph_16"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout8" />
+            app:layout_constraintTop_toBottomOf="@+id/pricesLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
