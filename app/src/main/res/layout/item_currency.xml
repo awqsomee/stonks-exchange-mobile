@@ -1,45 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ToggleButton xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_btnItem"
+    android:id="@+id/toggleButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_alignParentRight="false">
-
-    <ToggleButton
-        android:id="@+id/btnItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/currencybuttont_tint_list"
-        android:checked="false"
-        android:text="ToggleButton"
-        android:textOff=""
-        android:textOn=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/currencyName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text="USD"
-        android:textColor="@color/orange"
-        android:textSize="@dimen/font_paragraph_16"
-        android:layout_alignLeft="@+id/btnItem"/>
-
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="27dp"
-        android:foregroundGravity="right"
-        android:text="1000$"
-        android:textAlignment="textEnd"
-        android:textSize="@dimen/font_paragraph_16"
-        android:layout_alignRight="@+id/btnItem" />
-
-</RelativeLayout>
+    android:background="@drawable/currencybuttont_tint_list"
+    android:checked="false"
+    android:text=""
+    android:textColor="@color/orange"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
