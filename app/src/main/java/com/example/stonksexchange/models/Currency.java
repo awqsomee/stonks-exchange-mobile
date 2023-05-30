@@ -61,4 +61,8 @@ public class Currency {
     public String getDifferenceString() {
         return String.format("%.2f", difference.floatValue());
     }
+
+    public void setAmount(Number amount) {
+        this.amount = amount;
+    }
 }

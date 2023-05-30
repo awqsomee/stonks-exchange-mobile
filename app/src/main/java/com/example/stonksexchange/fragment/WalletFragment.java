@@ -31,8 +31,6 @@ import com.example.stonksexchange.models.Currency;
 import com.example.stonksexchange.utils.BackButtonHandler;
 import com.example.stonksexchange.utils.CurrenciesAdapter;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,8 +96,10 @@ public class WalletFragment extends Fragment {
                     app.getUser().setBalance(data.getUser().getBalance());
                     app.pushTransaction(data.getTransaction());
 
+                    adapter.changeBalance();
+
                     amountInput.setText("");
-                    balanceText.setText(String.format("%.2f", data.getUser().getBalance()));
+                    balanceText.setText(app.getUser().getBalanceString());
                     Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
 
                 } else {
@@ -132,8 +132,8 @@ public class WalletFragment extends Fragment {
                     cur_price.setText(data.getCurrency().getLatestPriceString());
                     price_change.setText("0");
 
+                    data.getCurrencies().add(0, new Currency("", "RUB", "Российский рубль", app.getUser().getBalance(), 0, 0, 0));
                     app.getWallet().setUserCurrencies(data.getCurrencies());
-                    System.out.println("AAS 1");
                     adapter.updateCurrencyList(data.getCurrency());
 
                     Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
@@ -160,6 +160,7 @@ public class WalletFragment extends Fragment {
                     GetUserCurrenciesResponse data = response.body();
                     data.getCurrencies().add(0, new Currency("", "RUB", "Российский рубль", app.getUser().getBalance(), 0, 0, 0));
                     app.getWallet().setUserCurrencies(data.getCurrencies());
+                    app.getWallet().setSelectedCurrency(app.getWallet().getUserCurrencies().get(0));
                     adapter = new CurrenciesAdapter(fragment, app.getWallet().getUserCurrencies());
                     recyclerView.setAdapter(adapter);
                 } else {
@@ -210,9 +211,11 @@ public class WalletFragment extends Fragment {
     public void onSelectedCurrencyChange() {
         if (app.getWallet().getSelectedCurrency().getSymbol() == "RUB") {
             pricesLayout.setVisibility(View.GONE);
+            closeWalletBtn.setVisibility(View.GONE);
             balanceText.setText(app.getUser().getBalanceString());
         } else {
             pricesLayout.setVisibility(View.VISIBLE);
+            closeWalletBtn.setVisibility(View.VISIBLE);
             Currency currency = app.getWallet().getSelectedCurrency();
             prev_price.setText(currency.getLatestPriceString());
             cur_price.setText(currency.getPriceString());
@@ -270,7 +273,17 @@ public class WalletFragment extends Fragment {
                 public void onResponse(Call<CloseAccountResponse> call, Response<CloseAccountResponse> response) {
                     if (response.isSuccessful()) {
                         CloseAccountResponse data = response.body();
-                        // TODO: Рассортировать ответ
+                        app.getUser().setBalance(data.getUser().getBalance());
+
+                        app.pushTransaction(data.getTransactionExchange());
+                        app.pushTransaction(data.getTransactionClose());
+
+                        adapter.changeBalance();
+                        adapter.deleteCurrency(data.getCurrency());
+
+                        app.getWallet().setUserCurrencies(adapter.getCurrencies());
+
+                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
                         ErrorUtils.handleErrorResponse(response, context);
                     }
