@@ -7,27 +7,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
+import com.example.stonksexchange.activity.LoginActivity;
 import com.example.stonksexchange.activity.MainActivity;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
@@ -54,6 +60,7 @@ import retrofit2.Response;
 
 public class AccountFragment extends Fragment {
     private static final int PERMISSION_REQUEST_CODE = 1;
+    private static final int PERMISSION_REQUEST_CODE_2 = 2;
     private static final String PERMISSION_READ_MEDIA_IMAGES = Manifest.permission.READ_MEDIA_IMAGES;
     App app;
     Context context;
@@ -69,6 +76,8 @@ public class AccountFragment extends Fragment {
     EditText editPassport;
     TextView deleteAccText;
     ImageView avatar;
+    TextView changeAvatarBtn;
+    TextView deleteAvatarBtn;
 
     public AccountFragment() {
     }
@@ -106,7 +115,8 @@ public class AccountFragment extends Fragment {
 
         getAccountData();
 
-        avatar.setOnClickListener(new AvatarClickListener());
+
+        avatar.setOnClickListener(new AccountFragment.AvatarClickListener());
         deleteAccText.setOnClickListener(new DeleteAccClickListener());
 
         for (EditText editText : editTextList) {
@@ -291,19 +301,53 @@ public class AccountFragment extends Fragment {
                 v.clearFocus();
                 return true;
             }
+            else {
+                System.out.println("ne done");
+            }
             return false;
         }
     }
 
-    private class AvatarClickListener implements View.OnClickListener {
+    private class AccClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            String readImagePermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ? Manifest.permission.READ_MEDIA_IMAGES : Manifest.permission.READ_EXTERNAL_STORAGE;
-            if (ContextCompat.checkSelfPermission(context, readImagePermission) == PackageManager.PERMISSION_GRANTED) {
-                uploadAvatar();
-            } else {
-                Toast.makeText(context, "Нужно разрешение", Toast.LENGTH_SHORT).show();
-                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, PERMISSION_REQUEST_CODE);
+            PopupMenu popupMenu = new PopupMenu(context, avatar);
+            popupMenu.getMenuInflater().inflate(R.menu.popup_edit_avatar, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.changeAvatarBtn:
+                            String readImagePermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ? Manifest.permission.READ_MEDIA_IMAGES : Manifest.permission.READ_EXTERNAL_STORAGE;
+                            if (ContextCompat.checkSelfPermission(context, readImagePermission) == PackageManager.PERMISSION_GRANTED) {
+                                uploadAvatar();
+                            } else {
+                                Toast.makeText(context, "Нужно разрешение", Toast.LENGTH_SHORT).show();
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                                    requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, PERMISSION_REQUEST_CODE);
+                                else {
+                                    MainActivity mainActivity = (MainActivity) getActivity();
+                                    ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE_2);
+                                }
+                            }
+                            return true;
+                        case R.id.deleteAvatarBtn:
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+            });
+            popupMenu.show();
+            return;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE_2) {
+            if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                System.out.println("AASS");
             }
         }
     }
