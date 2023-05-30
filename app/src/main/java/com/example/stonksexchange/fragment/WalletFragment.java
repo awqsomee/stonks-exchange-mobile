@@ -52,7 +52,7 @@ public class WalletFragment extends Fragment {
     ConstraintLayout pricesLayout;
     WalletFragment fragment;
     ImageButton closeWalletBtn;
-    List<String> currencySymbols;
+    CurrenciesAdapter adapter;
 
     public WalletFragment() {
     }
@@ -70,21 +70,21 @@ public class WalletFragment extends Fragment {
         replenishBtn = view.findViewById(R.id.replenishBtn);
         withdrawBtn = view.findViewById(R.id.withdrawBtn);
         balanceText = view.findViewById(R.id.balanceText);
-
         pricesLayout = view.findViewById(R.id.pricesLayout);
         prev_price = view.findViewById(R.id.prev_price);
         cur_price = view.findViewById(R.id.cur_price);
         price_change = view.findViewById(R.id.price_change);
         closeWalletBtn = view.findViewById(R.id.closeWalletBtn);
+        recyclerView = view.findViewById(R.id.currencyList);
 
         balanceText.setText(String.format("%.2f", app.getUser().getBalance()));
         replenishBtn.setOnClickListener(new ReplenishClickListener());
         withdrawBtn.setOnClickListener(new WithdrawClickListener());
         closeWalletBtn.setOnClickListener(new CloseAccListener());
 
-        recyclerView = view.findViewById(R.id.currencyList);
         getUserCurrencies();
         getCurrencies();
+
         return view;
     }
 
@@ -133,7 +133,8 @@ public class WalletFragment extends Fragment {
                     price_change.setText("0");
 
                     app.getWallet().setUserCurrencies(data.getCurrencies());
-                    recyclerView.setAdapter(new CurrenciesAdapter(fragment, app.getWallet().getUserCurrencies()));
+                    System.out.println("AAS 1");
+                    adapter.updateCurrencyList(data.getCurrency());
 
                     Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -159,7 +160,8 @@ public class WalletFragment extends Fragment {
                     GetUserCurrenciesResponse data = response.body();
                     data.getCurrencies().add(0, new Currency("", "RUB", "Российский рубль", app.getUser().getBalance(), 0, 0, 0));
                     app.getWallet().setUserCurrencies(data.getCurrencies());
-                    recyclerView.setAdapter(new CurrenciesAdapter(fragment, app.getWallet().getUserCurrencies()));
+                    adapter = new CurrenciesAdapter(fragment, app.getWallet().getUserCurrencies());
+                    recyclerView.setAdapter(adapter);
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }

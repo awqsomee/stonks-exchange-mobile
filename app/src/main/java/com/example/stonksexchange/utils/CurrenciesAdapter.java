@@ -80,5 +80,19 @@ public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.Bu
             toggleButton = itemView.findViewById(R.id.toggleButton);
         }
     }
+
+    public void updateCurrencyList(Currency currency) {
+        for (int i = 0; i < this.currencies.size(); i++) {
+            if (currency.getSymbol().equals(this.currencies.get(i).getSymbol())) {
+                this.currencies.set(i, currency);
+                break;
+            }
+        }
+
+        for (Currency c : this.currencies) {
+                System.out.println("AAS 4" + c.getSymbol() + " " + c.getAmount());
+        }
+        notifyDataSetChanged();
+    }
 }
 
