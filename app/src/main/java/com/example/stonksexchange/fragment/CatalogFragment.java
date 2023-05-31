@@ -70,6 +70,9 @@ public class CatalogFragment extends Fragment {
         sortByChangeBtn = view.findViewById(R.id.sortByChangeBtn);
         sortByNameBtn = view.findViewById(R.id.sortByNameBtn);
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.orange));
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.navigation);
+        swipeRefreshLayout.setDistanceToTriggerSync(600);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
