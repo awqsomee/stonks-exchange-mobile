@@ -1,9 +1,7 @@
 package com.example.stonksexchange.fragment;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -18,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,24 +37,13 @@ import com.example.stonksexchange.api.domain.forex.GetCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.OpenAccountResponse;
 import com.example.stonksexchange.models.Currency;
-import com.example.stonksexchange.models.CurrencyShort;
 import com.example.stonksexchange.utils.BackButtonHandler;
-import com.example.stonksexchange.utils.ButtonAdapter;
 
 import java.util.ArrayList;
-import com.example.stonksexchange.models.Currency;
+
 import com.example.stonksexchange.utils.CurrenciesAdapter;
 
 import java.util.List;
-import java.util.Map;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,6 +67,8 @@ public class WalletFragment extends Fragment {
     ImageButton closeWalletBtn;
     Button openWalletBtn;
     CurrenciesAdapter adapter;
+    Spinner dropdownMenuTransactions;
+
 
     public WalletFragment() {
     }
@@ -107,6 +95,25 @@ public class WalletFragment extends Fragment {
         openWalletBtn = view.findViewById(R.id.button);
         currencyFullName = view.findViewById(R.id.currencyFullName);
 
+        dropdownMenuTransactions = view.findViewById(R.id.transactionsDropdownMenu);
+        ArrayAdapter<String> dropdownMenuAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.dropdownMenuTransactionsItems));
+        dropdownMenuAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdownMenuTransactions.setAdapter(dropdownMenuAdapter);
+//        dropdownMenuTransactions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                // Handle the selected item
+//                String selectedItem = parent.getItemAtPosition(position).toString();
+//                // Do something with the selected item
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                // Handle the case where no item is selected
+//            }
+//        });
+
+
         openWalletBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +125,7 @@ public class WalletFragment extends Fragment {
         replenishBtn.setOnClickListener(new ReplenishClickListener());
         withdrawBtn.setOnClickListener(new WithdrawClickListener());
         closeWalletBtn.setOnClickListener(new CloseAccListener());
+
 
         getUserCurrencies();
         getCurrencies();

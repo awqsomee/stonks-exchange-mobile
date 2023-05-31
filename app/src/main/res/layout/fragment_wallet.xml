@@ -239,9 +239,11 @@
             android:layout_marginTop="-8dp"
             android:background="@drawable/shape_selector_dark"
             android:dropDownWidth="match_parent"
-            android:spinnerMode="dropdown"
-            android:dropDownVerticalOffset="16dp"
+            android:dropDownVerticalOffset="34dp"
             android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:popupBackground="@drawable/stockcard"
+            android:spinnerMode="dropdown"
             app:layout_constraintEnd_toStartOf="@+id/changeSortOrderTransactionsBtn"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -5,4 +5,10 @@
     <dimen name="font_paragraph_16">16sp</dimen>
     <dimen name="font_body_12">12sp</dimen>
     <dimen name="font_mark_10">10sp</dimen>
+
+    <string-array name="dropdownMenuTransactionsItems">
+        <item>Дата</item>
+        <item>Сумма</item>
+        <item>Тип операции</item>
+    </string-array>
 </resources>
