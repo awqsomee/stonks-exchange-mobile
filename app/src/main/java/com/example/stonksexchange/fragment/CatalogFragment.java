@@ -92,6 +92,7 @@ public class CatalogFragment extends Fragment {
         sortByChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sortByChangeBtn.setChecked(true);
                 comparator = Comparator.comparing(Stock::getChange).reversed();
                 setAdapter();
                 sortByNameBtn.setChecked(false);
@@ -101,6 +102,7 @@ public class CatalogFragment extends Fragment {
         sortByNameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sortByNameBtn.setChecked(true);
                 comparator = Comparator.comparing(Stock::getShortname);
                 setAdapter();
                 sortByChangeBtn.setChecked(false);
