@@ -18,11 +18,4 @@
         <item name="android:background">@color/dark_element</item>
         <item name="android:fontFamily">@font/exo2</item>
     </style>
-
-    <style name="dropdownMenu">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:background">@drawable/stockcard</item>
-        <item name="android:fontFamily">@font/exo2</item>
-    </style>
-
 </resources>
