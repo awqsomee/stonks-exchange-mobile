@@ -26,8 +26,12 @@ public class Wallet {
         return currencies;
     }
 
-    public Set<String> getCurrencyNames() {
-        return currencies.keySet();
+    public ArrayList<String> getCurrencyNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (CurrencyShort currency : currencies.values()) {
+            names.add(currency.getName());
+        }
+        return names;
     }
 
     public void setSelectedCurrency(Currency selectedCurrency) {

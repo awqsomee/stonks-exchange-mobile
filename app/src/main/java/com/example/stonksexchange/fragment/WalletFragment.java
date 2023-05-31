@@ -359,7 +359,6 @@ public class WalletFragment extends Fragment {
 
                 openAccount(selectedCurrencySymbol);
 
-                // Dismiss the dialog
                 dialog.dismiss();
             }
         });
