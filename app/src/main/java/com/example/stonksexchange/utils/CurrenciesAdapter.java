@@ -17,8 +17,6 @@ import java.util.ArrayList;
 
 public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.ButtonViewHolder> {
     private ArrayList<Currency> currencies;
-    private ToggleButton checkedButton;
-    private ToggleButton rubButton;
     private boolean isFirstItemChecked;
     private App app;
     private WalletFragment fragment;
@@ -42,29 +40,22 @@ public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.Bu
     public void onBindViewHolder(@NonNull ButtonViewHolder holder, int position) {
         Currency currency = currencies.get(position);
 
-        // Check the first toggle button only during initial creation
-        if (!isFirstItemChecked && position == 0) {
-            isFirstItemChecked = true;
-            checkedButton = holder.toggleButton;
-            rubButton = holder.toggleButton;
-            holder.toggleButton.setChecked(true);
-        }
-        holder.toggleButton.setText(currency.getAmount() + " " + currency.getSymbol());
+        boolean isSelected = currency.getSymbol().equals(app.getWallet().getSelectedCurrency().getSymbol());
+
         holder.toggleButton.setTextOn(currency.getAmount() + " " + currency.getSymbol());
         holder.toggleButton.setTextOff(currency.getAmount() + " " + currency.getSymbol());
 
+        holder.toggleButton.setChecked(isSelected);
+
         holder.toggleButton.setOnClickListener(view -> {
-            if (checkedButton == view) {
+            if (isSelected) {
                 holder.toggleButton.setChecked(true); // Keep the ToggleButton checked
             } else {
                 app.getWallet().setSelectedCurrency(currency);
-                checkedButton.toggle();
-                checkedButton = holder.toggleButton;
-                checkedButton.setChecked(true);
                 fragment.onSelectedCurrencyChange();
+                notifyDataSetChanged();
             }
         });
-
     }
 
     @Override
@@ -76,39 +67,40 @@ public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.Bu
         return currencies;
     }
 
-    public class ButtonViewHolder extends RecyclerView.ViewHolder {
-        ToggleButton toggleButton;
-
-        public ButtonViewHolder(@NonNull View itemView) {
-            super(itemView);
-            toggleButton = itemView.findViewById(R.id.toggleButton);
-        }
-    }
-
-    public void updateCurrencyList(Currency currency) {
-        for (int i = 0; i < this.currencies.size(); i++) {
+    public int updateCurrencyList(Currency currency) {
+        for (int i = 0; i < currencies.size(); i++) {
             if (currency.getSymbol().equals(this.currencies.get(i).getSymbol())) {
                 this.currencies.set(i, currency);
-                break;
+                notifyItemChanged(i);
+                return i;
             }
             if (this.currencies.get(i).getSymbol().equals("RUB")) {
                 this.currencies.get(i).setAmount(app.getUser().getBalance());
+                notifyItemChanged(i);
             }
         }
-        notifyDataSetChanged();
+        return 0;
+    }
+
+    public void addCurrency(Currency currency) {
+        notifyItemChanged(currencies.indexOf(app.getWallet().getSelectedCurrency()));
+        this.currencies.add(currency);
+        fragment.onSelectedCurrencyChange();
+        app.getWallet().setSelectedCurrency(currency);
+        notifyItemInserted(currencies.size() - 1);
+        notifyItemChanged(currencies.size() - 1);
+        fragment.onSelectedCurrencyChange();
     }
 
     public void deleteCurrency(Currency currency) {
+        notifyItemChanged(0);
         for (int i = 0; i < this.currencies.size(); i++) {
             if (currency.getSymbol().equals(this.currencies.get(i).getSymbol())) {
                 app.getWallet().setSelectedCurrency(this.currencies.get(0));
-                checkedButton.toggle();
-                checkedButton = rubButton;
-                checkedButton.setChecked(true);
                 fragment.onSelectedCurrencyChange();
                 this.currencies.remove(this.currencies.get(i));
 
-                notifyDataSetChanged();
+                notifyItemRemoved(i);
                 break;
             }
         }
@@ -121,13 +113,13 @@ public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.Bu
         notifyDataSetChanged();
     }
 
-    public void addCurrency(Currency currency) {
-        this.currencies.add(currency);
-        checkedButton.toggle();
-        checkedButton = rubButton;
-        checkedButton.setChecked(true);
-        fragment.onSelectedCurrencyChange();
-        notifyItemInserted(currencies.size() - 1);
+    public class ButtonViewHolder extends RecyclerView.ViewHolder {
+        ToggleButton toggleButton;
+
+        public ButtonViewHolder(@NonNull View itemView) {
+            super(itemView);
+            toggleButton = itemView.findViewById(R.id.toggleButton);
+        }
     }
 
 }

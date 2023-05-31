@@ -110,7 +110,6 @@ public class WalletFragment extends Fragment {
         openWalletBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("AAS 1");
                 showCurrencyPopup(view);
             }
         });
@@ -141,7 +140,7 @@ public class WalletFragment extends Fragment {
                     amountInput.setText("");
                     balanceText.setText(app.getUser().getBalanceString());
                     Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
-
+                    recyclerView.smoothScrollToPosition(0);
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }
@@ -170,14 +169,14 @@ public class WalletFragment extends Fragment {
 
                     prev_price.setText(data.getCurrency().getLatestPriceString());
                     cur_price.setText(data.getCurrency().getLatestPriceString());
-                    price_change.setText("0");
+                    price_change.setText(data.getCurrency().getDifferenceString());
 
                     data.getCurrencies().add(0, new Currency("", "RUB", "Российский рубль", app.getUser().getBalance(), 0, 0, 0));
-                    app.getWallet().setUserCurrencies(data.getCurrencies());
-                    adapter.updateCurrencyList(data.getCurrency());
+                    int index = adapter.updateCurrencyList(data.getCurrency());
+                    app.getWallet().setUserCurrencies(adapter.getCurrencies());
 
                     Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
-
+                    recyclerView.smoothScrollToPosition(index);
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }
@@ -314,6 +313,7 @@ public class WalletFragment extends Fragment {
                         app.getWallet().setUserCurrencies(adapter.getCurrencies());
 
                         Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
+                        recyclerView.smoothScrollToPosition(0);
                     } else {
                         ErrorUtils.handleErrorResponse(response, context);
                     }
@@ -381,9 +381,11 @@ public class WalletFragment extends Fragment {
                     app.pushTransaction(data.getTransaction());
                     adapter.addCurrency(data.getCurrency());
 
+
                     app.getWallet().setUserCurrencies(adapter.getCurrencies());
 
                     Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
+                    recyclerView.smoothScrollToPosition(adapter.getCurrencies().size() - 1);
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }

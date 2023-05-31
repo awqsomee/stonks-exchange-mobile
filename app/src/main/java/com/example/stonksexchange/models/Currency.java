@@ -62,7 +62,7 @@ public class Currency {
 
     public String getDifferenceString() {
         if (difference == null)
-            return "0";
+            return String.format("%.2f", 0f);
         return String.format("%.2f", difference.floatValue());
     }
 
