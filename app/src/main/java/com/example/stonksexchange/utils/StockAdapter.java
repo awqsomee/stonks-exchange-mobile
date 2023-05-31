@@ -45,24 +45,14 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         holder.stockShortname.setText(stock.getShortname());
         holder.stockSymbol.setText(stock.getSymbol());
         holder.stockPrice.setText(stock.getPrice() + " " + stock.getCurrency());
-        holder.stockChange.setText(stock.getChange() + "%");
-        switch (stock.getChange().charAt(0)) {
-            case '-':
-                System.out.println("-");
-                if (stock.getPrice().equals("-")) {
-                    System.out.println("noPrice");
-                    holder.stockChange.setTextColor(Color.parseColor("#E9EEF2"));
-                } else
-                    holder.stockChange.setTextColor(Color.parseColor("#FF2A51"));
-                break;
-            case '0':
-                holder.stockChange.setTextColor(Color.parseColor("#E9EEF2"));
-                break;
-            default:
-                holder.stockChange.setTextColor(Color.parseColor("#BBFFA7"));
+        holder.stockChange.setText(String.format("%.2f", stock.getChange()) + "%");
+        if (stock.getChange() > 0)
+            holder.stockChange.setTextColor(Color.parseColor("#BBFFA7"));
+        if (stock.getChange() < 0)
+            holder.stockChange.setTextColor(Color.parseColor("#FF2A51"));
+        if (stock.getChange() == 0)
+            holder.stockChange.setTextColor(Color.parseColor("#E9EEF2"));
 
-                break;
-        }
         String iconUrl;
 
         if (!stock.getLatname().matches("\\d")){

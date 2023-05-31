@@ -61,11 +61,11 @@ public class Stock {
         return "-";
     }
 
-    public String getChange() {
+    public Float getChange() {
         if (prices.size() > 0 && prices.get(0).getClose() != null) {
-            return String.format("%.2f", ((prices.get(0).getClose() - prices.get(1).getClose()) / prices.get(0).getClose()) * 100);
+            return (prices.get(0).getClose() - prices.get(1).getClose()) / prices.get(0).getClose() * 100;
         }
-        return "-";
+        return 0f;
     }
 
     public String getLatname() {

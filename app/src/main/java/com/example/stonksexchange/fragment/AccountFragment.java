@@ -313,26 +313,25 @@ public class AccountFragment extends Fragment {
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.changeAvatarBtn:
-                            String readImagePermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ? Manifest.permission.READ_MEDIA_IMAGES : Manifest.permission.READ_EXTERNAL_STORAGE;
-                            if (ContextCompat.checkSelfPermission(context, readImagePermission) == PackageManager.PERMISSION_GRANTED) {
-                                uploadAvatar();
-                            } else {
-                                Toast.makeText(context, "Нужно разрешение", Toast.LENGTH_SHORT).show();
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                                    requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, PERMISSION_REQUEST_CODE);
-                                else {
-                                    MainActivity mainActivity = (MainActivity) getActivity();
-                                    ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE_2);
-                                }
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.changeAvatarBtn) {
+                        String readImagePermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ? Manifest.permission.READ_MEDIA_IMAGES : Manifest.permission.READ_EXTERNAL_STORAGE;
+                        if (ContextCompat.checkSelfPermission(context, readImagePermission) == PackageManager.PERMISSION_GRANTED) {
+                            uploadAvatar();
+                        } else {
+                            Toast.makeText(context, "Нужно разрешение", Toast.LENGTH_SHORT).show();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, PERMISSION_REQUEST_CODE);
+                            else {
+                                MainActivity mainActivity = (MainActivity) getActivity();
+                                ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE_2);
                             }
-                            return true;
-                        case R.id.deleteAvatarBtn:
-                            return true;
-                        default:
-                            return false;
+                        }
+                        return true;
+                    } else if (itemId == R.id.deleteAvatarBtn) {
+                        return true;
                     }
+                    return false;
                 }
             });
             popupMenu.show();

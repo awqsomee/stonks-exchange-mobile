@@ -74,25 +74,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_catalog:
-                if (navigationView.getSelectedItemId() == R.id.menu_catalog) {
-                    catalogFragment.clearUI();
-                }
-                showFragment(catalogFragment);
-                return true;
-            case R.id.menu_investments:
-                showFragment(new InvestmentsFragment());
-                return true;
-            case R.id.menu_wallet:
-                showFragment(new WalletFragment());
-                return true;
-            case R.id.menu_dummy:
-                showFragment(new AccountFragment());
-                return true;
-            default:
-                return false;
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_catalog) {
+            if (navigationView.getSelectedItemId() == R.id.menu_catalog) {
+                catalogFragment.clearUI();
+            }
+            showFragment(catalogFragment);
+            return true;
+        } else if (itemId == R.id.menu_investments) {
+            showFragment(new InvestmentsFragment());
+            return true;
+        } else if (itemId == R.id.menu_wallet) {
+            showFragment(new WalletFragment());
+            return true;
+        } else if (itemId == R.id.menu_dummy) {
+            showFragment(new AccountFragment());
+            return true;
         }
+        return false;
     }
 
     private void showFragment(Fragment fragment) {
@@ -170,24 +169,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.balanceBtn:
-                                showFragment(new WalletFragment());
-                                navigationView.setSelectedItemId(R.id.menu_wallet);
-                                return true;
-                            case R.id.accountBtn:
-                                showFragment(new AccountFragment());
-                                navigationView.setSelectedItemId(R.id.menu_dummy);
-                                return true;
-                            case R.id.infoBtn:
-                                // TODO: Ссылка на инфо
-                                return true;
-                            case R.id.logOutBtn:
-                                logOut();
-                                return true;
-                            default:
-                                return false;
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.balanceBtn) {
+                            showFragment(new WalletFragment());
+                            navigationView.setSelectedItemId(R.id.menu_wallet);
+                            return true;
+                        } else if (itemId == R.id.accountBtn) {
+                            showFragment(new AccountFragment());
+                            navigationView.setSelectedItemId(R.id.menu_dummy);
+                            return true;
+                        } else if (itemId == R.id.infoBtn) {// TODO: Ссылка на инфо
+                            return true;
+                        } else if (itemId == R.id.logOutBtn) {
+                            logOut();
+                            return true;
                         }
+                        return false;
                     }
                 });
                 popupMenu.show();
