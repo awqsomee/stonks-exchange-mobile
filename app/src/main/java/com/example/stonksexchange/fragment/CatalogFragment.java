@@ -10,6 +10,7 @@ import android.widget.ToggleButton;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
@@ -20,6 +21,7 @@ import com.example.stonksexchange.models.Stock;
 import com.example.stonksexchange.utils.ArrayListSortUtil;
 import com.example.stonksexchange.utils.StockAdapter;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.concurrent.CountDownLatch;
 
@@ -48,6 +50,7 @@ public class CatalogFragment extends Fragment {
     }
 
     public void clearUI() {
+        app.setDisplayedStocks(new ArrayList<>());
         getStandartStocks();
     }
 
@@ -66,7 +69,15 @@ public class CatalogFragment extends Fragment {
         changeSortOrderBtn = view.findViewById(R.id.changeSortOrderBtn);
         sortByChangeBtn = view.findViewById(R.id.sortByChangeBtn);
         sortByNameBtn = view.findViewById(R.id.sortByNameBtn);
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                clearUI();
 
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         setSortClickListeners();
         if (app.getDisplayedStocks().size() == 0) {
             getStandartStocks();

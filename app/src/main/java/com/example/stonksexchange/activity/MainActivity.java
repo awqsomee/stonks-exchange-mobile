@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.menu_catalog:
                 if (navigationView.getSelectedItemId() == R.id.menu_catalog) {
-                    app.setDisplayedStocks(new ArrayList<>());
                     catalogFragment.clearUI();
                 }
                 showFragment(catalogFragment);
