@@ -34,6 +34,14 @@ public class Wallet {
         return names;
     }
 
+    public ArrayList<String> getCurrencySymbols() {
+        ArrayList<String> symbols = new ArrayList<>();
+        for (String symbol : currencies.keySet()) {
+            symbols.add(symbol);
+        }
+        return symbols;
+    }
+
     public void setSelectedCurrency(Currency selectedCurrency) {
         this.selectedCurrency = selectedCurrency;
     }
