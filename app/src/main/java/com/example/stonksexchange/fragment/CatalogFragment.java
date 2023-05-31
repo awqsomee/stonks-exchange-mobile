@@ -2,7 +2,6 @@ package com.example.stonksexchange.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.example.stonksexchange.models.Stock;
 import com.example.stonksexchange.utils.ArrayListSortUtil;
 import com.example.stonksexchange.utils.StockAdapter;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.concurrent.CountDownLatch;
 
@@ -39,9 +37,8 @@ public class CatalogFragment extends Fragment {
     ToggleButton sortByNameBtn;
 
     boolean isLoading = false;
+    Comparator<Stock> comparator = Comparator.comparing(Stock::getChange).reversed();
     private CountDownLatch responseCountDownLatch;
-
-    Comparator<Stock> comparator = Comparator.comparing(Stock::getShortname);
 
     public CatalogFragment() {
     }
@@ -55,8 +52,7 @@ public class CatalogFragment extends Fragment {
     }
 
     private void setAdapter() {
-        recyclerView.setAdapter(new StockAdapter(
-                ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked()), this));
+        recyclerView.setAdapter(new StockAdapter(ArrayListSortUtil.sortArrayList(app.getDisplayedStocks(), comparator, changeSortOrderBtn.isChecked()), this));
     }
 
     @Override
@@ -74,9 +70,15 @@ public class CatalogFragment extends Fragment {
         setSortClickListeners();
         if (app.getDisplayedStocks().size() == 0) {
             getStandartStocks();
-        } else
-            setAdapter();
+        } else setAdapter();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MainActivity.getNavigationView().setSelectedItemId(R.id.menu_catalog);
     }
 
     private void setSortClickListeners() {
@@ -140,7 +142,7 @@ public class CatalogFragment extends Fragment {
     private void getStandartStocks() {
         if (!isLoading) {
             isLoading = true;
-            int numberOfApiCalls = 6;
+            int numberOfApiCalls = 14;
             responseCountDownLatch = new CountDownLatch(numberOfApiCalls);
             getStock("GAZP");
             getStock("MGNT");
@@ -148,6 +150,14 @@ public class CatalogFragment extends Fragment {
             getStock("TSLA-RM");
             getStock("AAPL-RM");
             getStock("META-RM");
+            getStock("OZON");
+            getStock("LKOH");
+            getStock("AFLT");
+            getStock("AIZ-RM");
+            getStock("NIKE-RM");
+            getStock("MSFT-RM");
+            getStock("NVDA-RM");
+            getStock("INTC-RM");
         }
     }
 

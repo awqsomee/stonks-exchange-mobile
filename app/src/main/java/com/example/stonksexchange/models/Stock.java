@@ -67,4 +67,8 @@ public class Stock {
         }
         return "-";
     }
+
+    public String getLatname() {
+        return latname;
+    }
 }

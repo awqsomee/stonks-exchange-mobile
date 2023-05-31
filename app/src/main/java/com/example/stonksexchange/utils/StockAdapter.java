@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stonksexchange.R;
 import com.example.stonksexchange.activity.MainActivity;
-import com.example.stonksexchange.fragment.CatalogFragment;
 import com.example.stonksexchange.fragment.StockFragment;
 import com.example.stonksexchange.models.Stock;
 
@@ -64,9 +63,14 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
 
                 break;
         }
+        String iconUrl;
 
-        transliterator = Transliterator.getInstance("Russian-Latin/BGN");
-        String iconUrl = "https://cdn.bcs.ru/company-logos/" + transliterator.transliterate(stock.getShortname().split("[ -]")[0].toLowerCase()) + ".svg";
+        if (!stock.getLatname().matches("\\d")){
+            iconUrl = "https://cdn.bcs.ru/company-logos/" + stock.getLatname().toLowerCase() + ".svg";
+        } else {
+            transliterator = Transliterator.getInstance("Russian-Latin/BGN");
+            iconUrl = "https://cdn.bcs.ru/company-logos/" + transliterator.transliterate(stock.getShortname().split("[ -]")[0].toLowerCase()) + ".svg";
+        }
         Context context = holder.imageView.getContext().getApplicationContext();
         FetchSvgTask task = new FetchSvgTask(iconUrl, holder.imageView, context);
         task.execute();

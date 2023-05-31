@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         catalogFragment = new CatalogFragment();
         showFragment(catalogFragment);
-
     }
 
     @Override
