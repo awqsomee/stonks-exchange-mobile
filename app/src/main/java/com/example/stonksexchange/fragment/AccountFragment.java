@@ -116,7 +116,7 @@ public class AccountFragment extends Fragment {
         getAccountData();
 
 
-        avatar.setOnClickListener(new AccountFragment.AvatarClickListener());
+        avatar.setOnClickListener(new AccountFragment.AccClickListener());
         deleteAccText.setOnClickListener(new DeleteAccClickListener());
 
         for (EditText editText : editTextList) {
@@ -300,9 +300,6 @@ public class AccountFragment extends Fragment {
                 // Unfocusing the EditText
                 v.clearFocus();
                 return true;
-            }
-            else {
-                System.out.println("ne done");
             }
             return false;
         }
