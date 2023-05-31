@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:drawable="@drawable/shape_selector_dark"></item>
+    <item
+        android:width="10dp"
+        android:height="5dp"
+        android:right="20dp"
+        android:gravity="end|center_vertical"
+        android:background ="@drawable/shape_selector_dark"
+        android:drawable="@drawable/icon_triangle_dropdown"
+        >
+    </item>
+</layer-list>

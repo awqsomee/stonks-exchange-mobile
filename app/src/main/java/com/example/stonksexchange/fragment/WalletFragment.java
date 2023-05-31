@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -100,19 +101,22 @@ public class WalletFragment extends Fragment {
         ArrayAdapter<String> dropdownMenuAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.dropdownMenuTransactionsItems));
         dropdownMenuAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdownMenuTransactions.setAdapter(dropdownMenuAdapter);
-//        dropdownMenuTransactions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                // Handle the selected item
-//                String selectedItem = parent.getItemAtPosition(position).toString();
-//                // Do something with the selected item
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                // Handle the case where no item is selected
-//            }
-//        });
+
+        dropdownMenuTransactions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Handle the selected item
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                TextView textView=(TextView) view.findViewById(android.R.id.text1);
+                textView.setTextColor(ContextCompat.getColor(context, R.color.white)); //Change selected text color
+                // Do something with the selected item
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle the case where no item is selected
+            }
+        });
 
 
         openWalletBtn.setOnClickListener(new View.OnClickListener() {

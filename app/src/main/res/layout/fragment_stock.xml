@@ -3,16 +3,463 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/app_background">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout8"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Stock"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/stockFullname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Stock"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_header_24"
+            app:fontWeight="500"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/stock_image_holder" />
+
+        <TextView
+            android:id="@+id/stockSymbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:firstBaselineToTopHeight="@dimen/font_header_24"
+            android:text="TextView"
+            android:textColor="@color/light_grey"
+            android:textSize="@dimen/font_body_12"
+            app:layout_constraintStart_toStartOf="@+id/stockFullname"
+            app:layout_constraintTop_toBottomOf="@+id/stockFullname" />
+
+        <TextView
+            android:id="@+id/stockPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:firstBaselineToTopHeight="@dimen/font_header_24"
+            android:text="TextView"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/font_paragraph_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/stockChange" />
+
+        <TextView
+            android:id="@+id/stockChange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:firstBaselineToTopHeight="@dimen/font_header_24"
+            android:text="TextView"
+            android:textSize="@dimen/font_body_12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/shape_info_card"
+        android:paddingStart="22dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="22dp"
+        android:paddingBottom="26dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max цена акции"
+            android:textSize="@dimen/font_body_12"
+            android:textColor="@color/light_grey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Min цена акции"
+            android:textSize="@dimen/font_body_12"
+            android:textColor="@color/light_grey"
+            app:layout_constraintEnd_toStartOf="@+id/textView21"
+            app:layout_constraintStart_toEndOf="@+id/textView19"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Прирост"
+            android:textSize="@dimen/font_body_12"
+            android:textColor="@color/light_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/maxStockPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            android:textSize="@dimen/font_paragraph_16"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@+id/textView19"
+            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+        <TextView
+            android:id="@+id/minStockPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            android:textSize="@dimen/font_paragraph_16"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@+id/textView20"
+            app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+        <TextView
+            android:id="@+id/stockPriceChange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_paragraph_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout12"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
+
+        <ToggleButton
+            android:id="@+id/toggleButton2"
+            android:layout_width="79dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="-10dp"
+            android:background="@drawable/selector_tint_list"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="6dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="6dp"
+            android:text="ToggleButton"
+            android:textAllCaps="false"
+            android:textColor="@color/selectors_color"
+            android:textOff="День"
+            android:textOn="День"
+            android:textSize="@dimen/font_mark_10"
+            app:flow_horizontalAlign="center"
+            app:flow_verticalAlign="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:checked="true"/>
+
+        <ToggleButton
+            android:id="@+id/toggleButton4"
+            android:layout_width="79dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="-10dp"
+            android:background="@drawable/selector_tint_list"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="6dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="6dp"
+            android:text="ToggleButton"
+            android:textAllCaps="false"
+            android:textColor="@color/selectors_color"
+            android:textOff="Неделя"
+            android:textOn="Неделя"
+            android:textSize="@dimen/font_mark_10"
+            app:flow_horizontalAlign="center"
+            app:flow_verticalAlign="center"
+            app:layout_constraintStart_toEndOf="@+id/toggleButton2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton5"
+            android:layout_width="79dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="-10dp"
+            android:background="@drawable/selector_tint_list"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="6dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="6dp"
+            android:text="ToggleButton"
+            android:textAllCaps="false"
+            android:textColor="@color/selectors_color"
+            android:textOff="Месяц"
+            android:textOn="Месяц"
+            android:textSize="@dimen/font_mark_10"
+            app:flow_horizontalAlign="center"
+            app:flow_verticalAlign="center"
+            app:layout_constraintStart_toEndOf="@+id/toggleButton4"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton6"
+            android:layout_width="79dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="-10dp"
+            android:background="@drawable/selector_tint_list"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="6dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="6dp"
+            android:text="ToggleButton"
+            android:textAllCaps="false"
+            android:textColor="@color/selectors_color"
+            android:textOff="Год"
+            android:textOn="День"
+            android:textSize="@dimen/font_mark_10"
+            app:flow_horizontalAlign="center"
+            app:flow_verticalAlign="center"
+            app:layout_constraintStart_toEndOf="@+id/toggleButton5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton3"
+            android:layout_width="79dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="-10dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/selector_tint_list"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="6dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="6dp"
+            android:text="ToggleButton"
+            android:textAllCaps="false"
+            android:textColor="@color/selectors_color"
+            android:textOff="Все"
+            android:textOn="Все"
+            android:textSize="@dimen/font_mark_10"
+            app:flow_horizontalAlign="center"
+            app:flow_verticalAlign="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/toggleButton6"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <android.widget.Button
+        android:id="@+id/sellBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_dark_button"
+        android:text="Продать"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_paragraph_16"
+        app:fontWeight="500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <android.widget.Button
+        android:id="@+id/buyBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_light_button"
+        android:text="Купить"
+        android:textAllCaps="false"
+        android:textSize="@dimen/font_paragraph_16"
+        app:fontWeight="500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stockSellCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/sellBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sellBtn"
+        app:layout_constraintTop_toTopOf="@+id/sellBtn"
+        android:visibility="gone">
+
+
+        <android.widget.Button
+            android:id="@+id/lessSellBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/icon_minus"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/selectedSellCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_paragraph_16"
+            app:fontWeight="500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lessSellBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:text="/"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_paragraph_16"
+            app:fontWeight="500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/allSellCount"
+            app:layout_constraintStart_toEndOf="@+id/selectedSellCount"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/allSellCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="1024"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_paragraph_16"
+            app:fontWeight="500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/moreSellBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.widget.Button
+            android:id="@+id/moreSellBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/icon_plus"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stockMoreCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/buyBtn"
+        app:layout_constraintEnd_toStartOf="@+id/buyBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buyBtn"
+        android:visibility="gone">
+
+
+        <android.widget.Button
+            android:id="@+id/lessMoreBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/icon_minus"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/selectedMoreCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_paragraph_16"
+            app:fontWeight="500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lessMoreBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:text="/"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_paragraph_16"
+            app:fontWeight="500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/allMoreCount"
+            app:layout_constraintStart_toEndOf="@+id/selectedMoreCount"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/allMoreCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="1024"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_paragraph_16"
+            app:fontWeight="500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/moreMoreBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.widget.Button
+            android:id="@+id/moreMoreBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/icon_plus"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
