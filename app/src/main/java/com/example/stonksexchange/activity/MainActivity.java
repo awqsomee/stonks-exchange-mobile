@@ -204,6 +204,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         @Override
         public boolean onQueryTextSubmit(String query) {
             catalogFragment.setLoading(true);
+            navigationView.setSelectedItemId(R.id.menu_catalog);
+            showFragment(catalogFragment);
 
             Call<FindStocksResponse> call = ApiService.ApiService.findStock(searchView.getQuery().toString());
             call.enqueue(new Callback<FindStocksResponse>() {
