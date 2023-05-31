@@ -14,7 +14,6 @@ import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
-import com.example.stonksexchange.api.domain.balance.ChangeBalanceResponse;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.utils.BackButtonHandler;
 
@@ -48,7 +47,7 @@ public class StockFragment extends Fragment {
         BackButtonHandler.setupBackPressedCallback(this);
         symbol = getArguments().getString("symbol");
 
-         textView = view.findViewById(R.id.textView2);
+         textView = view.findViewById(R.id.stockFullname);
         textView.setText(symbol);
 
         getStockData();
