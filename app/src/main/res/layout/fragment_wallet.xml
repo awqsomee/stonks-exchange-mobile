@@ -124,7 +124,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/icon_delete_currencysvg" />
+                app:srcCompat="@drawable/icon_delete_currency" />
 
             <TextView
                 android:id="@+id/balanceText"
@@ -236,15 +236,16 @@
             android:id="@+id/transactionsDropdownMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="-136dp"
             android:layout_marginTop="-8dp"
             android:background="@drawable/shape_selector_dark"
-            android:dropDownWidth="match_parent"
-            android:dropDownVerticalOffset="34dp"
-            android:gravity="center"
-            android:paddingHorizontal="8dp"
-            android:popupBackground="@drawable/stockcard"
+            android:dropDownWidth="wrap_content"
+            android:dropDownVerticalOffset="44dp"
+            android:gravity="start"
+            android:paddingHorizontal="10dp"
             android:spinnerMode="dropdown"
-            app:layout_constraintEnd_toStartOf="@+id/changeSortOrderTransactionsBtn"
+            android:theme="@style/ListFont"
+            app:layout_constraintStart_toStartOf="@+id/changeSortOrderTransactionsBtn"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ToggleButton

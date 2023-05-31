@@ -2,6 +2,7 @@ package com.example.stonksexchange.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -354,7 +355,18 @@ public class WalletFragment extends Fragment {
         List<String> currencySymbols = new ArrayList<>(app.getWallet().getCurrencyNames());
 
         // Create an ArrayAdapter for the currency symbols
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, currencySymbols);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, currencySymbols){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view =super.getView(position, convertView, parent);
+
+                TextView textView=(TextView) view.findViewById(android.R.id.text1);
+
+                textView.setTextAppearance( R.style.ListFont);
+
+                return view;
+            }
+        };
 
         // Set the adapter on the ListView
         currencyListView.setAdapter(adapter);
