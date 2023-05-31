@@ -363,11 +363,10 @@ public class WalletFragment extends Fragment {
         currencyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedCurrencySymbol = currencySymbols.get(position);
+                String selectedCurrencySymbol = app.getWallet().getCurrencySymbols().get(position);
 
                 openAccount(selectedCurrencySymbol);
 
-                // Dismiss the dialog
                 dialog.dismiss();
             }
         });

@@ -42,8 +42,15 @@ public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.Bu
 
         boolean isSelected = currency.getSymbol().equals(app.getWallet().getSelectedCurrency().getSymbol());
 
-        holder.toggleButton.setTextOn(currency.getAmount() + " " + currency.getSymbol());
-        holder.toggleButton.setTextOff(currency.getAmount() + " " + currency.getSymbol());
+        if(currency.getSymbol().equals("RUB")) {
+            holder.toggleButton.setTextOn(app.getUser().getBalanceString() + " " + currency.getSymbol());
+            holder.toggleButton.setTextOff(app.getUser().getBalanceString() + " " + currency.getSymbol());
+        }
+        else {
+            holder.toggleButton.setTextOn(currency.getAmount() + " " + currency.getSymbol());
+            holder.toggleButton.setTextOff(currency.getAmount() + " " + currency.getSymbol());
+        }
+
 
         holder.toggleButton.setChecked(isSelected);
 
