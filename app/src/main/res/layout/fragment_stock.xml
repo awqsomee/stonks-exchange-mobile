@@ -185,8 +185,8 @@
             app:flow_horizontalAlign="center"
             app:flow_verticalAlign="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="toggleButton4"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:checked="true"/>
 
         <ToggleButton
             android:id="@+id/toggleButton4"
@@ -209,7 +209,6 @@
             app:flow_horizontalAlign="center"
             app:flow_verticalAlign="center"
             app:layout_constraintStart_toEndOf="@+id/toggleButton2"
-            app:layout_constraintEnd_toStartOf="toggleButton5"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ToggleButton
@@ -233,7 +232,6 @@
             app:flow_horizontalAlign="center"
             app:flow_verticalAlign="center"
             app:layout_constraintStart_toEndOf="@+id/toggleButton4"
-            app:layout_constraintEnd_toStartOf="toggleButton6"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ToggleButton
@@ -257,7 +255,6 @@
             app:flow_horizontalAlign="center"
             app:flow_verticalAlign="center"
             app:layout_constraintStart_toEndOf="@+id/toggleButton5"
-            app:layout_constraintEnd_toStartOf="toggleButton3"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ToggleButton
@@ -282,6 +279,7 @@
             app:flow_horizontalAlign="center"
             app:flow_verticalAlign="center"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/toggleButton6"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
