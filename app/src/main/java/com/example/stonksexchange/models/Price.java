@@ -23,4 +23,11 @@ public class Price {
             return close.floatValue();
         return null;
     }
+
+    public String getDate(){
+        if (date != null)
+            return date;
+        return null;
+    }
+
 }

@@ -18,8 +18,10 @@ import com.example.stonksexchange.R;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
+import com.example.stonksexchange.models.Price;
 import com.example.stonksexchange.utils.BackButtonHandler;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
@@ -29,8 +31,11 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +46,10 @@ public class StockFragment extends Fragment {
     Context context;
     String symbol;
     TextView textView;
+    ArrayList<Entry> prices;
+    String[] dates;
+
+    View view;
 
     private LineChart chart;
 
@@ -57,7 +66,7 @@ public class StockFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_stock, container, false);
+        view = inflater.inflate(R.layout.fragment_stock, container, false);
 
         app = App.getInstance();
         context = view.getContext();
@@ -66,10 +75,10 @@ public class StockFragment extends Fragment {
 
         textView = view.findViewById(R.id.stockFullname);
         textView.setText(symbol);
+        Entry xxx = new Entry(22f, 24f);
 
         getStockData();
-        chart = view.findViewById(R.id.chart);
-        setChartData();
+
         return view;
     }
 
@@ -81,6 +90,10 @@ public class StockFragment extends Fragment {
                 if (response.isSuccessful()) {
                     GetStockDataResponse data = response.body();
                     textView.setText(data.getStock().getName());
+                    prices = data.getStock().getFullPrice();
+                    dates = data.getStock().getAllDates();
+                    chart = view.findViewById(R.id.chart);
+                    setChartData();
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }
@@ -95,24 +108,16 @@ public class StockFragment extends Fragment {
     }
 
     private void setChartData(){
-        // Массив координат точек
-        ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(1f, 5f));
-        entries.add(new Entry(2f, 2f));
-        entries.add(new Entry(3f, 1f));
-        entries.add(new Entry(4f, 3f));
-        entries.add(new Entry(5f, 4f));
-        entries.add(new Entry(6f, 1f));
 
-        LineDataSet dataset = new LineDataSet(entries, "График первый");
+        LineDataSet dataset = new LineDataSet(prices, "График первый");
         dataset.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataset.setColors(new int[] {R.color.green}, context);    //цвет линии графика
+        dataset.setDrawCircles(false);
 
         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.chart_gradients);
         dataset.setDrawFilled(true);
         dataset.setFillDrawable(drawable);
 
-//        dataset.setGradientColor(getResources().getColor(R.color.green), getResources().getColor(R.color.app_background));
         dataset.setValueTextSize(10);
         dataset.setValueTextColor(getResources().getColor(R.color.white));
 
@@ -120,8 +125,12 @@ public class StockFragment extends Fragment {
         dataset.setHighLightColor(getResources().getColor(R.color.light_grey));
 
         LineData data = new LineData(dataset);
-
-        IMarker marker = chart.getMarker();
+        ValueFormatter formatter = new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                return dates[(int) value];
+            }
+        };
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -129,19 +138,16 @@ public class StockFragment extends Fragment {
         xAxis.setAxisLineColor(Color.parseColor("#44454B"));
         xAxis.setTextColor(getResources().getColor(R.color.white));
         xAxis.setTextSize(10);
+        xAxis.setValueFormatter(formatter);
 
         YAxis yAxis = chart.getAxisLeft();
-        yAxis.setDrawLabels(false);
-        yAxis.setDrawGridLines(false);
+        yAxis.setDrawLabels(false); //значения на главной оси Y
+        yAxis.setDrawGridLines(false); //горизонтальные линии
         yAxis.setDrawZeroLine(true);
         yAxis.setDrawAxisLine(false);
 
-        Legend legend = chart.getLegend();
-        legend.setEnabled(false);
-//        legend.setTextColor(Color.parseColor("#EE8100"));
-        Description description = chart.getDescription();
-        description.setEnabled(false);
-
+        chart.getLegend().setEnabled(false);
+        chart.getDescription().setEnabled(false);
         chart.getAxisRight().setEnabled(false);
         chart.setGridBackgroundColor(getResources().getColor(R.color.orange));
         chart.setData(data);

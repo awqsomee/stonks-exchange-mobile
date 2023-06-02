@@ -1,6 +1,14 @@
 package com.example.stonksexchange.models;
 
+import com.github.mikephil.charting.data.Entry;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Stock {
     String symbol;
@@ -9,6 +17,8 @@ public class Stock {
     String latname;
     String currency;
     List<Price> prices;
+//    List<Price> dates;
+
     Number isTraded;
 //    String isin;
 //    String issuesize;
@@ -35,6 +45,7 @@ public class Stock {
         this.latname = latname;
         this.currency = currency;
         this.prices = prices;
+//        this.dates = dates;
         this.isTraded = isTraded;
     }
 
@@ -70,5 +81,40 @@ public class Stock {
 
     public String getLatname() {
         return latname;
+    }
+
+    public ArrayList getFullPrice() {
+        ArrayList<Entry> data = new ArrayList<Entry>();
+        if (prices.size() > 0 && prices.get(0).getClose() != null) {
+            for (int i=0; i<prices.size(); i++){
+                if (prices.get(i).getClose() != null) {
+                    data.add(new Entry(i * 1f, prices.get(i).getClose()));
+                }
+                else{
+                    data.add(new Entry(i * 1f, 0));
+                }
+            }
+            return data;
+        }
+        return null;
+    }
+
+    public String[] getAllDates() {
+        String[] data = new String[prices.size()];
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM");
+        Date date = null;
+        if (prices.size() > 0 && prices.get(0).getClose() != null) {
+            for (int i=0; i<prices.size() - 1; i++){
+                try {
+                    date = inputFormat.parse(prices.get(i).getDate());
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                data[i] = outputFormat.format(date);
+            }
+            return data;
+        }
+        return null;
     }
 }
