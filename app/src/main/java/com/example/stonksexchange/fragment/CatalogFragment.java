@@ -32,12 +32,10 @@ import retrofit2.Response;
 public class CatalogFragment extends Fragment {
     App app;
     Context context;
-
     RecyclerView recyclerView;
     ToggleButton changeSortOrderBtn;
     ToggleButton sortByChangeBtn;
     ToggleButton sortByNameBtn;
-
     boolean isLoading = false;
     Comparator<Stock> comparator = Comparator.comparing(Stock::getChange).reversed();
     private CountDownLatch responseCountDownLatch;

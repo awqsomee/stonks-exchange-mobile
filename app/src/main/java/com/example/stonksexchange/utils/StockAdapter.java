@@ -22,12 +22,12 @@ import com.example.stonksexchange.models.Stock;
 
 import java.util.List;
 
-public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
+public class StockAdapter<T extends Stock> extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
     Transliterator transliterator = null;
-    private List<Stock> stocks;
+    private List<T> stocks;
     private Fragment fragment;
 
-    public StockAdapter(List<com.example.stonksexchange.models.Stock> stocks, Fragment fragment) {
+    public StockAdapter(List<T> stocks, Fragment fragment) {
         this.stocks = stocks;
         this.fragment = fragment;
     }
@@ -73,7 +73,6 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.fragmentContainer, StockFragment.newInstance(stock.getSymbol()));
                 transaction.commit();
-
             }
         });
 
@@ -84,7 +83,7 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         return stocks.size();
     }
 
-    public class StockViewHolder extends RecyclerView.ViewHolder {
+    public static class StockViewHolder extends RecyclerView.ViewHolder {
         TextView stockShortname;
         TextView stockSymbol;
         TextView stockPrice;

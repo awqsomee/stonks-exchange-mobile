@@ -32,8 +32,8 @@ import retrofit2.Response;
 public class InvestmentsFragment extends Fragment {
     App app;
     Context context;
-
     RecyclerView recyclerView;
+    Fragment fragment;
 
     ArrayList<UserStock> stocks = new ArrayList<>();
     public InvestmentsFragment() {
@@ -50,6 +50,7 @@ public class InvestmentsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.userStockList);
 
         getUserStocks();
+        fragment = this;
 
         return view;
     }
@@ -62,7 +63,7 @@ public class InvestmentsFragment extends Fragment {
                 if (response.isSuccessful()) {
                     GetUserStocksResponse data = response.body();
                     stocks = data.getStocks();
-                    recyclerView.setAdapter(new UserStockAdapter(stocks));
+                    recyclerView.setAdapter(new UserStockAdapter(stocks, fragment));
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }

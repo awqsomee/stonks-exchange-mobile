@@ -5,6 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stonksexchange.R;
@@ -13,50 +16,43 @@ import java.util.List;
 
 import android.widget.TextView;
 
+import com.example.stonksexchange.activity.MainActivity;
+import com.example.stonksexchange.fragment.StockFragment;
 import com.example.stonksexchange.models.UserStock;
 
-public class UserStockAdapter extends RecyclerView.Adapter<UserStockAdapter.StockViewHolder> {
-    private List<UserStock> stocks;
+public class UserStockAdapter extends StockAdapter {
+    private List<UserStock> userStocks;
+    private Fragment fragment;
 
-    public UserStockAdapter(List<UserStock> stocks) {
-        this.stocks = stocks;
+    public UserStockAdapter(List<UserStock> userStocks, Fragment fragment) {
+        super(userStocks, fragment);
+        this.userStocks = userStocks;
     }
-
     @NonNull
     @Override
-    public StockViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UserStockViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_stock, parent, false);
-        return new StockViewHolder(view);
+        return new UserStockViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StockViewHolder holder, int position) {
-        UserStock stock = stocks.get(position);
-        holder.stockName.setText(stock.getName());
-        holder.stockSymbol.setText(stock.getSymbol());
-        holder.stockPrice.setText(stock.getPrice() + " " + stock.getCurrency());
-        holder.stockChange.setText(String.format("%.2f", stock.getChange()) + "%");
-        holder.stockAmount.setText(stock.getAmount() + " шт");
+    public void onBindViewHolder(@NonNull UserStockAdapter.StockViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+        UserStock stock = userStocks.get(position);
+        UserStockViewHolder userStockViewHolder = (UserStockViewHolder) holder;
+        userStockViewHolder.stockAmount.setText(stock.getAmount() + " шт");
     }
 
     @Override
     public int getItemCount() {
-        return stocks.size();
+        return userStocks.size();
     }
 
-    public class StockViewHolder extends RecyclerView.ViewHolder {
-        TextView stockName;
-        TextView stockSymbol;
-        TextView stockPrice;
-        TextView stockChange;
+    public class UserStockViewHolder extends StockViewHolder {
         TextView stockAmount;
 
-        public StockViewHolder(@NonNull View itemView) {
+        public UserStockViewHolder(@NonNull View itemView) {
             super(itemView);
-            stockName = itemView.findViewById(R.id.stockName);
-            stockSymbol = itemView.findViewById(R.id.stockSymbol);
-            stockPrice = itemView.findViewById(R.id.stockPrice);
-            stockChange = itemView.findViewById(R.id.stockChange);
             stockAmount = itemView.findViewById(R.id.stockAmount);
         }
     }

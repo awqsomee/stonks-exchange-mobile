@@ -45,7 +45,7 @@ public class StockFragment extends Fragment {
     App app;
     Context context;
     String symbol;
-    TextView textView;
+    TextView stockSymbol;
     ArrayList<Entry> prices;
     String[] dates;
 
@@ -67,18 +67,23 @@ public class StockFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_stock, container, false);
-
         app = App.getInstance();
+        System.out.println("AASS");
         context = view.getContext();
+        System.out.println("AASS2");
         BackButtonHandler.setupBackPressedCallback(this);
+        System.out.println("AASS3");
         symbol = getArguments().getString("symbol");
+        System.out.println("AASS4");
 
-        textView = view.findViewById(R.id.stockFullname);
-        textView.setText(symbol);
-        Entry xxx = new Entry(22f, 24f);
+        stockSymbol = view.findViewById(R.id.stockSymbol);
+        System.out.println("AASS5");
+        stockSymbol.setText(symbol);
+        System.out.println("AASS6");
 
         getStockData();
 
+        System.out.println(symbol);
         return view;
     }
 
@@ -89,7 +94,7 @@ public class StockFragment extends Fragment {
             public void onResponse(Call<GetStockDataResponse> call, Response<GetStockDataResponse> response) {
                 if (response.isSuccessful()) {
                     GetStockDataResponse data = response.body();
-                    textView.setText(data.getStock().getName());
+                    stockSymbol.setText(data.getStock().getName());
                     prices = data.getStock().getFullPrice();
                     dates = data.getStock().getAllDates();
                     chart = view.findViewById(R.id.chart);
@@ -119,10 +124,10 @@ public class StockFragment extends Fragment {
         dataset.setFillDrawable(drawable);
 
         dataset.setValueTextSize(10);
-        dataset.setValueTextColor(getResources().getColor(R.color.white));
+        dataset.setValueTextColor(context.getResources().getColor(R.color.white));
 
         dataset.setHighlightEnabled(true);  //линии при выделенной точке
-        dataset.setHighLightColor(getResources().getColor(R.color.light_grey));
+        dataset.setHighLightColor(context.getResources().getColor(R.color.light_grey));
 
         LineData data = new LineData(dataset);
         ValueFormatter formatter = new ValueFormatter() {
@@ -136,7 +141,7 @@ public class StockFragment extends Fragment {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setAxisLineColor(Color.parseColor("#44454B"));
-        xAxis.setTextColor(getResources().getColor(R.color.white));
+        xAxis.setTextColor(context.getResources().getColor(R.color.white));
         xAxis.setTextSize(10);
         xAxis.setValueFormatter(formatter);
 
@@ -149,7 +154,7 @@ public class StockFragment extends Fragment {
         chart.getLegend().setEnabled(false);
         chart.getDescription().setEnabled(false);
         chart.getAxisRight().setEnabled(false);
-        chart.setGridBackgroundColor(getResources().getColor(R.color.orange));
+        chart.setGridBackgroundColor(context.getResources().getColor(R.color.orange));
         chart.setData(data);
         chart.setAutoScaleMinMaxEnabled(true);
         chart.setKeepPositionOnRotation(true);
