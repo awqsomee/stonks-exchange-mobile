@@ -19,6 +19,7 @@ import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.models.Price;
+import com.example.stonksexchange.models.Stock;
 import com.example.stonksexchange.utils.BackButtonHandler;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -45,7 +46,14 @@ public class StockFragment extends Fragment {
     App app;
     Context context;
     String symbol;
+    String name;
     TextView stockSymbol;
+    TextView stockFullname;
+    TextView stockPrice;
+    TextView stockChange;
+    TextView maxStockPrice;
+    TextView minStockPrice;
+    TextView stockPriceChange;
     ArrayList<Entry> prices;
     String[] dates;
 
@@ -56,10 +64,11 @@ public class StockFragment extends Fragment {
     public StockFragment() {
     }
 
-    public static StockFragment newInstance(String symbol) {
+    public static StockFragment newInstance(String symbol, String name ) {
         StockFragment fragment = new StockFragment();
         Bundle args = new Bundle();
         args.putString("symbol", symbol);
+        args.putString("name", name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,8 +81,16 @@ public class StockFragment extends Fragment {
         context = view.getContext();
         BackButtonHandler.setupBackPressedCallback(this);
         symbol = getArguments().getString("symbol");
+        name = getArguments().getString("name");
 
+        stockFullname = view.findViewById(R.id.stockFullname);
         stockSymbol = view.findViewById(R.id.stockSymbol);
+        stockPrice = view.findViewById(R.id.stockPrice);
+        stockChange = view.findViewById(R.id.stockChange);
+        maxStockPrice = view.findViewById(R.id.maxStockPrice);
+        minStockPrice = view.findViewById(R.id.minStockPrice);
+        stockPriceChange = view.findViewById(R.id.stockPriceChange);
+        stockFullname.setText(name);
         stockSymbol.setText(symbol);
 
         getStockData();
@@ -87,10 +104,17 @@ public class StockFragment extends Fragment {
             @Override
             public void onResponse(Call<GetStockDataResponse> call, Response<GetStockDataResponse> response) {
                 if (response.isSuccessful()) {
-                    GetStockDataResponse data = response.body();
-                    prices = data.getStock().getFullPrice();
-                    dates = data.getStock().getAllDates();
+                    Stock stock = response.body().getStock();
+                    prices = stock.getFullPrice();
+                    dates = stock.getAllDates();
                     chart = view.findViewById(R.id.chart);
+                    stockPrice.setText(stock.getPrice());
+                    stockChange.setText(String.format("%.2f", stock.getChange()) + "%");
+//                    Float max = stock.getPrices().get(0).getClose();
+//                    Float min = stock.getPrices().get(stock.getPrices().size() - 1).getClose();
+//                    maxStockPrice.setText(max.toString());
+//                    minStockPrice.setText(min.toString());
+//                    stockPriceChange.setText(String.format("%.2f",(max - min) / max * 100) + "%");
                     setChartData();
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);

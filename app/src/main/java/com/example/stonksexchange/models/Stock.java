@@ -116,4 +116,8 @@ public class Stock {
         }
         return null;
     }
+
+    public List<Price> getPrices() {
+        return prices;
+    }
 }

@@ -70,7 +70,7 @@ public class StockAdapter<T extends Stock> extends RecyclerView.Adapter<StockAda
             public void onClick(View v) {
                 FragmentManager fragmentManager = fragment.getParentFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragmentContainer, StockFragment.newInstance(stock.getSymbol()));
+                transaction.replace(R.id.fragmentContainer, StockFragment.newInstance(stock.getSymbol(), stock.getName()));
                 transaction.commit();
             }
         });
