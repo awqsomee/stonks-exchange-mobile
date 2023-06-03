@@ -67,23 +67,17 @@ public class StockFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_stock, container, false);
+
         app = App.getInstance();
-        System.out.println("AASS");
         context = view.getContext();
-        System.out.println("AASS2");
         BackButtonHandler.setupBackPressedCallback(this);
-        System.out.println("AASS3");
         symbol = getArguments().getString("symbol");
-        System.out.println("AASS4");
 
         stockSymbol = view.findViewById(R.id.stockSymbol);
-        System.out.println("AASS5");
         stockSymbol.setText(symbol);
-        System.out.println("AASS6");
 
         getStockData();
 
-        System.out.println(symbol);
         return view;
     }
 
@@ -94,7 +88,6 @@ public class StockFragment extends Fragment {
             public void onResponse(Call<GetStockDataResponse> call, Response<GetStockDataResponse> response) {
                 if (response.isSuccessful()) {
                     GetStockDataResponse data = response.body();
-                    stockSymbol.setText(data.getStock().getName());
                     prices = data.getStock().getFullPrice();
                     dates = data.getStock().getAllDates();
                     chart = view.findViewById(R.id.chart);

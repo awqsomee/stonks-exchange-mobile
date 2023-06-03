@@ -21,12 +21,9 @@ import com.example.stonksexchange.fragment.StockFragment;
 import com.example.stonksexchange.models.UserStock;
 
 public class UserStockAdapter extends StockAdapter {
-    private List<UserStock> userStocks;
-    private Fragment fragment;
 
     public UserStockAdapter(List<UserStock> userStocks, Fragment fragment) {
         super(userStocks, fragment);
-        this.userStocks = userStocks;
     }
     @NonNull
     @Override
@@ -38,14 +35,14 @@ public class UserStockAdapter extends StockAdapter {
     @Override
     public void onBindViewHolder(@NonNull UserStockAdapter.StockViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        UserStock stock = userStocks.get(position);
+        UserStock stock = (UserStock) stocks.get(position);
         UserStockViewHolder userStockViewHolder = (UserStockViewHolder) holder;
         userStockViewHolder.stockAmount.setText(stock.getAmount() + " шт");
     }
 
     @Override
     public int getItemCount() {
-        return userStocks.size();
+        return stocks.size();
     }
 
     public class UserStockViewHolder extends StockViewHolder {

@@ -24,8 +24,8 @@ import java.util.List;
 
 public class StockAdapter<T extends Stock> extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
     Transliterator transliterator = null;
-    private List<T> stocks;
-    private Fragment fragment;
+    protected List<T> stocks;
+    protected Fragment fragment;
 
     public StockAdapter(List<T> stocks, Fragment fragment) {
         this.stocks = stocks;
@@ -68,7 +68,7 @@ public class StockAdapter<T extends Stock> extends RecyclerView.Adapter<StockAda
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.getNavigationView().setSelectedItemId(R.id.menu_catalog);
+//                MainActivity.getNavigationView().setSelectedItemId(R.id.menu_catalog);
                 FragmentManager fragmentManager = fragment.getParentFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.fragmentContainer, StockFragment.newInstance(stock.getSymbol()));

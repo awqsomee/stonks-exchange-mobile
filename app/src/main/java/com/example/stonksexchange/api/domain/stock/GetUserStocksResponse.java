@@ -8,6 +8,9 @@ public class GetUserStocksResponse {
     ArrayList<UserStock> stocks;
     String message;
 
+    public GetUserStocksResponse() {
+    }
+
     public GetUserStocksResponse(ArrayList<UserStock> stocks, String message) {
         this.stocks = stocks;
         this.message = message;
@@ -15,9 +18,5 @@ public class GetUserStocksResponse {
 
     public ArrayList<UserStock> getStocks() {
         return stocks;
-    }
-
-    public String getMessage() {
-        return message;
     }
 }

@@ -19,7 +19,7 @@ public class Stock {
     List<Price> prices;
 //    List<Price> dates;
 
-    Number isTraded;
+//    Number isTraded;
 //    String isin;
 //    String issuesize;
 //    String facevalue;
@@ -38,7 +38,7 @@ public class Stock {
     public Stock() {
     }
 
-    public Stock(String symbol, String name, String shortname, String latname, String currency, List<Price> prices, Number isTraded) {
+    public Stock(String symbol, String name, String shortname, String latname, String currency, List<Price> prices) {
         this.symbol = symbol;
         this.name = name;
         this.shortname = shortname;
@@ -46,7 +46,6 @@ public class Stock {
         this.currency = currency;
         this.prices = prices;
 //        this.dates = dates;
-        this.isTraded = isTraded;
     }
 
     public String getSymbol() {

@@ -2,6 +2,7 @@ package com.example.stonksexchange;
 
 import android.app.Application;
 
+import com.example.stonksexchange.models.Investments;
 import com.example.stonksexchange.models.Stock;
 import com.example.stonksexchange.models.Transaction;
 import com.example.stonksexchange.models.User;
@@ -16,6 +17,7 @@ public class App extends Application {
     private ArrayList<Transaction> transactions;
     private boolean isAuth;
     private Wallet wallet;
+    private Investments investments;
 
     public App() {
         super.onCreate();
@@ -24,6 +26,7 @@ public class App extends Application {
         transactions = new ArrayList<>();
         displayedStocks = new ArrayList<>();
         wallet = new Wallet();
+        investments = new Investments();
     }
 
 
@@ -75,5 +78,9 @@ public class App extends Application {
 
     public void setDisplayedStocks(ArrayList<Stock> displayedStocks) {
         this.displayedStocks = displayedStocks;
+    }
+
+    public Investments getInvestments() {
+        return investments;
     }
 }
