@@ -87,9 +87,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         } else if (itemId == R.id.menu_wallet) {
             showFragment(new WalletFragment());
             return true;
-        } else if (itemId == R.id.menu_dummy) {
-            showFragment(new AccountFragment());
-            return true;
         }
         return false;
     }
