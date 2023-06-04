@@ -83,4 +83,12 @@ public class App extends Application {
     public Investments getInvestments() {
         return investments;
     }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
 }

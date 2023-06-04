@@ -1,26 +1,35 @@
 package com.example.stonksexchange.models;
 
 public class Transaction {
-    String id;
+    String symbol;
+    Number amount;
     String type;
     String date;
     String currency;
     Number cost;
-    String userId;
-    Number balance;
-    String message;
 
-    public Transaction() {
+    public String getType() {
+        return type;
     }
 
-    public Transaction(String id, String type, String date, String currency, Number cost, String userId, Number balance, String message) {
-        this.id = id;
-        this.type = type;
-        this.date = date;
-        this.currency = currency;
-        this.cost = cost;
-        this.userId = userId;
-        this.balance = balance;
-        this.message = message;
+    public String getDate() {
+        return date;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public Float getCost() {
+        if (cost != null) return cost.floatValue();
+        else return 0f;
+    }
+
+    public Number getAmount() {
+        return amount;
+    }
+
+    public String getSymbol() {
+        return symbol;
     }
 }

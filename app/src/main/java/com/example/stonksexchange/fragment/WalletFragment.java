@@ -20,11 +20,13 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
@@ -38,13 +40,22 @@ import com.example.stonksexchange.api.domain.forex.CurrencyExchangeResponse;
 import com.example.stonksexchange.api.domain.forex.GetCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.OpenAccountResponse;
+import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
+import com.example.stonksexchange.api.domain.transactions.GetTransactionsResponse;
 import com.example.stonksexchange.models.Currency;
+import com.example.stonksexchange.models.Stock;
+import com.example.stonksexchange.models.Transaction;
+import com.example.stonksexchange.utils.ArrayListSortUtil;
 import com.example.stonksexchange.utils.BackButtonHandler;
 
 import java.util.ArrayList;
 
 import com.example.stonksexchange.utils.CurrenciesAdapter;
+import com.example.stonksexchange.utils.StockAdapter;
+import com.example.stonksexchange.utils.TransactionAdapter;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -55,11 +66,13 @@ public class WalletFragment extends Fragment {
     App app;
     Context context;
 
+    View view;
     EditText amountInput;
     Button replenishBtn;
     Button withdrawBtn;
     TextView balanceText;
     RecyclerView recyclerView;
+    RecyclerView transactionsList;
     TextView prev_price;
     TextView cur_price;
     TextView price_change;
@@ -70,14 +83,20 @@ public class WalletFragment extends Fragment {
     Button openWalletBtn;
     CurrenciesAdapter adapter;
     Spinner dropdownMenuTransactions;
+    ToggleButton changeSortOrderTransactionsBtn;
 
+    Comparator<Transaction> comparator = Comparator.comparing(Transaction::getDate).reversed();
+
+    private void setTransactionsAdapter() {
+        transactionsList.setAdapter(new TransactionAdapter(ArrayListSortUtil.sortArrayList(app.getTransactions(), comparator, changeSortOrderTransactionsBtn.isChecked())));
+    }
 
     public WalletFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wallet, container, false);
+        view = inflater.inflate(R.layout.fragment_wallet, container, false);
 
         app = App.getInstance();
         context = view.getContext();
@@ -96,25 +115,42 @@ public class WalletFragment extends Fragment {
         recyclerView = view.findViewById(R.id.currencyList);
         openWalletBtn = view.findViewById(R.id.button);
         currencyFullName = view.findViewById(R.id.currencyFullName);
+        setTransactionSort();
+        setRefresher();
 
         dropdownMenuTransactions = view.findViewById(R.id.transactionsDropdownMenu);
         ArrayAdapter<String> dropdownMenuAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.dropdownMenuTransactionsItems));
         dropdownMenuAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdownMenuTransactions.setAdapter(dropdownMenuAdapter);
 
+        setTransactions();
+
         dropdownMenuTransactions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Handle the selected item
-                String selectedItem = parent.getItemAtPosition(position).toString();
+//                String selectedItem = parent.getItemAtPosition(position).toString();
                 TextView textView=(TextView) view.findViewById(android.R.id.text1);
-                textView.setTextColor(ContextCompat.getColor(context, R.color.white)); //Change selected text color
-                // Do something with the selected item
+                textView.setTextColor(ContextCompat.getColor(context, R.color.white));
+
+                System.out.println("AAS " + position);
+                switch (position){
+                    case 0:
+                        comparator = Comparator.comparing(Transaction::getDate).reversed();
+                        setTransactionsAdapter();
+                        break;
+                    case 1:
+                        comparator = Comparator.comparing(Transaction::getCost).reversed();
+                        setTransactionsAdapter();
+                        break;
+                    case 2:
+                        comparator = Comparator.comparing(Transaction::getType);
+                        setTransactionsAdapter();
+                        break;
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Handle the case where no item is selected
             }
         });
 
@@ -136,6 +172,55 @@ public class WalletFragment extends Fragment {
         getCurrencies();
 
         return view;
+    }
+
+    private void setTransactions() {
+        transactionsList = view.findViewById(R.id.transactionsList);
+
+        Call<GetTransactionsResponse> call = ApiService.AuthApiService.getTransactions();
+        call.enqueue(new Callback<GetTransactionsResponse>() {
+            @Override
+            public void onResponse(Call<GetTransactionsResponse> call, Response<GetTransactionsResponse> response) {
+                if (response.isSuccessful()) {
+                    GetTransactionsResponse data = response.body();
+                    app.setTransactions(data.getTransactions());
+                    Collections.reverse(app.getTransactions());
+                    setTransactionsAdapter();
+                } else {
+                    ErrorUtils.handleErrorResponse(response, context);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetTransactionsResponse> call, Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setTransactionSort() {
+        changeSortOrderTransactionsBtn = view.findViewById(R.id.changeSortOrderTransactionsBtn);
+
+        changeSortOrderTransactionsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTransactionsAdapter();
+            }
+        });
+    }
+
+    private void setRefresher() {
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.orange));
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.navigation);
+        swipeRefreshLayout.setDistanceToTriggerSync(600);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setTransactions();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private void changeBalance(ChangeBalanceRequest amount) {
