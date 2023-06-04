@@ -31,8 +31,9 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="29dp"
+            android:layout_height="29dp"
+            app:layout_constraintBottom_toBottomOf="@+id/stockFullname"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/stock_image_holder" />
@@ -401,7 +402,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/stockMoreCounter"
+        android:id="@+id/stockBuyCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/buyBtn"
@@ -412,7 +413,7 @@
 
 
         <android.widget.Button
-            android:id="@+id/lessMoreBtn"
+            android:id="@+id/lessBuyBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/icon_minus"
@@ -422,16 +423,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/selectedMoreCount"
+            android:id="@+id/selectedBuyCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="20"
+            android:text="10"
             android:textColor="@color/white"
             android:textSize="@dimen/font_paragraph_16"
             app:fontWeight="500"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/lessMoreBtn"
+            app:layout_constraintStart_toEndOf="@+id/lessBuyBtn"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -445,12 +446,12 @@
             android:textSize="@dimen/font_paragraph_16"
             app:fontWeight="500"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/allMoreCount"
-            app:layout_constraintStart_toEndOf="@+id/selectedMoreCount"
+            app:layout_constraintEnd_toStartOf="@+id/allBuyCount"
+            app:layout_constraintStart_toEndOf="@+id/selectedBuyCount"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/allMoreCount"
+            android:id="@+id/allBuyCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -459,11 +460,11 @@
             android:textSize="@dimen/font_paragraph_16"
             app:fontWeight="500"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/moreMoreBtn"
+            app:layout_constraintEnd_toStartOf="@+id/moreBuyBtn"
             app:layout_constraintTop_toTopOf="parent" />
 
         <android.widget.Button
-            android:id="@+id/moreMoreBtn"
+            android:id="@+id/moreBuyBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/icon_plus"

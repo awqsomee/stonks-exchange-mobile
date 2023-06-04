@@ -8,4 +8,8 @@ public class UserStock extends Stock{
     public Number getLatestPrice() {
         return latestPrice;
     }
+
+    public String getLatestPriceString() {
+        return String.format("%.2f", latestPrice.floatValue());
+    }
 }

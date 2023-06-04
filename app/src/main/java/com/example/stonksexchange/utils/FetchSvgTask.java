@@ -17,7 +17,7 @@ import com.example.stonksexchange.R;
 
 import java.net.URL;
 
-class FetchSvgTask extends AsyncTask<Void, Void, SVG> {
+public class FetchSvgTask extends AsyncTask<Void, Void, SVG> {
 
     private String svgUrl;
     private ImageView imageView;

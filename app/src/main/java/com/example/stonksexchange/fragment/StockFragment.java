@@ -1,12 +1,16 @@
 package com.example.stonksexchange.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.icu.text.Transliterator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,12 +20,18 @@ import androidx.fragment.app.Fragment;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
+import com.example.stonksexchange.activity.MainActivity;
+import com.example.stonksexchange.api.ApiManager;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
+import com.example.stonksexchange.api.domain.auth.AuthResponse;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
+import com.example.stonksexchange.api.domain.stock.StockExchangeRequest;
+import com.example.stonksexchange.api.domain.stock.StockExchangeResponse;
 import com.example.stonksexchange.models.Price;
 import com.example.stonksexchange.models.Stock;
 import com.example.stonksexchange.utils.BackButtonHandler;
+import com.example.stonksexchange.utils.FetchSvgTask;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -34,6 +44,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +61,7 @@ public class StockFragment extends Fragment {
     String name;
     int amount;
 
+    View view;
     TextView stockSymbol;
     TextView stockFullname;
     TextView stockPrice;
@@ -60,15 +72,17 @@ public class StockFragment extends Fragment {
     ArrayList<Entry> prices;
     String[] dates;
     ConstraintLayout pricesLayout;
+    Stock stock;
 
-    View view;
-
+    Counters counters;
     private LineChart chart;
+    int counter = 0;
+
 
     public StockFragment() {
     }
 
-    public static StockFragment newInstance(String symbol, String name, int amount ) {
+    public static StockFragment newInstance(String symbol, String name, int amount) {
         StockFragment fragment = new StockFragment();
         Bundle args = new Bundle();
         args.putString("symbol", symbol);
@@ -112,7 +126,19 @@ public class StockFragment extends Fragment {
             @Override
             public void onResponse(Call<GetStockDataResponse> call, Response<GetStockDataResponse> response) {
                 if (response.isSuccessful()) {
-                    Stock stock = response.body().getStock();
+                    ImageView imageView = view.findViewById(R.id.imageView);
+                    String iconUrl;
+                    stock = response.body().getStock();
+
+                    if (!stock.getLatname().matches("\\d")){
+                        iconUrl = "https://cdn.bcs.ru/company-logos/" + stock.getLatname().toLowerCase() + ".svg";
+                    } else {
+                        Transliterator transliterator = Transliterator.getInstance("Russian-Latin/BGN");
+                        iconUrl = "https://cdn.bcs.ru/company-logos/" + transliterator.transliterate(stock.getShortname().split("[ -]")[0].toLowerCase()) + ".svg";
+                    }
+                    FetchSvgTask task = new FetchSvgTask(iconUrl, imageView, context);
+                    task.execute();
+
                     if (amount != 0) pricesLayout.setVisibility(View.VISIBLE);
                     prices = stock.getFullPrice();
                     dates = stock.getAllDates();
@@ -125,6 +151,8 @@ public class StockFragment extends Fragment {
                     stockPriceChange.setText(stock.getPriceChange());
                     stockPriceChange.setTextColor(Color.parseColor(stock.getPriceChangeColor()));
                     setChartData();
+                    if (stock.getPrices().get(0).getClose() != null)
+                        counters = new Counters();
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }
@@ -138,11 +166,11 @@ public class StockFragment extends Fragment {
         });
     }
 
-    private void setChartData(){
+    private void setChartData() {
 
         LineDataSet dataset = new LineDataSet(prices, "График первый");
         dataset.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        dataset.setColors(new int[] {R.color.green}, context);    //цвет линии графика
+        dataset.setColors(new int[]{R.color.green}, context);    //цвет линии графика
         dataset.setDrawCircles(false);
 
         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.chart_gradients);
@@ -184,8 +212,156 @@ public class StockFragment extends Fragment {
         chart.setData(data);
         chart.setAutoScaleMinMaxEnabled(true);
         chart.setKeepPositionOnRotation(true);
-        chart.setPadding(0,0,0,0);
+        chart.setPadding(0, 0, 0, 0);
         chart.invalidate();
     }
 
+    private void exchangeStocks(int exchangeAmount) {
+        Call<StockExchangeResponse> call = ApiService.AuthApiService.exchangeStock(new StockExchangeRequest(exchangeAmount, symbol));
+        call.enqueue(new Callback<StockExchangeResponse>() {
+            @Override
+            public void onResponse(Call<StockExchangeResponse> call, Response<StockExchangeResponse> response) {
+                if (response.isSuccessful()) {
+                    StockExchangeResponse sResponse = response.body();
+
+                    amount = sResponse.getStock().getAmount();
+                    if (amount != 0) pricesLayout.setVisibility(View.VISIBLE);
+                    else pricesLayout.setVisibility(View.GONE);
+                    stockPrice.setText(sResponse.getStock().getPrice());
+                    minStockPrice.setText(sResponse.getStock().getLatestPriceString());
+                    maxStockPrice.setText(sResponse.getStock().getLatestPriceString());
+                    stockPriceChange.setText("0.00%");
+                    stockPriceChange.setTextColor(Color.parseColor("#E9EEF2"));
+                    float balance = sResponse.getUser().getBalance();
+                    app.pushTransaction(sResponse.getTransaction());
+                    app.getUser().setBalance(balance);
+
+                    counters.setCounters(balance, sResponse.getStock().getPrices().get(0).getClose(), amount);
+
+                    Toast.makeText(context, sResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    ErrorUtils.handleErrorResponse(response, context);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StockExchangeResponse> call, Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private class Counters {
+        Button buyBtn = view.findViewById(R.id.buyBtn);
+        Button sellBtn = view.findViewById(R.id.sellBtn);
+        ConstraintLayout buyCounter = view.findViewById(R.id.stockBuyCounter);
+        ConstraintLayout sellCounter = view.findViewById(R.id.stockSellCounter);
+        Button lessBuyBtn = view.findViewById(R.id.lessBuyBtn);
+        Button moreBuyBtn = view.findViewById(R.id.moreBuyBtn);
+        Button lessSellBtn = view.findViewById(R.id.lessSellBtn);
+        Button moreSellBtn = view.findViewById(R.id.moreSellBtn);
+        TextView selectedBuyCount = view.findViewById(R.id.selectedBuyCount);
+        TextView selectedSellCount = view.findViewById(R.id.selectedSellCount);
+        TextView allBuyCount = view.findViewById(R.id.allBuyCount);
+        TextView allSellCount = view.findViewById(R.id.allSellCount);
+
+        int allBuyCounter = 0;
+
+        Counters() {
+            buyBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println(counter);
+                    if (counter == 0) {
+                        sellBtn.setVisibility(View.GONE);
+                        buyCounter.setVisibility(View.VISIBLE);
+                        counter = 1;
+                        setCounters();
+                        return;
+                    }
+
+                    exchangeStocks(counter);
+
+                    counter = 0;
+                    checkCounter();
+                }
+            });
+
+            sellBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (amount == 0) return;
+
+                    if (counter == 0) {
+                        buyBtn.setVisibility(View.GONE);
+                        sellCounter.setVisibility(View.VISIBLE);
+                        counter = 1;
+                        setCounters();
+                        return;
+                    }
+
+                    exchangeStocks(-counter);
+
+                    counter = 0;
+                    checkCounter();
+                }
+            });
+
+            lessBuyBtn.setOnClickListener(new lessClickListener());
+            moreBuyBtn.setOnClickListener(new moreClickListener());
+            lessSellBtn.setOnClickListener(new lessClickListener());
+            moreSellBtn.setOnClickListener(new moreSellClickListener());
+                setCounters(app.getUser().getBalance(), stock.getPrices().get(0).getClose(), amount);
+        }
+
+        private void checkCounter() {
+            if (counter <= 0) {
+                sellBtn.setVisibility(View.VISIBLE);
+                buyBtn.setVisibility(View.VISIBLE);
+                buyCounter.setVisibility(View.GONE);
+                sellCounter.setVisibility(View.GONE);
+            }
+        }
+
+        public void setCounters(float balance, float price, int amount) {
+            allSellCount.setText(amount + "");
+            this.allBuyCounter = (int) Math.floor(balance / price);
+            allBuyCount.setText(allBuyCounter + "");
+        }
+
+        private class lessClickListener implements View.OnClickListener {
+            @Override
+            public void onClick(View v) {
+                counter--;
+                checkCounter();
+                setCounters();
+            }
+        }
+
+        private class moreClickListener implements View.OnClickListener {
+            @Override
+            public void onClick(View v) {
+                System.out.println(allBuyCounter);
+                if (counter < allBuyCounter) {
+                    counter++;
+                }
+                setCounters();
+            }
+        }
+
+        private class moreSellClickListener implements View.OnClickListener {
+            @Override
+            public void onClick(View v) {
+                if (counter < amount) {
+                    counter++;
+                }
+                setCounters();
+            }
+        }
+
+        private void setCounters() {
+            selectedBuyCount.setText(counter + "");
+            selectedSellCount.setText(counter + "");
+        }
+    }
 }
