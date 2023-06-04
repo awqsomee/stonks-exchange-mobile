@@ -127,8 +127,6 @@ public class WalletFragment extends Fragment {
 //                String selectedItem = parent.getItemAtPosition(position).toString();
                 TextView textView = (TextView) view.findViewById(android.R.id.text1);
                 textView.setTextColor(ContextCompat.getColor(context, R.color.white));
-
-                System.out.println("AAS " + position);
                 switch (position) {
                     case 0:
                         comparator = Comparator.comparing(Transaction::getDate).reversed();

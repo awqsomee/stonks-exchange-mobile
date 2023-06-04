@@ -36,7 +36,7 @@ public class CatalogFragment extends Fragment {
     ToggleButton changeSortOrderBtn;
     ToggleButton sortByChangeBtn;
     ToggleButton sortByNameBtn;
-    boolean isLoading = false;
+    boolean isLoading;
     Comparator<Stock> comparator = Comparator.comparing(Stock::getChange).reversed();
     private CountDownLatch responseCountDownLatch;
 
@@ -80,6 +80,7 @@ public class CatalogFragment extends Fragment {
             }
         });
         setSortClickListeners();
+
         if (app.getDisplayedStocks().size() == 0) {
             getStandartStocks();
         } else setAdapter();
