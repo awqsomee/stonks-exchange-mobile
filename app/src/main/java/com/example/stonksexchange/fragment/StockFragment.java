@@ -110,11 +110,11 @@ public class StockFragment extends Fragment {
                     chart = view.findViewById(R.id.chart);
                     stockPrice.setText(stock.getPrice());
                     stockChange.setText(String.format("%.2f", stock.getChange()) + "%");
-//                    Float max = stock.getPrices().get(0).getClose();
-//                    Float min = stock.getPrices().get(stock.getPrices().size() - 1).getClose();
-//                    maxStockPrice.setText(max.toString());
-//                    minStockPrice.setText(min.toString());
-//                    stockPriceChange.setText(String.format("%.2f",(max - min) / max * 100) + "%");
+                    stockChange.setTextColor(Color.parseColor(stock.getChangeColor()));
+                    maxStockPrice.setText(stock.getPrice());
+                    minStockPrice.setText(stock.getOldestPrice());
+                    stockPriceChange.setText(stock.getPriceChange());
+                    stockPriceChange.setTextColor(Color.parseColor(stock.getPriceChangeColor()));
                     setChartData();
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);

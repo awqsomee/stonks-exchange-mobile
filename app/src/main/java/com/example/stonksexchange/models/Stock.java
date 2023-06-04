@@ -1,5 +1,7 @@
 package com.example.stonksexchange.models;
 
+import android.graphics.Color;
+
 import com.github.mikephil.charting.data.Entry;
 
 import java.text.ParseException;
@@ -71,6 +73,44 @@ public class Stock {
         return "-";
     }
 
+    public String getOldestPrice() {
+        if (prices.size() > 0 && prices.get(prices.size() - 1).getClose() != null) {
+            return prices.get(prices.size() - 1).getClose().toString();
+        }
+        return "-";
+    }
+
+    public String getPriceChangeColor() {
+        if (prices.size() > 0 && prices.get(0).getClose() != null && prices.get(prices.size() - 1).getClose() != null) {
+            Float current = prices.get(0).getClose();
+            Float old = prices.get(prices.size() - 1).getClose();
+            if (current > old) return "#BBFFA7";
+            if (current < old) return "#FF2A51";
+            if (current == old) return "#E9EEF2";
+        }
+        return "#E9EEF2";
+    }
+
+    public String getChangeColor() {
+        if (prices.size() > 0 && prices.get(0).getClose() != null && prices.get(1).getClose() != null) {
+            Float current = prices.get(0).getClose();
+            Float old = prices.get(1).getClose();
+            if (current > old) return "#BBFFA7";
+            if (current < old) return "#FF2A51";
+            if (current == old) return "#E9EEF2";
+        }
+        return "#E9EEF2";
+    }
+
+    public String getPriceChange() {
+        if (prices.size() > 0 && prices.get(0).getClose() != null && prices.get(prices.size() - 1).getClose() != null) {
+            Float current = prices.get(0).getClose();
+            Float old = prices.get(prices.size() - 1).getClose();
+            return String.format("%.2f", ((current - old) / current * 100)) + "%";
+        }
+        return "-%";
+    }
+
     public Float getChange() {
         if (prices.size() > 0 && prices.get(0).getClose() != null) {
             return (prices.get(0).getClose() - prices.get(1).getClose()) / prices.get(0).getClose() * 100;
@@ -120,4 +160,5 @@ public class Stock {
     public List<Price> getPrices() {
         return prices;
     }
+
 }
