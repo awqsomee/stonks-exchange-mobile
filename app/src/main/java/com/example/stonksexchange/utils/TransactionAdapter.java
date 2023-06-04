@@ -33,6 +33,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         holder.transactionsName.setText(transaction.getType());
         if (transaction.getAmount() != null)
             holder.transactionsQuantity.setText(transaction.getAmount() + " " + transaction.getSymbol());
+        else if (transaction.getSymbol() != null)
+            holder.transactionsQuantity.setText(transaction.getSymbol());
         if (transaction.getCost() != 0f)
             holder.transactionsAmount.setText(String.format("%.2f", transaction.getCost()) + " " + transaction.getCurrency());
     }

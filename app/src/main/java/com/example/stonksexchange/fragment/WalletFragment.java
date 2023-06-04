@@ -2,7 +2,6 @@ package com.example.stonksexchange.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -40,10 +39,8 @@ import com.example.stonksexchange.api.domain.forex.CurrencyExchangeResponse;
 import com.example.stonksexchange.api.domain.forex.GetCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.GetUserCurrenciesResponse;
 import com.example.stonksexchange.api.domain.forex.OpenAccountResponse;
-import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.api.domain.transactions.GetTransactionsResponse;
 import com.example.stonksexchange.models.Currency;
-import com.example.stonksexchange.models.Stock;
 import com.example.stonksexchange.models.Transaction;
 import com.example.stonksexchange.utils.ArrayListSortUtil;
 import com.example.stonksexchange.utils.BackButtonHandler;
@@ -51,7 +48,6 @@ import com.example.stonksexchange.utils.BackButtonHandler;
 import java.util.ArrayList;
 
 import com.example.stonksexchange.utils.CurrenciesAdapter;
-import com.example.stonksexchange.utils.StockAdapter;
 import com.example.stonksexchange.utils.TransactionAdapter;
 
 import java.util.Collections;
@@ -129,11 +125,11 @@ public class WalletFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                String selectedItem = parent.getItemAtPosition(position).toString();
-                TextView textView=(TextView) view.findViewById(android.R.id.text1);
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
                 textView.setTextColor(ContextCompat.getColor(context, R.color.white));
 
                 System.out.println("AAS " + position);
-                switch (position){
+                switch (position) {
                     case 0:
                         comparator = Comparator.comparing(Transaction::getDate).reversed();
                         setTransactionsAdapter();
@@ -239,6 +235,7 @@ public class WalletFragment extends Fragment {
                     balanceText.setText(app.getUser().getBalanceString());
                     Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
                     recyclerView.smoothScrollToPosition(0);
+                    setTransactionsAdapter();
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }
@@ -274,6 +271,7 @@ public class WalletFragment extends Fragment {
                     app.getWallet().setUserCurrencies(adapter.getCurrencies());
 
                     Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
+                    setTransactionsAdapter();
                     recyclerView.smoothScrollToPosition(index);
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
@@ -299,7 +297,7 @@ public class WalletFragment extends Fragment {
                     app.getWallet().setUserCurrencies(data.getCurrencies());
                     app.getWallet().setSelectedCurrency(app.getWallet().getUserCurrencies().get(0));
                     adapter = new CurrenciesAdapter(fragment, app.getWallet().getUserCurrencies());
-                    currencyFullName.setText( app.getWallet().getSelectedCurrency().getName());
+                    currencyFullName.setText(app.getWallet().getSelectedCurrency().getName());
                     recyclerView.setAdapter(adapter);
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
@@ -401,8 +399,8 @@ public class WalletFragment extends Fragment {
                     if (response.isSuccessful()) {
                         CloseAccountResponse data = response.body();
                         app.getUser().setBalance(data.getUser().getBalance());
-
-                        app.pushTransaction(data.getTransactionExchange());
+                        if (data.getTransactionExchange() != null)
+                            app.pushTransaction(data.getTransactionExchange());
                         app.pushTransaction(data.getTransactionClose());
 
                         adapter.changeBalance();
@@ -412,6 +410,7 @@ public class WalletFragment extends Fragment {
 
                         Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
                         recyclerView.smoothScrollToPosition(0);
+                        setTransactionsAdapter();
                     } else {
                         ErrorUtils.handleErrorResponse(response, context);
                     }
@@ -444,14 +443,14 @@ public class WalletFragment extends Fragment {
         List<String> currencySymbols = new ArrayList<>(app.getWallet().getCurrencyNames());
 
         // Create an ArrayAdapter for the currency symbols
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, currencySymbols){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, currencySymbols) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                View view =super.getView(position, convertView, parent);
+                View view = super.getView(position, convertView, parent);
 
-                TextView textView=(TextView) view.findViewById(android.R.id.text1);
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
 
-                textView.setTextAppearance( R.style.ListFont);
+                textView.setTextAppearance(R.style.ListFont);
 
                 return view;
             }
@@ -494,6 +493,7 @@ public class WalletFragment extends Fragment {
 
                     Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
                     recyclerView.smoothScrollToPosition(adapter.getCurrencies().size() - 1);
+                    setTransactionsAdapter();
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }
