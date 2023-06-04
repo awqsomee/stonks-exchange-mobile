@@ -85,11 +85,10 @@ public class Stock {
     public ArrayList getFullPrice() {
         ArrayList<Entry> data = new ArrayList<Entry>();
         if (prices.size() > 0 && prices.get(0).getClose() != null) {
-            for (int i=0; i<prices.size(); i++){
+            for (int i = 0; i < prices.size(); i++) {
                 if (prices.get(i).getClose() != null) {
                     data.add(new Entry(i * 1f, prices.get(i).getClose()));
-                }
-                else{
+                } else {
                     data.add(new Entry(i * 1f, 0));
                 }
             }
@@ -104,7 +103,7 @@ public class Stock {
         SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM");
         Date date = null;
         if (prices.size() > 0 && prices.get(0).getClose() != null) {
-            for (int i=0; i<prices.size() - 1; i++){
+            for (int i = 0; i < prices.size(); i++) {
                 try {
                     date = inputFormat.parse(prices.get(i).getDate());
                 } catch (ParseException e) {

@@ -77,9 +77,9 @@
         android:id="@+id/constraintLayout11"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="6dp"
         android:background="@drawable/shape_info_card"
         android:paddingStart="22dp"
         android:paddingTop="16dp"
@@ -94,8 +94,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Max цена акции"
-            android:textSize="@dimen/font_body_12"
             android:textColor="@color/light_grey"
+            android:textSize="@dimen/font_body_12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -104,8 +104,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Min цена акции"
-            android:textSize="@dimen/font_body_12"
             android:textColor="@color/light_grey"
+            android:textSize="@dimen/font_body_12"
             app:layout_constraintEnd_toStartOf="@+id/textView21"
             app:layout_constraintStart_toEndOf="@+id/textView19"
             app:layout_constraintTop_toTopOf="parent" />
@@ -115,8 +115,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Прирост"
-            android:textSize="@dimen/font_body_12"
             android:textColor="@color/light_grey"
+            android:textSize="@dimen/font_body_12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -126,8 +126,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text=""
-            android:textSize="@dimen/font_paragraph_16"
             android:textColor="@color/white"
+            android:textSize="@dimen/font_paragraph_16"
             app:layout_constraintStart_toStartOf="@+id/textView19"
             app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
@@ -137,8 +137,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text=""
-            android:textSize="@dimen/font_paragraph_16"
             android:textColor="@color/white"
+            android:textSize="@dimen/font_paragraph_16"
             app:layout_constraintStart_toStartOf="@+id/textView20"
             app:layout_constraintTop_toBottomOf="@+id/textView20" />
 

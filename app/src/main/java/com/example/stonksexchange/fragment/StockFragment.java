@@ -130,7 +130,7 @@ public class StockFragment extends Fragment {
     }
 
     private void setChartData(){
-
+        reverseChartData();
         LineDataSet dataset = new LineDataSet(prices, "График первый");
         dataset.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataset.setColors(new int[] {R.color.green}, context);    //цвет линии графика
@@ -147,10 +147,12 @@ public class StockFragment extends Fragment {
         dataset.setHighLightColor(context.getResources().getColor(R.color.light_grey));
 
         LineData data = new LineData(dataset);
+
         ValueFormatter formatter = new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
-                return dates[(int) value];
+                    System.out.println(value + " "+ (int )value + " "+ dates[(int) value]);
+                    return dates[(int) value];
             }
         };
 
@@ -168,15 +170,19 @@ public class StockFragment extends Fragment {
         yAxis.setDrawZeroLine(true);
         yAxis.setDrawAxisLine(false);
 
+        chart.setData(data);
         chart.getLegend().setEnabled(false);
         chart.getDescription().setEnabled(false);
         chart.getAxisRight().setEnabled(false);
         chart.setGridBackgroundColor(context.getResources().getColor(R.color.orange));
-        chart.setData(data);
         chart.setAutoScaleMinMaxEnabled(true);
         chart.setKeepPositionOnRotation(true);
         chart.setPadding(0,0,0,0);
         chart.invalidate();
     }
 
+    private void reverseChartData(){
+        Collections.reverse(prices);
+        Collections.reverse(Arrays.asList(dates));
+    }
 }
