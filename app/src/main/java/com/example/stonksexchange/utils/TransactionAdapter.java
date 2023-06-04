@@ -8,20 +8,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
-import com.example.stonksexchange.fragment.WalletFragment;
-import com.example.stonksexchange.models.Currency;
 import com.example.stonksexchange.models.Transaction;
 
 import java.util.List;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.ViewHolder> {
-    private App app;
     protected List<Transaction> transactions;
 
     public TransactionAdapter(List<Transaction> transactions) {
-        app = App.getInstance();
         this.transactions = transactions;
     }
 
@@ -62,11 +57,5 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             transactionsQuantity = itemView.findViewById(R.id.transactionsQuantity);
             transactionsAmount = itemView.findViewById(R.id.transactionsAmount);
         }
-    }
-
-    public void addTransaction(Transaction transaction) {
-        this.transactions.add(transaction);
-        app.pushTransaction(transaction);
-        notifyDataSetChanged();
     }
 }
