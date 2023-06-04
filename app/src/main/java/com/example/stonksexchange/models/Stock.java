@@ -1,6 +1,7 @@
 package com.example.stonksexchange.models;
 
 import android.graphics.Color;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.data.Entry;
 
