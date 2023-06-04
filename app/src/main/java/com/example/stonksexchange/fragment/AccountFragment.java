@@ -181,6 +181,29 @@ public class AccountFragment extends Fragment {
         launcher.launch(intent);
     }
 
+    private void deleteAvatar() {
+        Call<UserDataResponse> call = ApiService.AuthApiService.deleteAvatar();
+        call.enqueue(new Callback<UserDataResponse>() {
+            @Override
+            public void onResponse(Call<UserDataResponse> call, Response<UserDataResponse> response) {
+                if (response.isSuccessful()) {
+                    UserDataResponse data = response.body();
+                    User user = data.getUser();
+                    app.setUserData(user);
+                    avatar.setImageDrawable(context.getDrawable(R.drawable.authorized_user));
+                    MainActivity.getAccAuthButton().setImageDrawable(context.getDrawable(R.drawable.authorized_user));
+                } else {
+                    ErrorUtils.handleErrorResponse(response, context);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDataResponse> call, Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private ActivityResultLauncher<Intent> registerGalleryLauncher() {
         return registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
@@ -329,6 +352,7 @@ public class AccountFragment extends Fragment {
                         }
                         return true;
                     } else if (itemId == R.id.deleteAvatarBtn) {
+                        deleteAvatar();
                         return true;
                     }
                     return false;
