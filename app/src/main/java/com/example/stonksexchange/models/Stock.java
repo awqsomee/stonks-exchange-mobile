@@ -19,6 +19,7 @@ public class Stock {
     String latname;
     String currency;
     List<Price> prices;
+    Number amount;
 //    List<Price> dates;
 
 //    Number isTraded;
@@ -36,19 +37,6 @@ public class Stock {
 //    String engine;
 //    String market;
 //    String board;
-
-    public Stock() {
-    }
-
-    public Stock(String symbol, String name, String shortname, String latname, String currency, List<Price> prices) {
-        this.symbol = symbol;
-        this.name = name;
-        this.shortname = shortname;
-        this.latname = latname;
-        this.currency = currency;
-        this.prices = prices;
-//        this.dates = dates;
-    }
 
     public String getSymbol() {
         return symbol;
@@ -161,4 +149,9 @@ public class Stock {
         return prices;
     }
 
+    public int getAmount() {
+        if (amount != null)
+            return amount.intValue();
+        return 0;
+    }
 }

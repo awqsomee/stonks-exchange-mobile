@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -47,6 +48,8 @@ public class StockFragment extends Fragment {
     Context context;
     String symbol;
     String name;
+    int amount;
+
     TextView stockSymbol;
     TextView stockFullname;
     TextView stockPrice;
@@ -56,6 +59,7 @@ public class StockFragment extends Fragment {
     TextView stockPriceChange;
     ArrayList<Entry> prices;
     String[] dates;
+    ConstraintLayout pricesLayout;
 
     View view;
 
@@ -64,11 +68,12 @@ public class StockFragment extends Fragment {
     public StockFragment() {
     }
 
-    public static StockFragment newInstance(String symbol, String name ) {
+    public static StockFragment newInstance(String symbol, String name, int amount ) {
         StockFragment fragment = new StockFragment();
         Bundle args = new Bundle();
         args.putString("symbol", symbol);
         args.putString("name", name);
+        args.putInt("amount", amount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,6 +87,7 @@ public class StockFragment extends Fragment {
         BackButtonHandler.setupBackPressedCallback(this);
         symbol = getArguments().getString("symbol");
         name = getArguments().getString("name");
+        amount = getArguments().getInt("amount");
 
         stockFullname = view.findViewById(R.id.stockFullname);
         stockSymbol = view.findViewById(R.id.stockSymbol);
@@ -90,6 +96,8 @@ public class StockFragment extends Fragment {
         maxStockPrice = view.findViewById(R.id.maxStockPrice);
         minStockPrice = view.findViewById(R.id.minStockPrice);
         stockPriceChange = view.findViewById(R.id.stockPriceChange);
+        pricesLayout = view.findViewById(R.id.pricesLayout);
+
         stockFullname.setText(name);
         stockSymbol.setText(symbol);
 
@@ -105,6 +113,7 @@ public class StockFragment extends Fragment {
             public void onResponse(Call<GetStockDataResponse> call, Response<GetStockDataResponse> response) {
                 if (response.isSuccessful()) {
                     Stock stock = response.body().getStock();
+                    if (amount != 0) pricesLayout.setVisibility(View.VISIBLE);
                     prices = stock.getFullPrice();
                     dates = stock.getAllDates();
                     chart = view.findViewById(R.id.chart);
