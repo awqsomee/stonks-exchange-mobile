@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     static ImageView accAuthButton;
     private MenuItem walletCount;
 
+    public Button goBackBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         context = this;
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigationView = findViewById(R.id.navigationView);
         searchView = findViewById(R.id.searchView);
 
+        setGoBackButton();
+
         accBtn.setOnClickListener(new AccClickListener());
         accAuthButton.setOnClickListener(new AccClickListener());
 
@@ -71,6 +75,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         catalogFragment = new CatalogFragment();
         showFragment(catalogFragment);
+    }
+
+    private void setGoBackButton() {
+        goBackBtn = findViewById(R.id.goBackBtn);
+        goBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

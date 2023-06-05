@@ -95,6 +95,8 @@ public class StockFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_stock, container, false);
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.goBackBtn.setVisibility(View.VISIBLE);
 
         app = App.getInstance();
         context = view.getContext();
@@ -363,5 +365,12 @@ public class StockFragment extends Fragment {
             selectedBuyCount.setText(counter + "");
             selectedSellCount.setText(counter + "");
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.goBackBtn.setVisibility(View.GONE);
     }
 }
