@@ -257,7 +257,7 @@ public class AccountFragment extends Fragment {
                         MainActivity mainActivity = (MainActivity) getActivity();
                         mainActivity.logOut();
                     } else {
-//                    ErrorUtils.handleErrorResponse(response, context);
+                        ErrorUtils.handleErrorResponse(response, context);
                     }
                 }
 
