@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     static ImageView accAuthButton;
     private MenuItem walletCount;
 
-    public Button goBackBtn;
+    public ImageButton goBackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
