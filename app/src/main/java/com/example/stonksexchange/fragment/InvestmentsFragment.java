@@ -108,8 +108,8 @@ public class InvestmentsFragment extends Fragment {
             titleUserIncomePer.setText("Убытки, %");
             userIncomeCur.setTextColor(Color.parseColor("#FF2A51"));
         }
-        userIncomeCur.setText(difference + " руб");
-        userIncomePer.setText((difference / assets * 100) + " %");
+        userIncomeCur.setText(String.format("%.2f", difference) + " руб");
+        userIncomePer.setText(String.format("%.2f", (difference / assets * 100)) + " %");
     }
 
     private void getUserStocks() {

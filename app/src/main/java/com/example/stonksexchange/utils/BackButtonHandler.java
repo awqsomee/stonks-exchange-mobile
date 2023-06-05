@@ -1,5 +1,8 @@
 package com.example.stonksexchange.utils;
 
+import android.view.Menu;
+import android.view.MenuItem;
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +25,9 @@ public class BackButtonHandler {
     }
 
     private static void navigateToCatalogFragment(Fragment fragment) {
-        MainActivity.getNavigationView().setSelectedItemId(R.id.menu_catalog);
+        Menu menu = MainActivity.getNavigationView().getMenu();
+        MenuItem menuItem = menu.findItem(R.id.menu_catalog);
+        menuItem.setChecked(true);
         FragmentManager fragmentManager = fragment.getParentFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragmentContainer, new CatalogFragment());
