@@ -120,8 +120,8 @@ public class StockFragment extends Fragment {
         if (app.getIsAuth())
             if (stock != null && stock.getPrices().get(0).getClose() != null)
                 counters.setExchangeButtons();
-        else
-            counters.setToLoginButtons();
+            else
+                counters.setToLoginButtons();
     }
 
     private void getStockData() {
@@ -147,7 +147,7 @@ public class StockFragment extends Fragment {
                     prices = stock.getFullPrice();
                     dates = stock.getAllDates();
                     chart = view.findViewById(R.id.chart);
-                    stockPrice.setText(stock.getPrice());
+                    stockPrice.setText(stock.getPrice() + " " + stock.getCurrency());
                     stockChange.setText(String.format("%.2f", stock.getChange()) + "%");
                     stockChange.setTextColor(Color.parseColor(stock.getChangeColor()));
                     maxStockPrice.setText(stock.getPrice());
@@ -296,6 +296,11 @@ public class StockFragment extends Fragment {
             buyBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (allBuyCounter == 0){
+                        Toast.makeText(context, "Недостаточно средств", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     if (counter == 0) {
                         sellBtn.setVisibility(View.GONE);
                         buyCounter.setVisibility(View.VISIBLE);
@@ -350,7 +355,11 @@ public class StockFragment extends Fragment {
         public void setCounters(float balance, float price, int amount) {
             allSellCount.setText(amount + "");
             this.allBuyCounter = (int) Math.floor(balance / price);
-            allBuyCount.setText(allBuyCounter + "");
+            if (this.allBuyCounter != 0) {
+                allBuyCount.setText(allBuyCounter + "");
+            } else {
+                allBuyCount.setText("-");
+            }
         }
 
         private class lessClickListener implements View.OnClickListener {
