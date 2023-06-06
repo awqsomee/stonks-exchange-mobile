@@ -37,6 +37,8 @@ import com.example.stonksexchange.activity.LoginActivity;
 import com.example.stonksexchange.activity.MainActivity;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
+import com.example.stonksexchange.api.domain.balance.ChangeBalanceRequest;
+import com.example.stonksexchange.api.domain.balance.ChangeBalanceResponse;
 import com.example.stonksexchange.api.domain.user.UserDataResponse;
 import com.example.stonksexchange.models.User;
 import com.example.stonksexchange.utils.BackButtonHandler;
@@ -249,23 +251,44 @@ public class AccountFragment extends Fragment {
     private class DeleteAccClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Call<UserDataResponse> call = ApiService.AuthApiService.deleteUser();
-            call.enqueue(new Callback<UserDataResponse>() {
+            Call<ChangeBalanceResponse> callWithdraw = ApiService.AuthApiService.changeBalance(new ChangeBalanceRequest(-app.getUser().getBalance()));
+            callWithdraw.enqueue(new Callback<ChangeBalanceResponse>() {
                 @Override
-                public void onResponse(Call<UserDataResponse> call, Response<UserDataResponse> response) {
+                public void onResponse(Call<ChangeBalanceResponse> call, Response<ChangeBalanceResponse> response) {
                     if (response.isSuccessful()) {
-                        MainActivity mainActivity = (MainActivity) getActivity();
-                        mainActivity.logOut();
+                        ChangeBalanceResponse data = response.body();
+                        app.getUser().setBalance(data.getUser().getBalance());
+                        app.pushTransaction(data.getTransaction());
+
+                        Call<UserDataResponse> callDelete = ApiService.AuthApiService.deleteUser();
+                        callDelete.enqueue(new Callback<UserDataResponse>() {
+                            @Override
+                            public void onResponse(Call<UserDataResponse> call, Response<UserDataResponse> response) {
+                                if (response.isSuccessful()) {
+                                    MainActivity mainActivity = (MainActivity) getActivity();
+                                    mainActivity.logOut();
+                                } else {
+                                    ErrorUtils.handleErrorResponse(response, context);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<UserDataResponse> call, Throwable t) {
+                                ErrorUtils.failureRequest(context);
+                            }
+                        });
                     } else {
                         ErrorUtils.handleErrorResponse(response, context);
                     }
                 }
 
                 @Override
-                public void onFailure(Call<UserDataResponse> call, Throwable t) {
+                public void onFailure(Call<ChangeBalanceResponse> call, Throwable t) {
                     ErrorUtils.failureRequest(context);
+
                 }
             });
+
         }
     }
 
