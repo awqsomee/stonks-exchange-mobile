@@ -1,7 +1,7 @@
 package com.example.stonksexchange.fragment;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.icu.text.Transliterator;
@@ -20,35 +20,26 @@ import androidx.fragment.app.Fragment;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
+import com.example.stonksexchange.activity.LoginActivity;
 import com.example.stonksexchange.activity.MainActivity;
-import com.example.stonksexchange.api.ApiManager;
 import com.example.stonksexchange.api.ApiService;
 import com.example.stonksexchange.api.ErrorUtils;
-import com.example.stonksexchange.api.domain.auth.AuthResponse;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.api.domain.stock.StockExchangeRequest;
 import com.example.stonksexchange.api.domain.stock.StockExchangeResponse;
-import com.example.stonksexchange.models.Price;
 import com.example.stonksexchange.models.Stock;
 import com.example.stonksexchange.utils.BackButtonHandler;
 import com.example.stonksexchange.utils.FetchSvgTask;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.IMarker;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -95,6 +86,7 @@ public class StockFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_stock, container, false);
+        counters = new Counters();
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.goBackBtn.setVisibility(View.VISIBLE);
 
@@ -122,6 +114,16 @@ public class StockFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (app.getIsAuth())
+            if (stock != null && stock.getPrices().get(0).getClose() != null)
+                counters.setExchangeButtons();
+        else
+            counters.setToLoginButtons();
+    }
+
     private void getStockData() {
         Call<GetStockDataResponse> call = ApiService.ApiService.getStockData(symbol, "", "");
         call.enqueue(new Callback<GetStockDataResponse>() {
@@ -132,7 +134,7 @@ public class StockFragment extends Fragment {
                     String iconUrl;
                     stock = response.body().getStock();
 
-                    if (!stock.getLatname().matches("\\d")){
+                    if (!stock.getLatname().matches("\\d")) {
                         iconUrl = "https://cdn.bcs.ru/company-logos/" + stock.getLatname().toLowerCase() + ".svg";
                     } else {
                         Transliterator transliterator = Transliterator.getInstance("Russian-Latin/BGN");
@@ -153,8 +155,13 @@ public class StockFragment extends Fragment {
                     stockPriceChange.setText(stock.getPriceChange());
                     stockPriceChange.setTextColor(Color.parseColor(stock.getPriceChangeColor()));
                     setChartData();
-                    if (stock.getPrices().get(0).getClose() != null)
-                        counters = new Counters();
+                    if (app.getIsAuth())
+                        if (stock.getPrices().get(0).getClose() != null)
+                            counters.setExchangeButtons();
+                        else
+                            Toast.makeText(context, "В данный момент акция не торгуется", Toast.LENGTH_SHORT).show();
+                    else
+                        counters.setToLoginButtons();
                 } else {
                     ErrorUtils.handleErrorResponse(response, context);
                 }
@@ -269,10 +276,26 @@ public class StockFragment extends Fragment {
         int allBuyCounter = 0;
 
         Counters() {
+
+        }
+
+        public void setToLoginButtons() {
+            buyBtn.setOnClickListener(new toLogIn());
+            sellBtn.setOnClickListener(new toLogIn());
+        }
+
+        private class toLogIn implements View.OnClickListener {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, LoginActivity.class);
+                startActivity(intent);
+            }
+        }
+
+        public void setExchangeButtons() {
             buyBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println(counter);
                     if (counter == 0) {
                         sellBtn.setVisibility(View.GONE);
                         buyCounter.setVisibility(View.VISIBLE);
@@ -312,7 +335,7 @@ public class StockFragment extends Fragment {
             moreBuyBtn.setOnClickListener(new moreClickListener());
             lessSellBtn.setOnClickListener(new lessClickListener());
             moreSellBtn.setOnClickListener(new moreSellClickListener());
-                setCounters(app.getUser().getBalance(), stock.getPrices().get(0).getClose(), amount);
+            setCounters(app.getUser().getBalance(), stock.getPrices().get(0).getClose(), amount);
         }
 
         private void checkCounter() {
@@ -342,7 +365,6 @@ public class StockFragment extends Fragment {
         private class moreClickListener implements View.OnClickListener {
             @Override
             public void onClick(View v) {
-                System.out.println(allBuyCounter);
                 if (counter < allBuyCounter) {
                     counter++;
                 }
