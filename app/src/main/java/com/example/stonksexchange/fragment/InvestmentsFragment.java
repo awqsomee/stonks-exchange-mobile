@@ -102,14 +102,22 @@ public class InvestmentsFragment extends Fragment {
             titleUserIncomeCur.setText("Прибыль");
             titleUserIncomePer.setText("Прибыль, %");
             userIncomeCur.setTextColor(Color.parseColor("#BBFFA7"));
-            if (difference == 0) userIncomeCur.setTextColor(Color.parseColor("#E9EEF2"));
+            userIncomePer.setTextColor(Color.parseColor("#BBFFA7"));
+            if (difference == 0) {
+                userIncomeCur.setTextColor(Color.parseColor("#E9EEF2"));
+                userIncomePer.setTextColor(Color.parseColor("#E9EEF2"));
+            }
         } else {
             titleUserIncomeCur.setText("Убытки");
             titleUserIncomePer.setText("Убытки, %");
             userIncomeCur.setTextColor(Color.parseColor("#FF2A51"));
+            userIncomePer.setTextColor(Color.parseColor("#FF2A51"));
         }
         userIncomeCur.setText(String.format("%.2f", difference) + " руб");
-        userIncomePer.setText(String.format("%.2f", (difference / assets * 100)) + " %");
+        if (assets != 0)
+            userIncomePer.setText(String.format("%.2f", (difference / assets * 100)) + " %");
+        else
+            userIncomePer.setText(String.format("%.2f", 0f) + " %");
     }
 
     private void getUserStocks() {
