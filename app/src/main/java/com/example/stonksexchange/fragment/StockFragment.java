@@ -162,8 +162,7 @@ public class StockFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GetStockDataResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
-
+                ErrorUtils.failureRequest(context);
             }
         });
     }
@@ -248,7 +247,7 @@ public class StockFragment extends Fragment {
 
             @Override
             public void onFailure(Call<StockExchangeResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
             }
         });
     }

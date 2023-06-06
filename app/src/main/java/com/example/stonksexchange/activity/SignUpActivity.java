@@ -140,7 +140,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
-                Toast.makeText(SignUpActivity.this, "Внутренняя ошибка", Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
             }
         });
     }

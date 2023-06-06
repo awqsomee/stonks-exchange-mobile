@@ -16,6 +16,7 @@ import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
 import com.example.stonksexchange.activity.MainActivity;
 import com.example.stonksexchange.api.ApiService;
+import com.example.stonksexchange.api.ErrorUtils;
 import com.example.stonksexchange.api.domain.stock.GetStockDataResponse;
 import com.example.stonksexchange.models.Stock;
 import com.example.stonksexchange.utils.ArrayListSortUtil;
@@ -148,7 +149,7 @@ public class CatalogFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GetStockDataResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
                 countDown();
             }
         });

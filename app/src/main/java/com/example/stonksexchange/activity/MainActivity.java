@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
-//                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
             }
         });
     }
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                 @Override
                 public void onFailure(Call<FindStocksResponse> call, Throwable t) {
-                    Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    ErrorUtils.failureRequest(context);
                     catalogFragment.setLoading(false);
                 }
             });

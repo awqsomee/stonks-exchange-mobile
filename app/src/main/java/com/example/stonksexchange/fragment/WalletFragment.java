@@ -187,7 +187,7 @@ public class WalletFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GetTransactionsResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
             }
         });
     }
@@ -241,7 +241,7 @@ public class WalletFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ChangeBalanceResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
 
             }
         });
@@ -278,8 +278,7 @@ public class WalletFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CurrencyExchangeResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
-
+                ErrorUtils.failureRequest(context);
             }
         });
     }
@@ -304,7 +303,7 @@ public class WalletFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GetUserCurrenciesResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
             }
         });
     }
@@ -325,7 +324,7 @@ public class WalletFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GetCurrenciesResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
             }
         });
     }
@@ -416,7 +415,7 @@ public class WalletFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<CloseAccountResponse> call, Throwable t) {
-                    Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    ErrorUtils.failureRequest(context);
                 }
             });
         }
@@ -499,7 +498,7 @@ public class WalletFragment extends Fragment {
 
             @Override
             public void onFailure(Call<OpenAccountResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
             }
         });
     }

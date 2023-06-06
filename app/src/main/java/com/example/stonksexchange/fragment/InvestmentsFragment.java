@@ -130,7 +130,7 @@ public class InvestmentsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GetUserStocksResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
                 countDown();
                 isLoading = false;
             }
@@ -155,7 +155,7 @@ public class InvestmentsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GetUserCurrenciesResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
                 countDown();
             }
         });

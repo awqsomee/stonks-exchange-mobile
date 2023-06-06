@@ -149,13 +149,13 @@ public class AccountFragment extends Fragment {
                     editPhone.setText(user.getPhoneNumber());
                     editPassport.setText(user.getPassportNumber());
                 } else {
-//                    ErrorUtils.handleErrorResponse(response, context);
+                    ErrorUtils.handleErrorResponse(response, context);
                 }
             }
 
             @Override
             public void onFailure(Call<UserDataResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
             }
         });
     }
@@ -199,7 +199,7 @@ public class AccountFragment extends Fragment {
 
             @Override
             public void onFailure(Call<UserDataResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ErrorUtils.failureRequest(context);
             }
         });
     }
@@ -238,7 +238,7 @@ public class AccountFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<UserDataResponse> call, Throwable t) {
-                            Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                            ErrorUtils.failureRequest(context);
                         }
                     });
                 }
@@ -263,7 +263,7 @@ public class AccountFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<UserDataResponse> call, Throwable t) {
-                    Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    ErrorUtils.failureRequest(context);
                 }
             });
         }
@@ -313,7 +313,7 @@ public class AccountFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<UserDataResponse> call, Throwable t) {
-                        Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        ErrorUtils.failureRequest(context);
                     }
                 });
                 // Closing the keyboard
