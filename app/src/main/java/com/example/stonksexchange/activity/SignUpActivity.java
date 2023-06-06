@@ -102,20 +102,33 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void attemptSignUp() {
-        if (!passwordSignUpInput.getText().toString().equals(repeatPasswordInput.getText().toString())) {
+        String lastName = lastNameInput.getText().toString();
+        String firstName = firstNameInput.getText().toString();
+        String patronymic = patronymicInput.getText().toString();
+        if (lastName.equals("") || firstName.equals("") || patronymic.equals("")) {
+            Toast.makeText(SignUpActivity.this, "Введите ФИО", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String email = emailInput.getText().toString();
+        if (email.equals("")) {
+            Toast.makeText(SignUpActivity.this, "Введите email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String password = passwordSignUpInput.getText().toString();
+        String repeatPassword = passwordSignUpInput.getText().toString();
+        if (password.equals("")) {
+            Toast.makeText(SignUpActivity.this, "Введите пароль", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!password.equals(repeatPassword)) {
             Toast.makeText(SignUpActivity.this, "Пароли не совпадают", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String lastName = lastNameInput.getText().toString();
-        String firstName = firstNameInput.getText().toString();
-        String patronymic = patronymicInput.getText().toString();
-        if (lastName.equals("")) return;
-        if (firstName.equals("")) return;
-        if (patronymic.equals("")) return;
         String fullName = lastName + " " + firstName + " " + patronymic;
 
-        SignUpRequest signUpRequest = new SignUpRequest(emailInput.getText().toString(), fullName, passwordSignUpInput.getText().toString());
+        SignUpRequest signUpRequest = new SignUpRequest(email, fullName, password);
         Call<AuthResponse> call = ApiService.ApiService.signUp(signUpRequest);
 
         call.enqueue(new Callback<AuthResponse>() {
