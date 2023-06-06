@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/goBackBtn"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
@@ -29,12 +29,12 @@
 
             android:minWidth="0dp"
             android:minHeight="0dp"
-            app:icon="@drawable/button_back"
+            android:paddingStart="0dp"
+            android:src="@drawable/button_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"
-           />
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/accButton"
@@ -71,7 +71,6 @@
             android:id="@+id/searchView"
             android:layout_width="0dp"
             android:layout_height="32dp"
-            android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/shape_inset5"
             android:minWidth="180dp"
