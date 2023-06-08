@@ -90,12 +90,10 @@ public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.Bu
     }
 
     public void addCurrency(Currency currency) {
-        notifyItemChanged(currencies.indexOf(app.getWallet().getSelectedCurrency()));
         this.currencies.add(currency);
         fragment.onSelectedCurrencyChange();
         app.getWallet().setSelectedCurrency(currency);
-        notifyItemInserted(currencies.size() - 1);
-        notifyItemChanged(currencies.size() - 1);
+        notifyDataSetChanged();
         fragment.onSelectedCurrencyChange();
     }
 
