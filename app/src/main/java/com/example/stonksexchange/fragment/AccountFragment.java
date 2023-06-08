@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -47,6 +49,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -214,10 +218,24 @@ public class AccountFragment extends Fragment {
                 String filePath = FileUtils.getPathFromUri(requireContext(), selectedFileUri);
 
                 if (filePath != null) {
+
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), selectedFileUri);
+                        Bitmap circleBitmap = FileUtils.getCircularBitmap(bitmap);
+
+                        // Convert the circular bitmap to a PNG file
+                        File outputFile = new File(context.getCacheDir(), "image.png");
+                        FileOutputStream fos = new FileOutputStream(outputFile);
+                        circleBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                        fos.flush();
+                        fos.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     // Step 4: Create a RequestBody from the selected file
-                    File file = new File(filePath);
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
-                    MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+                    File outputFile = new File(context.getCacheDir(), "image.png");
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), outputFile);
+                    MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", outputFile.getName(), requestBody);
 
                     // Step 5: Make a request to the server using Retrofit
                     Call<UserDataResponse> call = ApiService.AuthApiService.uploadAvatar(filePart);
@@ -388,9 +406,10 @@ public class AccountFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST_CODE_2) {
+        if (requestCode == PERMISSION_REQUEST_CODE_2 || requestCode == PERMISSION_REQUEST_CODE) {
             if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             }
         }
     }
+
 }

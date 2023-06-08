@@ -3,6 +3,14 @@ package com.example.stonksexchange.utils;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -63,6 +71,31 @@ public class FileUtils {
             }
         }
         return filePath;
+    }
+
+    public static Bitmap getCircularBitmap(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int radius = Math.min(width, height) / 2;
+
+        Bitmap output = Bitmap.createBitmap(radius * 2, radius * 2, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, radius * 2, radius * 2);
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        canvas.drawCircle(radius, radius, radius, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+
+        // Calculate the coordinates to center the bitmap
+        int left = (radius * 2 - width) / 2;
+        int top = (radius * 2 - height) / 2;
+        canvas.drawBitmap(bitmap, null, new Rect(left, top, left + width, top + height), paint);
+
+        return output;
     }
 }
 
