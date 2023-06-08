@@ -47,6 +47,7 @@ public class InvestmentsFragment extends Fragment {
     RecyclerView recyclerView;
     Fragment fragment;
     boolean isLoading = false;
+    ToggleButton changeSortOrderBtn;
     Comparator<UserStock> comparator = Comparator.comparing(UserStock::getChange).reversed();
     private CountDownLatch responseCountDownLatch;
 
@@ -54,7 +55,7 @@ public class InvestmentsFragment extends Fragment {
     }
 
     private void setAdapter() {
-        recyclerView.setAdapter(new UserStockAdapter(ArrayListSortUtil.sortArrayList(app.getInvestments().getUserStocks(), comparator, true), this));
+        recyclerView.setAdapter(new UserStockAdapter(ArrayListSortUtil.sortArrayList(app.getInvestments().getUserStocks(), comparator, changeSortOrderBtn.isChecked()), this));
     }
 
     @Override
@@ -69,6 +70,7 @@ public class InvestmentsFragment extends Fragment {
         isLoading = true;
 
         recyclerView = view.findViewById(R.id.userStockList);
+        setSortClickListeners();
 
         int numberOfApiCalls = 2;
         responseCountDownLatch = new CountDownLatch(numberOfApiCalls);
@@ -76,6 +78,38 @@ public class InvestmentsFragment extends Fragment {
         getUserCurrencies();
 
         return view;
+    }
+
+    private void setSortClickListeners() {
+        changeSortOrderBtn = view.findViewById(R.id.changeSortOrderBtn);
+        ToggleButton sortByChangeBtn = view.findViewById(R.id.sortByChangeBtn);
+        ToggleButton sortByNameBtn = view.findViewById(R.id.sortByNameBtn);
+        changeSortOrderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setAdapter();
+            }
+        });
+
+        sortByChangeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortByChangeBtn.setChecked(true);
+                comparator = Comparator.comparing(UserStock::getChange).reversed();
+                setAdapter();
+                sortByNameBtn.setChecked(false);
+            }
+        });
+
+        sortByNameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortByNameBtn.setChecked(true);
+                comparator = Comparator.comparing(UserStock::getShortname);
+                setAdapter();
+                sortByChangeBtn.setChecked(false);
+            }
+        });
     }
 
     private void countData() {
@@ -88,13 +122,18 @@ public class InvestmentsFragment extends Fragment {
         Float assets = app.getUser().getBalance().floatValue();
         Float difference = 0f;
         ArrayList<Currency> userCurrencies = app.getWallet().getUserCurrencies();
-        for (Currency currency : userCurrencies) {
-            assets += currency.getAmount().floatValue() * currency.getPrice().floatValue();
-            difference += currency.getDifference().floatValue();
+        if (userCurrencies.size() != 0) {
+            for (Currency currency : userCurrencies) {
+                assets += currency.getAmount().floatValue() * currency.getPrice().floatValue();
+                difference += currency.getDifference().floatValue();
+            }
         }
-        for (UserStock stock : app.getInvestments().getUserStocks()) {
-            assets += stock.getAmount() * stock.getPrices().get(0).getClose();
-            difference += stock.getAmount() * (stock.getPrices().get(0).getClose() - stock.getLatestPrice().floatValue());
+        ArrayList<UserStock> userStocks = app.getInvestments().getUserStocks();
+        if (userStocks.size() != 0) {
+            for (UserStock stock : userStocks) {
+                assets += stock.getAmount() * stock.getPrices().get(0).getClose();
+                difference += stock.getAmount() * (stock.getPrices().get(0).getClose() - stock.getLatestPrice().floatValue());
+            }
         }
 
         userAsset.setText(assets + " руб");
