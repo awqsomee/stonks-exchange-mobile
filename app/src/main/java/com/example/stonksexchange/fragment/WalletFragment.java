@@ -212,6 +212,8 @@ public class WalletFragment extends Fragment {
             @Override
             public void onRefresh() {
                 setTransactions();
+                getUserCurrencies();
+                getCurrencies();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });

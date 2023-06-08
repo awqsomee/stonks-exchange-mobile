@@ -17,14 +17,12 @@ import java.util.ArrayList;
 
 public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.ButtonViewHolder> {
     private ArrayList<Currency> currencies;
-    private boolean isFirstItemChecked;
     private App app;
     private WalletFragment fragment;
 
     public CurrenciesAdapter(WalletFragment fragment, ArrayList<Currency> currencies) {
         this.currencies = currencies;
         app = App.getInstance();
-        isFirstItemChecked = false;
         this.fragment = fragment;
     }
 
@@ -50,7 +48,6 @@ public class CurrenciesAdapter extends RecyclerView.Adapter<CurrenciesAdapter.Bu
             holder.toggleButton.setTextOn(currency.getAmount() + " " + currency.getSymbol());
             holder.toggleButton.setTextOff(currency.getAmount() + " " + currency.getSymbol());
         }
-
 
         holder.toggleButton.setChecked(isSelected);
 
