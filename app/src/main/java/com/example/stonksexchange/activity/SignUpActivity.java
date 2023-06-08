@@ -116,7 +116,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         String password = passwordSignUpInput.getText().toString();
-        String repeatPassword = passwordSignUpInput.getText().toString();
+        String repeatPassword = repeatPasswordInput.getText().toString();
         if (password.equals("")) {
             Toast.makeText(SignUpActivity.this, "Введите пароль", Toast.LENGTH_SHORT).show();
             return;
