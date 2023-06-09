@@ -73,6 +73,7 @@
             android:layout_height="32dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/shape_inset5"
+            android:textCursorDrawable="@drawable/shape_edittext_cursor"
             android:minWidth="180dp"
             app:circularflow_defaultRadius="5dp"
             app:layout_constraintBottom_toBottomOf="parent"

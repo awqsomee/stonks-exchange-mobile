@@ -18,4 +18,9 @@
         <item name="android:background">@color/dark_element</item>
         <item name="android:fontFamily">@font/exo2</item>
     </style>
+
+    <style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textCursorDrawable">@drawable/shape_edittext_cursor</item>
+
+    </style>
 </resources>
