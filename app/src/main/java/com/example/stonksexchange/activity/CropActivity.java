@@ -87,7 +87,7 @@ public class CropActivity extends AppCompatActivity {
     }
 
     public void setupOverlayTouchListener() {
-        overlay.setOnTouchListener(new View.OnTouchListener() {
+        imageView.setOnTouchListener(new View.OnTouchListener() {
             private float scaleFactor = 1f;
             private ScaleGestureDetector scaleGestureDetector;
             private GestureDetector gestureDetector;
