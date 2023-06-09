@@ -117,11 +117,11 @@ public class StockFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (app.getIsAuth())
+        if (app.getIsAuth()) {
             if (stock != null && stock.getPrices().get(0).getClose() != null)
                 counters.setExchangeButtons();
-            else
-                counters.setToLoginButtons();
+        } else
+            counters.setToLoginButtons();
     }
 
     private void getStockData() {
@@ -296,7 +296,7 @@ public class StockFragment extends Fragment {
             buyBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (allBuyCounter == 0){
+                    if (allBuyCounter == 0) {
                         Toast.makeText(context, "Недостаточно средств", Toast.LENGTH_SHORT).show();
                         return;
                     }
