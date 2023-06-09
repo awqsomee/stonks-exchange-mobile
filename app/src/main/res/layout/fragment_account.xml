@@ -533,30 +533,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-
-    <!-- ImageView to display the selected image -->
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
-
-    <!-- Circular overlay for cropping -->
-    <ImageView
-        android:id="@+id/overlay"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/circular_overlay"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@id/image_view"
-        app:layout_constraintBottom_toBottomOf="@id/image_view"
-        app:layout_constraintStart_toStartOf="@id/image_view"
-        app:layout_constraintEnd_toEndOf="@id/image_view"
-        android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,6 +36,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.stonksexchange.App;
 import com.example.stonksexchange.R;
+import com.example.stonksexchange.activity.CropActivity;
 import com.example.stonksexchange.activity.LoginActivity;
 import com.example.stonksexchange.activity.MainActivity;
 import com.example.stonksexchange.api.ApiService;
@@ -83,11 +84,7 @@ public class AccountFragment extends Fragment {
     EditText editPhone;
     EditText editPassport;
     TextView deleteAccText;
-    ImageView avatar;
-    ImageView imageView;
-    ImageView overlay;
-    Bitmap originalBitmap;
-    ScrollView scrollView;
+    static ImageView avatar;
 
     public AccountFragment() {
     }
@@ -104,9 +101,6 @@ public class AccountFragment extends Fragment {
         launcher = registerGalleryLauncher();
 
         List<EditText> editTextList = new ArrayList<>();
-        imageView = view.findViewById(R.id.image_view);
-        overlay = view.findViewById(R.id.overlay);
-        scrollView = view.findViewById(R.id.scroll);
         usernameInput = view.findViewById(R.id.usernameInput);
         editLastname = view.findViewById(R.id.editLastname);
         editFirstname = view.findViewById(R.id.editFirstname);
@@ -190,7 +184,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void uploadAvatar() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("*/*");  // Set the MIME type to filter file types if needed
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");  // Set the MIME type to filter file types if needed
         launcher.launch(intent);
     }
 
@@ -220,17 +214,14 @@ public class AccountFragment extends Fragment {
     private ActivityResultLauncher<Intent> registerGalleryLauncher() {
         return registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
-                scrollView.setVisibility(View.GONE);
-                imageView.setVisibility(View.VISIBLE);
-                overlay.setVisibility(View.VISIBLE);
                 Intent data = result.getData();
                 Uri selectedFileUri = data.getData();
                 String filePath = FileUtils.getPathFromUri(requireContext(), selectedFileUri);
 
                 if (filePath != null) {
-                    Cropper cropper = new Cropper(getContext(), imageView, overlay, avatar, scrollView);
-                    cropper.loadAndSetupImage(selectedFileUri);
-                    cropper.setupOverlayTouchListener();
+                    Intent intent = new Intent(context, CropActivity.class);
+                    intent.putExtra("imageUri", selectedFileUri.toString());
+                    startActivity(intent);
 //                    // Step 4: Create a RequestBody from the selected file
 //                    File outputFile = new File(context.getCacheDir(), "image.png");
 //                    RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), outputFile);
@@ -263,6 +254,18 @@ public class AccountFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public static ImageView getAvatar() {
+        return avatar;
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        getAccountData();
     }
 
     private class DeleteAccClickListener implements View.OnClickListener {
