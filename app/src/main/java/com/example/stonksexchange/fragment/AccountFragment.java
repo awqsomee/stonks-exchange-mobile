@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ import com.example.stonksexchange.api.domain.balance.ChangeBalanceResponse;
 import com.example.stonksexchange.api.domain.user.UserDataResponse;
 import com.example.stonksexchange.models.User;
 import com.example.stonksexchange.utils.BackButtonHandler;
+import com.example.stonksexchange.utils.Cropper;
 import com.example.stonksexchange.utils.FileUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
@@ -82,8 +84,10 @@ public class AccountFragment extends Fragment {
     EditText editPassport;
     TextView deleteAccText;
     ImageView avatar;
-    TextView changeAvatarBtn;
-    TextView deleteAvatarBtn;
+    ImageView imageView;
+    ImageView overlay;
+    Bitmap originalBitmap;
+    ScrollView scrollView;
 
     public AccountFragment() {
     }
@@ -100,6 +104,9 @@ public class AccountFragment extends Fragment {
         launcher = registerGalleryLauncher();
 
         List<EditText> editTextList = new ArrayList<>();
+        imageView = view.findViewById(R.id.image_view);
+        overlay = view.findViewById(R.id.overlay);
+        scrollView = view.findViewById(R.id.scroll);
         usernameInput = view.findViewById(R.id.usernameInput);
         editLastname = view.findViewById(R.id.editLastname);
         editFirstname = view.findViewById(R.id.editFirstname);
@@ -213,54 +220,46 @@ public class AccountFragment extends Fragment {
     private ActivityResultLauncher<Intent> registerGalleryLauncher() {
         return registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
+                scrollView.setVisibility(View.GONE);
+                imageView.setVisibility(View.VISIBLE);
+                overlay.setVisibility(View.VISIBLE);
                 Intent data = result.getData();
                 Uri selectedFileUri = data.getData();
                 String filePath = FileUtils.getPathFromUri(requireContext(), selectedFileUri);
 
                 if (filePath != null) {
-
-                    try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), selectedFileUri);
-                        Bitmap circleBitmap = FileUtils.getCircularBitmap(bitmap);
-
-                        // Convert the circular bitmap to a PNG file
-                        File outputFile = new File(context.getCacheDir(), "image.png");
-                        FileOutputStream fos = new FileOutputStream(outputFile);
-                        circleBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                        fos.flush();
-                        fos.close();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    // Step 4: Create a RequestBody from the selected file
-                    File outputFile = new File(context.getCacheDir(), "image.png");
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), outputFile);
-                    MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", outputFile.getName(), requestBody);
-
-                    // Step 5: Make a request to the server using Retrofit
-                    Call<UserDataResponse> call = ApiService.AuthApiService.uploadAvatar(filePart);
-                    call.enqueue(new Callback<UserDataResponse>() {
-                        @Override
-                        public void onResponse(Call<UserDataResponse> call, Response<UserDataResponse> response) {
-                            if (response.isSuccessful()) {
-                                UserDataResponse data = response.body();
-                                User user = data.getUser();
-                                app.setUserData(user);
-                                if (app.getUser().getAvatar() != null) {
-                                    RequestCreator avatarImage = Picasso.get().load("https://stonks-kaivr.amvera.io/" + app.getUser().getAvatar());
-                                    avatarImage.into(avatar);
-                                    avatarImage.into(MainActivity.getAccAuthButton());
-                                }
-                            } else {
-                                ErrorUtils.handleErrorResponse(response, context);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<UserDataResponse> call, Throwable t) {
-                            ErrorUtils.failureRequest(context);
-                        }
-                    });
+                    Cropper cropper = new Cropper(getContext(), imageView, overlay, avatar, scrollView);
+                    cropper.loadAndSetupImage(selectedFileUri);
+                    cropper.setupOverlayTouchListener();
+//                    // Step 4: Create a RequestBody from the selected file
+//                    File outputFile = new File(context.getCacheDir(), "image.png");
+//                    RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), outputFile);
+//                    MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", outputFile.getName(), requestBody);
+//
+//                    // Step 5: Make a request to the server using Retrofit
+//                    Call<UserDataResponse> call = ApiService.AuthApiService.uploadAvatar(filePart);
+//                    call.enqueue(new Callback<UserDataResponse>() {
+//                        @Override
+//                        public void onResponse(Call<UserDataResponse> call, Response<UserDataResponse> response) {
+//                            if (response.isSuccessful()) {
+//                                UserDataResponse data = response.body();
+//                                User user = data.getUser();
+//                                app.setUserData(user);
+//                                if (app.getUser().getAvatar() != null) {
+//                                    RequestCreator avatarImage = Picasso.get().load("https://stonks-kaivr.amvera.io/" + app.getUser().getAvatar());
+//                                    avatarImage.into(avatar);
+//                                    avatarImage.into(MainActivity.getAccAuthButton());
+//                                }
+//                            } else {
+//                                ErrorUtils.handleErrorResponse(response, context);
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<UserDataResponse> call, Throwable t) {
+//                            ErrorUtils.failureRequest(context);
+//                        }
+//                    });
                 }
             }
         });
